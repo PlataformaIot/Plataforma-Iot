@@ -1,0 +1,11 @@
+.addCampos{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addCampos Button{
+    margin:5px;
+    padding: auto;
+    margin-top: -7px;
+}

@@ -19,7 +19,7 @@ export default function Header() {
     }, [])
 
     async function handleDevices() {
-        let devi = await (await api.get('/gps/10')).data.map((item, index) => {
+        let devi = await (await api.get('gps/10')).data.map((item, index) => {
             return {
                 ...item,
                 key: index,
