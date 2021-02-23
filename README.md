@@ -82,50 +82,50 @@ Comece criando uma unidade de arquivo para zookeeper (um serviço usado pelo Kaf
 
 Depois, coloque a seguinte definição dentro do arquivo:
 
-[Unit]
+[Unit] 
 Requires=network.target remote-fs.target
 After=network.target remote-fs.target
 
-[Service]
+[Service] 
 Type=simple
 User=kafka
 ExecStart=/home/kafka/kafka/bin/zookeeper-server-start.sh /home/kafka/kafka/config/zookeeper.properties
 ExecStop=/home/kafka/kafka/bin/zookeeper-server-stop.sh
 Restart=on-abnormal
 
-[Install]
+[Install] 
 WantedBy=multi-user.target
 
-[Unit]
+[Unit] 
 section specifies that Zookeeper needs networking and the filesystem to be ready before it starts. While
 
-[Service]
+[Service] 
 section specifies that systemd should use the zookeeper-server-start-sh amd zookeeper-server-stop.sh shell files to start and stop service.
 
 O próximo passo consiste em criar um arquivo systemd para o Kafka:
 
-sudo nano /etc/systemd/system/kafka.service
+    sudo nano /etc/systemd/system/kafka.service
 
 Insira o seguinte:
 
-[Unit]
+[Unit] 
 Requires=zookeeper.service
 After=zookeeper.service
 
-[Service]
+[Service] 
 Type=simple
 User=kafka
 ExecStart=/bin/sh -c '/home/kafka/kafka/bin/kafka-server-start.sh /home/kafka/kafka/config/server.properties > /home/kafka/kafka/kafka.log 2>&1'
 ExecStop=/home/kafka/kafka/bin/kafka-server-stop.sh
 Restart=on-abnormal
 
-[Install]
+[Install] 
 WantedBy=multi-user.target
 
-[Unit]
+[Unit] 
 section specifies that this file depends on zookeeper.service. This will ensure that zookeeper starts automatically when kafka starts. While
 
-[Service]
+[Service] 
 specifies that systemd should use the kafka-server-start-sh and kafka-server-stop-sh shell files to start and stop the service.
 
 Uma vez que as unidades tenham sido definidas, inicie o kafka:
@@ -151,20 +151,20 @@ Um produtor, que viabiliza a publicação de registros Um consumidor, que vai le
 Para começar, crie um tópico chamado ibti:
 
 # DENTRO DA PASTA BIN
-* Criando topico
+* Criando topico 
     ./kafka-topics.sh--create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic ibti
 
-* Listando os topicos
+* Listando os topicos 
     ./kafka-topics --zookeeper 127.0.0.1:2181 --list
 
-* Remover topico
+* Remover topico 
     ./kafka-topics.sh --zookeeper 127.0.0.1:2181 --topic first_topic --delete
 
-* Produzindo menssagem
+* Produzindo menssagem 
     ./kafka-console-producer.sh --broker-list localhost:9092 --topic ibti
 
-* Consumindo menssagem
-./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ibti --from-beginning
+* Consumindo menssagem 
+    ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ibti --from-beginning
 
 
 Se tudo estiver certo, você verá a mensagem em seu terminal.
@@ -189,5 +189,4 @@ Se quiser desbloquear, use a flag -u como feito abaixo:
     sudo passwd kafka -u
 
 Conclusão
-
-Se chegou até aqui, você tem um Apache Kafka funcionando em um servidor Ubuntu.
+Você agora tem um Apache Kafka funcionando em um servidor Ubuntu.
