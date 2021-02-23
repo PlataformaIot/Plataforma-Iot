@@ -19,8 +19,7 @@ Por fim, basta navegar o terminal até a pasta onde o 'go.py' está e execute o 
 
 ## Parâmetros de configuração para processamento das variáveis de cada dispositivo
 
-O front-end deverá gerar um código JSON de configuração para cada dispositivo com a seguinte estrutura exemplificada:
-
+A configuração para cada dispositivo deverá vir de uma colection armazenado no banco de dados "tipos" que deverá ser gerada por um código JSON obtido a partir front-end com a seguinte estrutura de exemplo:
 
     json_object = {
         "name": "gps_dragino",
@@ -55,9 +54,16 @@ O front-end deverá gerar um código JSON de configuração para cada dispositiv
         "order": "big"
     }
 
+Alguns dados obtidos de dispositivos necessitam de processamento, que pode ser implementado por meio desta API. A chave "operations" indica as operações múltiplas operações que serão aplicadas sequêncialmente a cada variável, e os argumentos (operandos) são especificados pela chave "args" no lugar de sua respectiva operação.
+Estes campos ("operations" e "args") implementam o seguinte processamento nas variáveis:
 
-a existência da chave "if" é o opicional. Esse campo específico no exemplo realiza o seguinte processamento nas variáveis:
+    lat = lat / 1000000.0
 
+    long = long / 1000000.0
+
+    bateria = ( bateria & 0b1111111111111111 ) / 1000.0
+
+Um pré-processamento condicional também pode ser implementado e é indicado pela chave "if", cuja existência é opicional. Esse campo específico no exemplo realiza o seguinte processamento nas variáveis:
 
     if( lat & 0x80000000 ):
         lat = lat + (-0x100000000)
@@ -71,6 +77,5 @@ a existência da chave "if" é o opicional. Esse campo específico no exemplo re
 
     if(1):
         bateria = bateria
-
 
 Na chave "var" são dispostas todas as variáveis que receberão o processamento condicionado. Todas as listas de valores deverão ter o mesmo tamanho, pois as operações/valores para a respectiva variável deverão ficar na mesma posição da lista em cada chave de "if". Caso não haja um condição ou operação para uma variável, deve-se atribuir o valor "none" no lugar da mesma em cada lista.
