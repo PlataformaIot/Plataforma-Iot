@@ -1,11 +1,21 @@
-.addCampos{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.variaveis {}
+
+.bitIni {
+    margin-bottom: 7px;
+    margin-left: -25px;
 }
 
-.addCampos Button{
-    margin:5px;
-    padding: auto;
-    margin-top: -7px;
+.bitFinal {
+    margin-bottom: 7px;
+    margin-left: -25px;
+}
+
+.bits {
+    display: flex;
+}
+
+.variavel {
+    margin-right: -10%;
+    margin-bottom: 7px;
+    margin-left: -3%;
 }

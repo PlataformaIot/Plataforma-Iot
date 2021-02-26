@@ -1,32 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Jumbotron, Form, Dropdown } from 'react-bootstrap';
+import { Container, Row, Col, Button, Jumbotron, Form, Modal, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
+import { MdRemoveCircleOutline } from 'react-icons/md'
 import './styles.css';
 
 export default function Cadastro() {
+
+    const [bitInicial, setBitInicial] = useState([]);//bit inicial
+    const [bitFinal, setBitFinal] = useState([]);//bit final
+    const [operacao, setOperacao] = useState([]);//operação
+    const [byte, setByte] = useState('');//quantidade de bytes
+
+    const [variavelSelecionado, setVariavelSelecionado] = useState([])
+    const [modalOpen, setModalOpen] = useState(false);//abre modal
+
     const [cadastro, setCadastro] = useState([]);//cadastro para nova variavel
     const [ordem, setOrdem] = useState([])// selecionar a ordem que vai ser dada Big ou Little
-    const [variavel, setVariavel] = useState('');//Armazena a variavel
+    const [variavel, setVariavel] = useState([]);//Armazena a variavel
     const [campos, setCampos] = useState([])//Gera o novo campo
     const [calculo, setCalculo] = useState([]);//combo para calculo, cria novo campo
 
     //função cria novo campo
     function handleCampo(e) {
         e.preventDefault()
-        if (variavel !== '' && ordem !== '') {
+        setVariavel([...variavel, ''])
+        setBitInicial([...bitInicial, ''])
+        setBitFinal([...bitFinal, ''])
+        setVariavelSelecionado([...variavelSelecionado, ''])
 
-            let newCadastro = cadastro
-            newCadastro.push({
-                variavel: variavel,
-                ordem: ordem
-            })
-            setCampos([...campos, ''])
-            setCadastro(newCadastro)
-        }
     }
 
-    function handleCadastro(e) {
+    const handleVariavel = (e, index) => {
+        variavel[index] = e.target.value
+        setVariavel([...variavel])
+    }
+
+    const handleBitInicial = (e, index) => {
+        bitInicial[index] = e.target.value
+        setBitInicial([...bitInicial])
+    }
+
+    const handleBitFinal = (e, index) => {
+        bitFinal[index] = e.target.value
+        setBitFinal([...bitFinal])
+    }
+
+    const openModal = (variaveis) => {
+        setModalOpen(true)
+        
+        setCampos(variaveis)
+
+
+    }
+
+    const closeModal = () => {
+        setModalOpen(false)
+    }
+
+    const handleOperacao = (e, index) => {
+        operacao[index] = e.target.value
+        setOperacao([...operacao])
+    }
+
+    function handleCadastro(e, index) {
 
     }
 
@@ -37,9 +74,15 @@ export default function Cadastro() {
     }
 
     //função remove uma variavel botão '-' warning
-    function handleRemove(index) {
-        setCampos(cadastro.splice(index, 1))
+    const handleRemove = (position) => {
+        setVariavel([...variavel.filter((_, index) => index !== position)])
+        setBitInicial([...bitInicial.filter((_, index) => index !== position)])
+        setBitFinal([...bitFinal.filter((_, index) => index !== position)])
+        setVariavelSelecionado([...variavelSelecionado.filter((_, index) => index !== position)])
+
     }
+
+
 
 
 
@@ -56,62 +99,92 @@ export default function Cadastro() {
                 <Col>
                     <h3 style={{ textAlign: 'center' }}>Dados do Dispositivo</h3>
                     <Jumbotron>
-
                         <Form onSubmit={handleCadastro}>
                             <Form.Row>
                                 <Col lg="1">
                                     <Form.Label>Tamanho</Form.Label>
-                                    <Form.Control style={{ marginBottom: '10px' }} value={variavel} onChange={(e) => setVariavel(e.target.value)} maxLength={10} />
+                                    <Form.Control style={{ marginBottom: '10px' }} value={byte} onChange={(e) => setByte(e.target.value)} maxLength={10} />
                                 </Col>
                             </Form.Row>
                             <Form.Row>
                                 <Col lg="2">
                                     <Form.Label>Ordem dos Bits</Form.Label>
-                                        <Form.Control style={{ marginBottom: '10px' }} as="select" custom>
-                                            <option value='1'>Big</option>
-                                            <option value="2">Little</option>
-                                        </Form.Control>
+                                    <Form.Control style={{ marginBottom: '10px' }} as="select" custom>
+                                        <option value='1'>Big</option>
+                                        <option value="2">Little</option>
+                                    </Form.Control>
                                 </Col>
                             </Form.Row>
                             <Form.Label>Variáveis</Form.Label>
                             <Form.Row>
-                                <Col lg="3">
-                                    <Form.Control style={{ marginBottom: '10px' }} placeholder="Variavel" value={variavel} onChange={(e) => setVariavel(e.target.value)} maxLength={10} />
-                                </Col>
-                                <Col lg="1">
-                                    <Form.Control style={{ marginBottom: '10px' }} placeholder="BitIni" />
-                                </Col>
-                                <Col lg="1">
-                                    <Form.Control style={{ marginBottom: '10px' }} placeholder="BitFinal" />
-                                </Col>
                                 <Button style={{ marginBottom: '10px' }} variant="success" onClick={handleCampo}>Adicionar variável</Button>
                             </Form.Row>
 
                             <Form.Row>
-                                <Col lg="12">
-                                    {cadastro.map((campo, index) => (
-                                        <Form.Row>
-                                            <Col key={index} lg="3" >
-                                                <Form.Control value={campo.variavel} placeholder="Digite a variavel" disabled />
-                                            </Col>
-                                            <Col lg="1">
+                                <div className="variaveis">
+                                    <div className="bits">
+                                        <Col lg="5">
+                                            {variavel.map((variaveis, index) => (
+                                                <Form.Row key={index}>
+                                                    <Col lg="1">
+                                                        <Badge onClick={() => { openModal(variaveis) }} style={{ marginLeft: '-90%', marginTop: '50%', cursor: 'pointer' }} variant="danger"><MdRemoveCircleOutline size={18} /></Badge>
+                                                    </Col>
+                                                    <Col lg="10" >
+                                                        <div className="variavel">
+                                                            <Form.Control value={variaveis} onChange={(e) => handleVariavel(e, index)} placeholder={`Variavel ${index + 1}`} />
+                                                        </div>
+                                                    </Col>
 
-                                                <Form.Control placeholder="BitIni" disabled/>
-                                            </Col>
-                                                
-                                            <Col lg="1">
-                                                <Form.Control placeholder="BitFinal" disabled/>
-                                            </Col>
-                                            
-                                            <Col>
-                                                <Button style={{ marginBottom: '10px' }} onClick={handleCalculo} variant="success">Operação</Button>
-                                                <Button style={{ marginBottom: '10px', marginLeft: '7px' }} onClick={() => (handleRemove(index))} variant="warning">Remover variável</Button>
-                                            </Col>
-                                        </Form.Row>
-                                    ))}
-                                </Col>
+
+                                                </Form.Row>
+                                            ))}
+                                        </Col>
+                                        <Col lg="3">
+                                            {bitInicial.map((bitI, index) => (
+                                                <Form.Row key={index}>
+                                                    <Col>
+                                                        <div className="bitIni">
+                                                            <Form.Control value={bitI} onChange={(e) => handleBitInicial(e, index)} placeholder={`BitInicial ${index + 1}`} />
+                                                        </div>
+                                                    </Col>
+                                                </Form.Row>
+                                            ))}
+                                        </Col>
+
+                                        <Col lg="6">
+                                            {bitFinal.map((bitF, index) => (
+                                                <Form.Row key={index}>
+                                                    <Col>
+                                                        <div className="bitFinal">
+                                                            <Form.Control value={bitF} onChange={(e) => handleBitFinal(e, index)} placeholder={`BitFinal ${index + 1}`} />
+                                                        </div>
+                                                    </Col>
+                                                    <Col>
+                                                        <Button onClick={() => handleRemove(index)} variant="warning">Remover variável</Button>
+                                                    </Col>
+                                                </Form.Row>
+                                            ))}
+                                        </Col>
+                                    </div>
+                                </div>
+
+                                {variavelSelecionado.map((va, index) => (
+                                    <Modal key={index} show={modalOpen} onHide={closeModal}>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title>Operação</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            {index}
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                            <Button variant="success">Salvar</Button>
+                                        </Modal.Footer>
+                                    </Modal>
+                                ))}
+
+
                             </Form.Row>
-                            <Button variant="success">Enviar</Button>
+                            <Button onClick={handleCadastro} variant="success">Enviar</Button>
                         </Form>
                     </Jumbotron>
                 </Col>
