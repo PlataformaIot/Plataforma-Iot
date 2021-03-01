@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Jumbotron, Form, Modal, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Button, Jumbotron, Form, Modal, Badge, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { MdRemoveCircleOutline } from 'react-icons/md';
@@ -13,11 +13,11 @@ export default function Cadastro() {
     const [operacao, setOperacao] = useState([]);//operação
     const [byte, setByte] = useState('');//quantidade de bytes
 
+    const [bodyCard, setBodyCard] = useState([]);
 
 
 
-    const [variavelSelecionado, setVariavelSelecionado] = useState([])
-    const [modalOpen, setModalOpen] = useState(false);//abre modal
+
 
     const [cadastro, setCadastro] = useState([]);//cadastro para nova variavel
     const [ordem, setOrdem] = useState([])// selecionar a ordem que vai ser dada Big ou Little
@@ -28,56 +28,73 @@ export default function Cadastro() {
     //função cria novo campo
     function handleCampo(e) {
         e.preventDefault()
-        setVariavel([...variavel, ''])
-        setBitInicial([...bitInicial, ''])
+        setBodyCard([...bodyCard, ''])
+        
+        /* setVariavel([...variavel, ''])
+        setBitInicial([...bitInicial,''])
         setBitFinal([...bitFinal, ''])
-        //setVariavelSelecionado([...variavelSelecionado, ''])
-        setOperacao([...operacao, ''])
-
+        setOperacao([...operacao,'']) */
     }
 
 
-    const handleVariavel = (e, index) => {
+    const handleVariavel = (e, index, position) => {
         variavel[index] = e.target.value
         setVariavel([...variavel])
+
+
     }
 
     const handleBitInicial = (e, index) => {
         bitInicial[index] = e.target.value
         setBitInicial([...bitInicial])
+
     }
 
     const handleBitFinal = (e, index) => {
         bitFinal[index] = e.target.value
         setBitFinal([...bitFinal])
-    }
-
-    const openModal = (variaveis) => {
-        setModalOpen(true)
-        setCampos(variaveis)
-
 
     }
 
-    const closeModal = () => {
-        setModalOpen(false)
+    const handleCard = (e, index) => {
+        bodyCard[index] = e.target.value;
+        setBodyCard([...bodyCard])
+        setBodyCard([...bodyCard, ''])
+
     }
+
+    const removeCard = (position, index) => {
+        setBodyCard([...bodyCard.filter((_, index) => index !== position)])
+        /* setVariavel([...variavel.filter((_, index) => index !== position)])
+        setBitInicial([...bitInicial.filter((_, index) => index !== position)])
+        setBitFinal([...bitFinal.filter((_, index) => index !== position)])
+        setOperacao([...operacao.filter((_, index) => index !== position)]) */
+        
+    }
+
+
 
     //armazena os dados de operação
     const handleOperacao = (e, index) => {
         operacao[index] = e.target.value
         setOperacao([...operacao])
+
     }
 
     //cria o novo campo para operação
-    const newCampoOperacao = (e) => {
+    const newCampoOperacao = (e, index) => {
         e.preventDefault()
         setOperacao([...operacao, ''])
+
     }
 
-    const removeCampoOperacao = (position) => {
+
+
+    const removeOperacao = (position) => {
         setOperacao([...operacao.filter((_, index) => index !== position)])
     }
+
+
 
     function handleCadastro(e, index) {
         console.log(cadastro)
@@ -86,6 +103,7 @@ export default function Cadastro() {
             bitInicial: bitInicial,
             bitFinal: bitFinal,
             variavel: variavel,
+            operacao: operacao
         })
 
 
@@ -100,14 +118,14 @@ export default function Cadastro() {
     }
 
     //função remove uma variavel botão '-' warning
-    const handleRemove = (position) => {
+    /* const handleRemove = (position) => {
         setVariavel([...variavel.filter((_, index) => index !== position)])
         setBitInicial([...bitInicial.filter((_, index) => index !== position)])
         setBitFinal([...bitFinal.filter((_, index) => index !== position)])
-        //setVariavelSelecionado([...variavelSelecionado.filter((_, index) => index !== position)])
         setOperacao([...operacao.filter((_, index) => index !== position)])
+        setBodyCard([...bodyCard.filter((_, index) => index !== position)])
 
-    }
+    } */
 
 
 
@@ -143,78 +161,39 @@ export default function Cadastro() {
                                 </Col>
                             </Form.Row>
                             <Form.Label>Variáveis</Form.Label>
-                            <Form.Row>
-                                <Button style={{ marginBottom: '10px' }} variant="success" onClick={handleCampo}>Adicionar variável</Button>
-                            </Form.Row>
 
 
-                            <Form.Row>
-                                <Col lg="3">
-                                    {variavel.map((variaveis, index) => (
-                                        <Form.Row key={index}>
-                                            {/* <Col lg="1">
-                                                    <Badge onClick={() => { openModal(variaveis) }} style={{ marginLeft: '-90%', marginTop: '50%', cursor: 'pointer' }} variant="danger"><MdRemoveCircleOutline size={18} /></Badge>
-                                                </Col> */}
-                                            <Form.Control style={{ marginBottom: '10px', marginRight: '6px' }} value={variaveis} onChange={(e) => handleVariavel(e, index)} placeholder={`Variavel ${index + 1}`} />
-                                        </Form.Row>
-                                    ))}
-                                </Col>
 
-                                <Col lg="2">
-                                    {bitInicial.map((bitI, index) => (
-                                        <Form.Row key={index}>
-                                            <Form.Control style={{ marginBottom: '10px', width: '50%' }} value={bitI} onChange={(e) => handleBitInicial(e, index)} placeholder={`BitInicial ${index + 1}`} />
-                                        </Form.Row>
-                                    ))}
-                                </Col>
+                            {
+                                bodyCard.map((card, index) => (
+                                    <Card body key={index}>
+                                        {`Campo ${index + 1}`}
 
-
-                                <Col lg="2">
-                                    {operacao.map((op, index) => (
-                                        <Form.Row key={index} style={{alignItems:'center', flexDirection:'row'}}>
-                                            <Form.Control style={{width:'35%', marginBottom:'10px', marginLeft:'10px', flexDirection:'column'}} as="select">
-                                                <option value={op} onChange={(e) => handleOperacao(e, index)}>{index}</option>
+                                        <Form.Row>
+                                            <Form.Control value={card.variavel} onChange={(e) => handleVariavel(e, index)} placeholder={`Variavel ${index + 1}`} />
+                                            <Form.Control value={card.bitInicial} onChange={(e) => handleBitInicial(e, index)} placeholder={`BitInicial ${index + 1}`} />
+                                            <Form.Control value={card.bitFinal} onChange={(e) => handleBitFinal(e, index)} placeholder={`BitFinal ${index + 1}`} />
+                                            <Form.Control onChange={(e) => handleOperacao(e, index)} as="select">
+                                                <option value={card.operacao} >{index}</option>
                                             </Form.Control>
-                                            <Badge style={{marginTop:'-8px', marginLeft:'5px'}} variant="danger" onClick={() => handleRemove(index)}><MdRemoveCircleOutline size={20} /></Badge>
+                                            <Badge variant="danger" style={{ cursor: 'pointer' }} onClick={() => removeOperacao(index)}><MdRemoveCircleOutline size={20} /></Badge>
+                                        <Button onClick={newCampoOperacao} variant="success"><VscSymbolOperator size={25} /></Button>
+                                        <Button onClick={() =>removeCard(index)} variant="danger"><MdRemoveCircleOutline size={25} /></Button>
                                         </Form.Row>
-
-                                    ))}
-                                </Col>
-
-                                <Col lg="4">
-                                    {bitFinal.map((bitF, index) => (
-                                        <Form.Row key={index}>
-                                            <Form.Control style={{ marginBottom: '10px', width: '24%', marginLeft: '-73%' }} value={bitF} onChange={(e) => handleBitFinal(e, index)} placeholder={`BitFinal ${index + 1}`} />
-                                            <div className="botoes">
-                                                <Button style={{ marginLeft: '-30px' }} onClick={newCampoOperacao} variant="success"><VscSymbolOperator size={25} /></Button>
-                                                <Button style={{ marginLeft: '10px' }} onClick={() => handleRemove(index)} variant="danger"><MdRemoveCircleOutline size={25} /></Button>
-                                            </div>
-                                        </Form.Row>
-                                    ))}
-                                </Col>
+                                    </Card>
+                                ))
+                            }
 
 
 
 
 
-
-
-                                {variavelSelecionado.map((va, index) => (
-                                    <Modal key={index} show={modalOpen} onHide={closeModal}>
-                                        <Modal.Header closeButton>
-                                            <Modal.Title>Operação</Modal.Title>
-                                        </Modal.Header>
-                                        <Modal.Body>
-                                            {index}
-                                        </Modal.Body>
-                                        <Modal.Footer>
-                                            <Button variant="success">Salvar</Button>
-                                        </Modal.Footer>
-                                    </Modal>
-                                ))}
-
-
+                            <Form.Row>
+                                <Button style={{ marginBottom: '10px' }} variant="success" onClick={handleCard}>Adicionar variável</Button>
                             </Form.Row>
+
+
+
                             <Button onClick={handleCadastro} variant="success">Enviar</Button>
                         </Form>
                     </Jumbotron>
