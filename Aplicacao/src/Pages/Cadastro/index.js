@@ -8,127 +8,81 @@ import './styles.css';
 
 export default function Cadastro() {
 
-    const [bitInicial, setBitInicial] = useState([]);//bit inicial
-    const [bitFinal, setBitFinal] = useState([]);//bit final
-    const [operacao, setOperacao] = useState([]);//operação
-    const [byte, setByte] = useState('');//quantidade de bytes
+    const [form, setForm] = useState({ cards: [] });
+    const [cadastro, setCadastro] = useState();
+    const [operations, setOperations] = useState([{
+        id: 1, name: "Soma", value: "sum"
+    },
+    {
+        id: 2, name: "Divisão", value: "div"
+    },
+    {
+        id: 3, name: "Multiplicação", value: "mux"
+    },
+    {
+        id: 4, name: "Máscara", value: "mask"
+    },])
 
-    const [bodyCard, setBodyCard] = useState([]);
-
-
-
-
-
-    const [cadastro, setCadastro] = useState([]);//cadastro para nova variavel
-    const [ordem, setOrdem] = useState([])// selecionar a ordem que vai ser dada Big ou Little
-    const [variavel, setVariavel] = useState([]);//Armazena a variavel
-    const [campos, setCampos] = useState([])//Gera o novo campo
-    const [calculo, setCalculo] = useState([]);//combo para calculo, cria novo campo
-
-    //função cria novo campo
-    function handleCampo(e) {
-        e.preventDefault()
-        setBodyCard([...bodyCard, ''])
-        
-        /* setVariavel([...variavel, ''])
-        setBitInicial([...bitInicial,''])
-        setBitFinal([...bitFinal, ''])
-        setOperacao([...operacao,'']) */
+    const addNewCamp = () => {
+        let newForm = { ...form }
+        let newCard = {
+            variavel: '',
+            bitInicial: '',
+            bitFinal: '',
+            operationsSelects: []
+        }
+        newForm.cards.push(newCard);
+        setForm(newForm)
     }
 
-
-    const handleVariavel = (e, index, position) => {
-        variavel[index] = e.target.value
-        setVariavel([...variavel])
-
-
+    const addNewOperation = (index) => {
+        let newForm = { ...form }
+        let newOperationSelect = {
+            operacao: []
+        }
+        newForm.cards[index].operationsSelects.push(newOperationSelect);
+        setForm(newForm)
     }
 
-    const handleBitInicial = (e, index) => {
-        bitInicial[index] = e.target.value
-        setBitInicial([...bitInicial])
-
+    const onFormUpdate = (e, index) => {
+        let newForm = { ...form }
+        newForm.cards[index][e.target.value] = e.target.value;
+        setForm(newForm)
     }
 
-    const handleBitFinal = (e, index) => {
-        bitFinal[index] = e.target.value
-        setBitFinal([...bitFinal])
-
+    function onOperationSelectUpdate(e, cardIndex, selectIndex) {
+        let newForm = { ...form };
+        newForm.cards[cardIndex].operationsSelects[selectIndex].operacao = e.target.value;
+        setForm(newForm);
     }
 
-    const handleCard = (e, index) => {
-        bodyCard[index] = e.target.value;
-        setBodyCard([...bodyCard])
-        setBodyCard([...bodyCard, ''])
-
-    }
-
-    const removeCard = (position, index) => {
-        setBodyCard([...bodyCard.filter((_, index) => index !== position)])
-        /* setVariavel([...variavel.filter((_, index) => index !== position)])
-        setBitInicial([...bitInicial.filter((_, index) => index !== position)])
-        setBitFinal([...bitFinal.filter((_, index) => index !== position)])
-        setOperacao([...operacao.filter((_, index) => index !== position)]) */
-        
+    function operationRemove(cardIndex, selectIndex) {
+        let newForm = { ...form };
+        newForm.cards[cardIndex].operationsSelects.splice(selectIndex, 1);
+        setForm(newForm);
     }
 
 
 
-    //armazena os dados de operação
-    const handleOperacao = (e, index) => {
-        operacao[index] = e.target.value
-        setOperacao([...operacao])
+    const removeOperacao = (cardIndex, selectIndex) => {
+        //setForm([...newCard.filter((_, index) => index !== position)])
+        let newForm = { ...form };
+        newForm.cards.splice(cardIndex, 1)
+        setForm(newForm);
 
-    }
-
-    //cria o novo campo para operação
-    const newCampoOperacao = (e, index) => {
-        e.preventDefault()
-        setOperacao([...operacao, ''])
-
-    }
-
-
-
-    const removeOperacao = (position) => {
-        setOperacao([...operacao.filter((_, index) => index !== position)])
     }
 
 
 
     function handleCadastro(e, index) {
-        console.log(cadastro)
-        let newCadastro = cadastro
-        newCadastro.push({
-            bitInicial: bitInicial,
-            bitFinal: bitFinal,
-            variavel: variavel,
-            operacao: operacao
-        })
+        console.log(form)
+        let newCadastro = form
+
 
 
 
         setCadastro(newCadastro)
     }
-
-    //função cria novo campo para calculo
-    function handleCalculo(e) {
-        e.preventDefault()
-        setCalculo([...calculo, ''])
-    }
-
-    //função remove uma variavel botão '-' warning
-    /* const handleRemove = (position) => {
-        setVariavel([...variavel.filter((_, index) => index !== position)])
-        setBitInicial([...bitInicial.filter((_, index) => index !== position)])
-        setBitFinal([...bitFinal.filter((_, index) => index !== position)])
-        setOperacao([...operacao.filter((_, index) => index !== position)])
-        setBodyCard([...bodyCard.filter((_, index) => index !== position)])
-
-    } */
-
-
-
 
 
 
@@ -148,7 +102,7 @@ export default function Cadastro() {
                             <Form.Row>
                                 <Col lg="1">
                                     <Form.Label>Tamanho</Form.Label>
-                                    <Form.Control style={{ marginBottom: '10px' }} value={byte} onChange={(e) => setByte(e.target.value)} maxLength={10} />
+                                    <Form.Control style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
                             </Form.Row>
                             <Form.Row>
@@ -164,32 +118,50 @@ export default function Cadastro() {
 
 
 
+
                             {
-                                bodyCard.map((card, index) => (
+                                form.cards.map((card, index) => (
                                     <Card body key={index}>
                                         {`Campo ${index + 1}`}
 
                                         <Form.Row>
-                                            <Form.Control value={card.variavel} onChange={(e) => handleVariavel(e, index)} placeholder={`Variavel ${index + 1}`} />
-                                            <Form.Control value={card.bitInicial} onChange={(e) => handleBitInicial(e, index)} placeholder={`BitInicial ${index + 1}`} />
-                                            <Form.Control value={card.bitFinal} onChange={(e) => handleBitFinal(e, index)} placeholder={`BitFinal ${index + 1}`} />
-                                            <Form.Control onChange={(e) => handleOperacao(e, index)} as="select">
-                                                <option value={card.operacao} >{index}</option>
-                                            </Form.Control>
-                                            <Badge variant="danger" style={{ cursor: 'pointer' }} onClick={() => removeOperacao(index)}><MdRemoveCircleOutline size={20} /></Badge>
-                                        <Button onClick={newCampoOperacao} variant="success"><VscSymbolOperator size={25} /></Button>
-                                        <Button onClick={() =>removeCard(index)} variant="danger"><MdRemoveCircleOutline size={25} /></Button>
+
+                                            <Form.Control name="variavel" onChange={(e) => onFormUpdate(e, index)} placeholder={`Variavel ${index + 1}`} />
+                                            <Form.Control name="bitInicial" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitInicial ${index + 1}`} />
+                                            <Form.Control name="bitFinal" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitFinal ${index + 1}`} />
+
+                                            {form.cards[index].operationsSelects &&
+                                                form.cards[index].operationsSelects.length > 0 &&
+                                                form.cards[index].operationsSelects.map((operationSelect, i) => (
+
+                                                    <Form.Row key={i} >
+                                                        <Form.Control value={form.cards[index].operationsSelects[i].operacao} onChange={(e) => onOperationSelectUpdate(e, index, i)} as="select">
+                                                            {operations.map((operation) => (
+                                                                <option key={operation.id} value={operation.value}>{operation.name}</option>
+                                                            ))}
+                                                        </Form.Control>
+                                                        <Badge onClick={() => operationRemove(index, i)} variant="danger" style={{ cursor: 'pointer' }} ><MdRemoveCircleOutline size={20} /></Badge>
+                                                    </Form.Row>
+                                                ))
+                                            }
+
+                                            <Button onClick={() => addNewOperation(index)} variant="success"><VscSymbolOperator size={25} /></Button>
+                                            <Button onClick={() => removeOperacao(index)} variant="danger"><MdRemoveCircleOutline size={25} /></Button>
                                         </Form.Row>
+
                                     </Card>
                                 ))
+
                             }
 
 
 
 
 
+
+
                             <Form.Row>
-                                <Button style={{ marginBottom: '10px' }} variant="success" onClick={handleCard}>Adicionar variável</Button>
+                                <Button style={{ marginBottom: '10px' }} variant="success" onClick={() => addNewCamp()}>Adicionar variável</Button>
                             </Form.Row>
 
 
