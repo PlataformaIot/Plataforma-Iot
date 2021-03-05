@@ -10,25 +10,33 @@ export default function Cadastro() {
 
     const [form, setForm] = useState({ cards: [] });
     const [cadastro, setCadastro] = useState();
-    const [operations, setOperations] = useState([{
-        id: 1, name: "Soma", value: "sum"
-    },
-    {
-        id: 2, name: "Divisão", value: "div"
-    },
-    {
-        id: 3, name: "Multiplicação", value: "mux"
-    },
-    {
-        id: 4, name: "Máscara", value: "mask"
-    },])
+    const [operations, setOperations] = useState([
+        {
+            id: 0, name: 'Operação', value: null
+        },
+        {
+            id: 1, name: "Soma", value: "sum"
+        },
+        {
+            id: 2, name: "Divisão", value: "div"
+        },
+        {
+            id: 3, name: "Multiplicação", value: "mux"
+        },
+        {
+            id: 4, name: "Máscara", value: "mask"
+        },
+    ]);
+    const [ordemByte, setOrdemBytes] = useState([{ id: 0, name: '', value: '' }, { id: 1, name: 'Little', value: 'little' }, { id: 2, name: 'Big', value: 'big' },])
 
     const addNewCamp = () => {
         let newForm = { ...form }
         let newCard = {
-            variavel: '',
-            bitInicial: '',
-            bitFinal: '',
+            variavel: "",
+            bitInicial: "",
+            bitFinal: "",
+            args:"",
+            ordemByte:[],
             operationsSelects: []
         }
         newForm.cards.push(newCard);
@@ -38,7 +46,8 @@ export default function Cadastro() {
     const addNewOperation = (index) => {
         let newForm = { ...form }
         let newOperationSelect = {
-            operacao: []
+            operacao: [],
+            ordemByte:[]
         }
         newForm.cards[index].operationsSelects.push(newOperationSelect);
         setForm(newForm)
@@ -46,7 +55,7 @@ export default function Cadastro() {
 
     const onFormUpdate = (e, index) => {
         let newForm = { ...form }
-        newForm.cards[index][e.target.value] = e.target.value;
+        newForm.cards[index][e.target.name] = e.target.value;
         setForm(newForm)
     }
 
@@ -76,12 +85,9 @@ export default function Cadastro() {
 
     function handleCadastro(e, index) {
         console.log(form)
-        let newCadastro = form
+        setForm(form)
 
-
-
-
-        setCadastro(newCadastro)
+       
     }
 
 
@@ -97,8 +103,8 @@ export default function Cadastro() {
 
                 <Col>
                     <h3 style={{ textAlign: 'center' }}>Dados do Dispositivo</h3>
-                    <Jumbotron>
                         <Form onSubmit={handleCadastro}>
+                    <Jumbotron>
                             <Form.Row>
                                 <Col lg="1">
                                     <Form.Label>Tamanho</Form.Label>
@@ -109,8 +115,9 @@ export default function Cadastro() {
                                 <Col lg="2">
                                     <Form.Label>Ordem dos Bits</Form.Label>
                                     <Form.Control style={{ marginBottom: '10px' }} as="select" custom>
-                                        <option value='1'>Big</option>
-                                        <option value="2">Little</option>
+                                        {ordemByte.map((byte) => (
+                                            <option key={byte.id} value={byte.value}>{byte.name}</option>
+                                        ))}
                                     </Form.Control>
                                 </Col>
                             </Form.Row>
@@ -119,34 +126,48 @@ export default function Cadastro() {
 
 
 
-                            {
-                                form.cards.map((card, index) => (
-                                    <Card body key={index}>
+                            {form.cards.length > 0 && form.cards.map((card, index) => (
+                                    <Card body key={index} style={{ marginBottom: '3%', borderRadius: '5px' }}>
                                         {`Campo ${index + 1}`}
 
                                         <Form.Row>
+                                            <Col lg="12">
+                                                <Form.Control style={{ marginBottom: '1%', width: '40%', marginRight: '1%' }} name="variavel" onChange={(e) => onFormUpdate(e, index)} placeholder={`Variavel ${index + 1}`} />
+                                                <Form.Control style={{ marginBottom: '1%', width: '10%', marginRight: '1%' }} name="bitInicial" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitInicial ${index + 1}`} />
+                                                <Form.Control style={{ marginBottom: '1%', width: '10%', marginRight: '1%' }} name="bitFinal" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitFinal ${index + 1}`} />
 
-                                            <Form.Control name="variavel" onChange={(e) => onFormUpdate(e, index)} placeholder={`Variavel ${index + 1}`} />
-                                            <Form.Control name="bitInicial" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitInicial ${index + 1}`} />
-                                            <Form.Control name="bitFinal" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitFinal ${index + 1}`} />
+                                                {form.cards[index].operationsSelects &&
+                                                    form.cards[index].operationsSelects.length > 0 &&
+                                                    form.cards[index].operationsSelects.map((operationSelect, i) => (
 
-                                            {form.cards[index].operationsSelects &&
-                                                form.cards[index].operationsSelects.length > 0 &&
-                                                form.cards[index].operationsSelects.map((operationSelect, i) => (
+                                                        <>
+                                                            <Form.Row key={i} >
+                                                                <Col lg="7">
+                                                                    <Form.Control style={{ marginRight: '1%', width: '20%', marginBottom: '2%' }} value={form.cards[index].operationsSelects[i].operacao} onChange={(e) => onOperationSelectUpdate(e, index, i)} as="select">
+                                                                        {operations.map((operation) => (
+                                                                            <option  key={operation.id} value={operation.value}>{operation.name}</option>
+                                                                        ))}
+                                                                    </Form.Control>
+                                                                    
+                                                                   
+                                                                </Col>
+                                                                <Col style={{marginLeft:'-46%'}} >
+                                                                    <Badge onClick={() => operationRemove(index, i)} variant="danger" style={{ cursor: 'pointer', marginLeft:'11%', marginTop:'0.5%' }} ><MdRemoveCircleOutline size={20} /></Badge>
+                                                                    <Form.Control placeholder="ARGS" style={{width:'10%', marginTop:'-3.4%'}} name="args" onChange={(e) => onFormUpdate(e, index)}/>
+                                                                </Col>
+                                                                
+                                                            </Form.Row>
 
-                                                    <Form.Row key={i} >
-                                                        <Form.Control value={form.cards[index].operationsSelects[i].operacao} onChange={(e) => onOperationSelectUpdate(e, index, i)} as="select">
-                                                            {operations.map((operation) => (
-                                                                <option key={operation.id} value={operation.value}>{operation.name}</option>
-                                                            ))}
-                                                        </Form.Control>
-                                                        <Badge onClick={() => operationRemove(index, i)} variant="danger" style={{ cursor: 'pointer' }} ><MdRemoveCircleOutline size={20} /></Badge>
-                                                    </Form.Row>
-                                                ))
-                                            }
+                                                        </>
 
-                                            <Button onClick={() => addNewOperation(index)} variant="success"><VscSymbolOperator size={25} /></Button>
-                                            <Button onClick={() => removeOperacao(index)} variant="danger"><MdRemoveCircleOutline size={25} /></Button>
+                                                    ))
+                                                }
+                                            </Col>
+                                            <Col>
+                                                <Button onClick={() => addNewOperation(index)} variant="success"><VscSymbolOperator size={25} /></Button>
+                                                <Button style={{ marginLeft: '2%' }} onClick={() => removeOperacao(index)} variant="danger"><MdRemoveCircleOutline size={25} /></Button>
+                                            </Col>
+
                                         </Form.Row>
 
                                     </Card>
@@ -154,21 +175,16 @@ export default function Cadastro() {
 
                             }
 
-
-
-
-
-
-
                             <Form.Row>
                                 <Button style={{ marginBottom: '10px' }} variant="success" onClick={() => addNewCamp()}>Adicionar variável</Button>
                             </Form.Row>
 
+                        
 
-
-                            <Button onClick={handleCadastro} variant="success">Enviar</Button>
-                        </Form>
                     </Jumbotron>
+                    
+                            <Button onClick={() => console.log(form)} variant="success">Enviar</Button>
+                        </Form>
                 </Col>
             </Row>
         </Container>
