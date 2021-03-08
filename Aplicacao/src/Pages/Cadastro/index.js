@@ -28,6 +28,9 @@ export default function Cadastro() {
         },
     ]);
     const [ordemByte, setOrdemBytes] = useState([{ id: 0, name: '', value: '' }, { id: 1, name: 'Little', value: 'little' }, { id: 2, name: 'Big', value: 'big' },])
+    const [saveOrdemByte, setSaveOrdemByte] = useState(1);
+    const [tamanhoByte, setTamanhoByte] = useState('')
+
 
     const addNewCamp = () => {
         let newForm = { ...form }
@@ -36,7 +39,6 @@ export default function Cadastro() {
             bitInicial: "",
             bitFinal: "",
             args:"",
-            ordemByte:[],
             operationsSelects: []
         }
         newForm.cards.push(newCard);
@@ -46,8 +48,7 @@ export default function Cadastro() {
     const addNewOperation = (index) => {
         let newForm = { ...form }
         let newOperationSelect = {
-            operacao: [],
-            ordemByte:[]
+            operacao: []
         }
         newForm.cards[index].operationsSelects.push(newOperationSelect);
         setForm(newForm)
@@ -64,6 +65,10 @@ export default function Cadastro() {
         newForm.cards[cardIndex].operationsSelects[selectIndex].operacao = e.target.value;
         setForm(newForm);
     }
+
+   function onOrdemByte(e){
+        setOrdemBytes(e.target.value)
+   }
 
     function operationRemove(cardIndex, selectIndex) {
         let newForm = { ...form };
@@ -84,8 +89,15 @@ export default function Cadastro() {
 
 
     function handleCadastro(e, index) {
-        console.log(form)
-        setForm(form)
+        console.log(cadastro)
+
+        const params ={
+            card: form,
+            ordemByte: saveOrdemByte,
+            tamanhoByte: tamanhoByte
+        }
+
+        setCadastro(params)
 
        
     }
@@ -108,15 +120,15 @@ export default function Cadastro() {
                             <Form.Row>
                                 <Col lg="1">
                                     <Form.Label>Tamanho</Form.Label>
-                                    <Form.Control style={{ marginBottom: '10px' }} maxLength={10} />
+                                    <Form.Control value={tamanhoByte} onChange={(e) => setTamanhoByte(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
                             </Form.Row>
                             <Form.Row>
                                 <Col lg="2">
                                     <Form.Label>Ordem dos Bits</Form.Label>
-                                    <Form.Control style={{ marginBottom: '10px' }} as="select" custom>
+                                    <Form.Control value={saveOrdemByte} onChange={e => setSaveOrdemByte(e.target.value)}  style={{ marginBottom: '10px' }} as="select" custom>
                                         {ordemByte.map((byte) => (
-                                            <option key={byte.id} value={byte.value}>{byte.name}</option>
+                                            <option  key={byte.id} value={byte.value}>{byte.name}</option>
                                         ))}
                                     </Form.Control>
                                 </Col>
@@ -183,7 +195,7 @@ export default function Cadastro() {
 
                     </Jumbotron>
                     
-                            <Button onClick={() => console.log(form)} variant="success">Enviar</Button>
+                            <Button onClick={handleCadastro} variant="success">Enviar</Button>
                         </Form>
                 </Col>
             </Row>
