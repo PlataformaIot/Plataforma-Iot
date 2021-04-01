@@ -15,7 +15,11 @@ export default function Home() {
         { id: '2', title: 'Indicador', info: 'Informações do Dispositivo', icon: <AiOutlineInfoCircle size={50} />, nav: '/indicator' },
         { id: '3', title: 'Localização', info: 'Localização do dispositivo', icon: <SiOpenstreetmap size={50} />, nav: '/map' },
     ]);
-    const [selectDevices, setSelectDevice] = useState({device: '', ts: '', counter: '', lat: '', long: '', bateria: ''})
+    const [selectDevices, setSelectDevice] = useState(
+        {id:'1', device: 'Device 1', ts: '12', counter: '0', lat: '123', long: '12', bateria: '40'},
+        {id:'2', device: 'Device 2', ts: '13', counter: '1', lat: '125', long: '2', bateria: '50'},
+        {id:'3', device: 'Device 3', ts: '14', counter: '2', lat: '124', long: '1', bateria: '10'},
+        )
 
     useEffect(() => {
         handleSelectDados()
@@ -24,9 +28,15 @@ export default function Home() {
 
     async function handleSelectDados(e){
         let dev = await api.get(`gps`)
-        
+    }
+
+    //Linha para teste Redux
+
+    function dataDevices(){
         
     }
+
+    //Fim da linda de teste para Redux
 
     return (
 
