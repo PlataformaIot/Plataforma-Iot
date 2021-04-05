@@ -9,25 +9,40 @@ import Graph from '../../Pages/Graph';
 import './styles.css';
 import api from '../../Connections/api';
 
+import {useSelector} from 'react-redux';
+
 export default function Home() {
     const [navigation, setNavigation] = useState([
         { id: '1', title: 'Adicionar dispositivo', info: 'Cadastrar novo didpositivo', icon: <RiAddFill size={40} />, nav: '/cadastro' },
         { id: '2', title: 'Indicador', info: 'Informações do Dispositivo', icon: <AiOutlineInfoCircle size={50} />, nav: '/indicator' },
         { id: '3', title: 'Localização', info: 'Localização do dispositivo', icon: <SiOpenstreetmap size={50} />, nav: '/map' },
     ]);
-    const [selectDevices, setSelectDevice] = useState(
-        {id:'1', device: 'Device 1', ts: '12', counter: '0', lat: '123', long: '12', bateria: '40'},
-        {id:'2', device: 'Device 2', ts: '13', counter: '1', lat: '125', long: '2', bateria: '50'},
-        {id:'3', device: 'Device 3', ts: '14', counter: '2', lat: '124', long: '1', bateria: '10'},
-        )
+    const [selectDevices, setSelectDevice] = useState()
 
+    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
+    const devices = useSelector((state) => state.devicesState.devices)
+    console.log(devices[0])
+    
+    
+    function handleFilter(){
+        if(selectedDevice === ''){
+            //console.log(devices)
+           //setDevice(devices)
+        }
+        else{
+           //setDevice(devices.filter((device) => device.device === selectedDevice))
+        }
+    }
+    
+    
     useEffect(() => {
-        handleSelectDados()
-
-    }, [])
+        //handleSelectDados()
+        //handleFilter()
+        //console.log(handleFilter()[0])
+    }, [selectedDevice])
 
     async function handleSelectDados(e){
-        let dev = await api.get(`gps`)
+        let dev = await api.get(`devices`)
     }
 
     //Linha para teste Redux
@@ -64,21 +79,22 @@ export default function Home() {
 
                 </Col>
                 <Col>
+                
                     <div className="info">
                         <CardDeck>
                             <Card bg="danger" text='light'>
                                 <Card.Body>
                                     <Card.Title>Temperatura</Card.Title>
                                     <Card.Text>
-                                    <h1><strong>43ºC</strong></h1>
+                                    <h1><strong>{selectedDevice === '' ? (devices.length > 0 ? devices[0].temperatura : "") : devices.filter((device) => device.device === selectedDevice)[0].temperatura}ºC</strong></h1>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
                             <Card bg="light">
                                 <Card.Body>
-                                    <Card.Title>Humidade</Card.Title>
+                                    <Card.Title>Umidade</Card.Title>
                                     <Card.Text>
-                                    <h1><strong>30%</strong></h1>
+                                    <h1><strong>{selectedDevice === '' ? (devices.length > 0 ? devices[0].umidade : "") : devices.filter((device) => device.device === selectedDevice)[0].umidade}%</strong></h1>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -86,9 +102,8 @@ export default function Home() {
                                 <Card.Body>
                                     <Card.Title>Bateria</Card.Title>
                                     <Card.Text>
-                                    <h1><strong>90%</strong></h1>
+                                    <h1><strong>{selectedDevice === '' ? (devices.length > 0 ? devices[0].bateria : "") : devices.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
                                     </Card.Text>
-
                                 </Card.Body>
                             </Card>
                         </CardDeck>

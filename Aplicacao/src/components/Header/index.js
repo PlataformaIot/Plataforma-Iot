@@ -1,38 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {useSelector} from 'react-redux';//uso ainda não foi definido
+import { useDispatch, useSelector } from 'react-redux';//uso ainda não foi definido
 import './styles.css';
 
 import api from '../../Connections/api';
 
 import Logo from '../../assets/logo.svg';
 
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, Form, Button } from 'react-bootstrap';
+import { atualizarDevices, selecionarDevice } from '../../store/Modulos/Devices/actions';
+
 
 export default function Header() {
 
     const [device, setDevice] = useState([]);
-    const [selectDevice, setSelectDevice] = useState({ device: '', ts: '', counter: '', lat: '', long: '', bateria: '' })
+    const [selectDevice, setSelectDevice] = useState([])
+    const dispatch = useDispatch()
+    const devices = useSelector((state) => state.devicesState.devices)
+    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
+    console.log(selectedDevice)
 
     useEffect(() => {
         handleDevices()
+        
+        
+        
     }, [])
 
     async function handleDevices() {
-        let devi = await (await api.get('gps/10')).data.map((item, index) => {
+        /* let devi = await (await api.get('devices')).data.map((item, index) => {
             return {
                 ...item,
                 key: index,
             }
-        })
-        setDevice(devi)
+        }) */
+        const response = await api.get('devices')
+        dispatch(atualizarDevices(response.data))
+        
     }
 
-    /* function handleSelectDevice(e) {
-       console.log(JSON.stringify(selectDevice))
-    } */
+    function handleSelectDevice(dev) {
+        dispatch({
+            type:'SELECT_DEVICE',
+            dev
+        })
+    }
 
-   
+
 
 
     return (
@@ -41,18 +55,19 @@ export default function Header() {
                 <img src={Logo} width="100" height="100" />
             </Link>
 
-            <Dropdown>
-                <Dropdown.Toggle variant="primary" id="dropdown-basic">Devices</Dropdown.Toggle>
-                <Dropdown.Menu onChange={(e) => setSelectDevice({ selectDevice: e.target.value })}>
-                    {device.length && device.length > 0 ? device.map((dev) => (
-                        <Dropdown.Item>{dev.device}</Dropdown.Item>
+      
+                <Form.Control value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
+                    {devices.length && devices.length > 0 ? devices.map((dev) => (
+                        <option key={dev.id} value={dev.device}>{dev.device}</option>
+              
                     )) :
                         (
                             <div>Nenhum dispositivo</div>
                         )
                     }
-                </Dropdown.Menu>
-            </Dropdown>
+                </Form.Control>
+                
+
 
         </header>
     )

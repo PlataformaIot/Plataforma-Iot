@@ -1,11 +1,23 @@
-import produce from 'immer';
+import { ATUALIZAR_DEVICES, SELECT_DEVICE } from './actions';
 
-export default function Devices(state = [], action) {
-    switch (action.type) {
-        case 'SELECT_DEVICE':
-            return produce(state, draft => {
-                draft.push(action.trip)
-            });
+const initialState = {
+    devices: [],
+    selectedDevice: ''
+}
+
+export default (state = initialState, { type, payload }) => {
+    switch (type) {
+        case ATUALIZAR_DEVICES:
+           
+            return {
+                ...state,
+                devices: payload
+            }
+        case SELECT_DEVICE:
+            return {
+                ...state,
+                selectedDevice: payload
+            }
         default:
             return state
     }
