@@ -12,19 +12,20 @@ export default function Graph() {
                 loader={<div>Carregando</div>}
                 data={
                     [
-                        ['x', 'Cachorro'],
-                        [0, 0],
-                        [1, 10],
-                        [2, 23],
-                        [3, 17],
-                        [4, 18],
-                        [5, 9],
-                        [6, 11],
-                        [7, 27],
-                        [8, 33],
-                        [9, 40],
-                        [10, 32],
-                        [11, 35],
+                        ['x', 'Umidade', 'Temperatura', 'Bateria'],
+                        [0, 0, 0, 100],
+                        [1, 10, 8, 90],
+                        [2, 23, 30, 90],
+                        [3, 17, 40, 89],
+                        [4, 18, 50, 80],
+                        [5, 9, 30, 75],
+                        [6, 11, 5, 60],
+                        [7, 27, 10, 58],
+                        [8, 33, 12, 50],
+                        [9, 40, 22, 48],
+                        [10, 32, 40, 40],
+                        [11, 35, 9, 30],
+                        [11, 50, 30, 90],
                     ]
                 }
                 options={{
@@ -32,7 +33,10 @@ export default function Graph() {
                         title: 'Tempo'
                     },
                     vAxis: {
-                        title: 'Popularidade'
+                        title: 'Temperatura e Umidade'
+                    },
+                    series:{
+                        2:{curveType: 'function'}
                     },
                 }}
                 rootProps={{ 'data-testid': '1' }}
