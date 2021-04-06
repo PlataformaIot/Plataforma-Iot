@@ -149,8 +149,8 @@ export default function Cadastro() {
                                         <Row>
                                             <Col lg="12">
                                                 <Form.Control style={{ marginBottom: '1%', width: '40%', marginRight: '1%' }} name="variavel" onChange={(e) => onFormUpdate(e, index)} placeholder={`Variavel ${index + 1}`} />
-                                                <Form.Control style={{ marginBottom: '1%', width: '20%', marginRight: '1%' }} name="bitInicial" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitInicial ${index + 1}`} />
-                                                <Form.Control style={{ marginBottom: '1%', width: '20%', marginRight: '1%' }} name="bitFinal" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitFinal ${index + 1}`} />
+                                                <Form.Control style={{ marginBottom: '1%', width: '30%', marginRight: '1%' }} name="bitInicial" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitInicial ${index + 1}`} />
+                                                <Form.Control style={{ marginBottom: '1%', width: '30%', marginRight: '1%' }} name="bitFinal" onChange={(e) => onFormUpdate(e, index)} placeholder={`BitFinal ${index + 1}`} />
 
                                                 {form.cards[index].operationsSelects &&
                                                     form.cards[index].operationsSelects.length > 0 &&

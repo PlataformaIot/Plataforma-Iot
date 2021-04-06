@@ -22,9 +22,6 @@ export default function Header() {
 
     useEffect(() => {
         handleDevices()
-        
-        
-        
     }, [])
 
     async function handleDevices() {
@@ -36,17 +33,8 @@ export default function Header() {
         }) */
         const response = await api.get('devices')
         dispatch(atualizarDevices(response.data))
-        
+
     }
-
-    function handleSelectDevice(dev) {
-        dispatch({
-            type:'SELECT_DEVICE',
-            dev
-        })
-    }
-
-
 
 
     return (
@@ -55,18 +43,18 @@ export default function Header() {
                 <img src={Logo} width="100" height="100" />
             </Link>
 
-      
-                <Form.Control value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
-                    {devices.length && devices.length > 0 ? devices.map((dev) => (
-                        <option key={dev.id} value={dev.device}>{dev.device}</option>
-              
-                    )) :
-                        (
-                            <div>Nenhum dispositivo</div>
-                        )
-                    }
-                </Form.Control>
-                
+
+            
+            <Form.Control style={{width:'13%'}} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
+                {devices.length && devices.length > 0 ? devices.map((dev) => (
+                    <option key={dev.id} value={dev.device}>{dev.device}</option>
+                )) :
+                    (
+                        <div>Nenhum dispositivo</div>
+                    )
+                }
+            </Form.Control>
+
 
 
         </header>
