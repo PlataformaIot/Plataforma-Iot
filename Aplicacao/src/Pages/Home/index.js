@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Col, Row, Container, CardDeck, Card, Jumbotron } from 'react-bootstrap';
+import { Col, Row, Container, CardDeck, Card, Jumbotron, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsClipboardData, BsGraphUp } from 'react-icons/bs'
 import { AiOutlineInfoCircle } from 'react-icons/ai'
@@ -8,12 +8,14 @@ import { RiAddFill } from 'react-icons/ri'
 import Graph from '../../Pages/Graph';
 import './styles.css';
 import api from '../../Connections/api';
+import Mapa from '../Map'
 
 import { useSelector } from 'react-redux';
 
 export default function Home() {
-    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
-    const devices = useSelector((state) => state.devicesState.devices)
+    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
+    const devices = useSelector((state) => state.devicesState.devices);
+
     const [navigation, setNavigation] = useState([
         { id: '1', title: 'Adicionar dispositivo', info: 'Cadastrar novo didpositivo', icon: <RiAddFill size={40} />, nav: '/cadastro' },
         { id: '2', title: 'Indicador', info: 'Informações do Dispositivo', icon: <AiOutlineInfoCircle size={50} />, nav: '/indicator' },
@@ -23,9 +25,7 @@ export default function Home() {
 
 
 
-    useEffect(() => {
-
-    }, [selectedDevice])
+    useEffect(() => { }, [selectedDevice])
 
 
     return (
@@ -85,8 +85,8 @@ export default function Home() {
                         <br></br>
                         <Card>
                             <Card.Body>
-                                <Card.Title>Gráfico</Card.Title>
-                                <Graph />
+                                <Card.Title>Mapa</Card.Title>
+                                        <Graph />
                             </Card.Body>
                         </Card>
 

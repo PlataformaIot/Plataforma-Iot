@@ -15,6 +15,7 @@ export default function Header() {
 
     const [device, setDevice] = useState([]);
     const [selectDevice, setSelectDevice] = useState([])
+    const [mapSelect, setMapSelect] = useState([]);
     const dispatch = useDispatch()
     const devices = useSelector((state) => state.devicesState.devices)
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
@@ -31,9 +32,14 @@ export default function Header() {
                 key: index,
             }
         }) */
-        const response = await api.get('devices')
+        const dev = await api.get('devices')
+        const response = await api.get(`data?limit=4&dev_addr=${dev}`)
         dispatch(atualizarDevices(response.data))
 
+    }
+
+    async function dataMaps(){
+        
     }
 
 

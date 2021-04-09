@@ -36,7 +36,8 @@ export default function Graph() {
                         title: 'Temperatura e Umidade'
                     },
                     series:{
-                        2:{curveType: 'function'}
+                        2:{curveType: 'function'},
+                        
                     },
                 }}
                 rootProps={{ 'data-testid': '1' }}

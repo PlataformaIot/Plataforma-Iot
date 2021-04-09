@@ -122,7 +122,7 @@ export default function Cadastro() {
                             <Form.Row>
                                 <Col lg="3">
                                     <Form.Label>Nome</Form.Label>
-                                    <Form.Control value={tamanhoByte} onChange={(e) => setNome(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
+                                    <Form.Control value={nome} onChange={(e) => setNome(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
                                 <Col lg="1">
                                     <Form.Label>Tamanho</Form.Label>
