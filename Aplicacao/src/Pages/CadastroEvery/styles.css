@@ -1,0 +1,35 @@
+.btnAdd{
+    margin-bottom: 2%;    
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.toggle{
+    align-items: center;
+    display: flex;
+}
+
+.badges .badge{
+    display: flex;
+    margin-left: 5%;
+    
+}
+
+.badges{
+    display: flex;
+    margin-left: 77%;
+}
+
+.camposEUI{
+    margin-bottom: 2%;
+}
+
+.nextCad{
+    margin-top: 10%;
+    
+}
+
+.nextCad button{
+    font-size: 20px;
+    font-weight: bold;
+}

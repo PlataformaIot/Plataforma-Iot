@@ -6,7 +6,7 @@ import { MdRemoveCircleOutline } from 'react-icons/md';
 import { VscSymbolOperator } from 'react-icons/vsc';
 import './styles.css';
 
-export default function Cadastro() {
+export default function CadastroVariaveis() {
 
     const [form, setForm] = useState({ cards: [] });
     const [cadastro, setCadastro] = useState();
@@ -110,7 +110,7 @@ export default function Cadastro() {
 
     return (
         <Container fluid>
-            <Link to="/">
+            <Link to="/cadastro">
                 <Button variant="light" style={{ marginBottom: '2%' }}><IoMdArrowRoundBack size={30} /></Button>
             </Link>
             <Row lg="12">
@@ -156,27 +156,27 @@ export default function Cadastro() {
                                                     form.cards[index].operationsSelects.length > 0 &&
                                                     form.cards[index].operationsSelects.map((operationSelect, i) => (
 
-                                                        
-                                                            <Form.Row key={i} >
-                                                                <Col>
-                                                                    <Form.Control style={{ marginRight: '1%', width: '100%', marginBottom: '2%' }} value={form.cards[index].operationsSelects[i].operacao} onChange={(e) => onOperationSelectUpdate(e, index, i)} as="select">
-                                                                        {operations.map((operation) => (
-                                                                            <option key={operation.id} value={operation.value}>{operation.name}</option>
-                                                                        ))}
-                                                                    </Form.Control>
-                                                                </Col>
+
+                                                        <Form.Row key={i} >
+                                                            <Col>
+                                                                <Form.Control style={{ marginRight: '1%', width: '100%', marginBottom: '2%' }} value={form.cards[index].operationsSelects[i].operacao} onChange={(e) => onOperationSelectUpdate(e, index, i)} as="select">
+                                                                    {operations.map((operation) => (
+                                                                        <option key={operation.id} value={operation.value}>{operation.name}</option>
+                                                                    ))}
+                                                                </Form.Control>
+                                                            </Col>
 
 
-                                                                <Col>
-                                                                    <Form.Control placeholder="ARGS" name="args" onChange={(e) => onFormUpdate(e, index)} />
-                                                                </Col>
-                                                                <Col>
-                                                                    <Badge style={{justifyContent:'center', alignItems:'center', marginTop:5}} onClick={() => operationRemove(index, i)} variant="danger"  ><MdRemoveCircleOutline size={20} /></Badge>
-                                                                </Col>
+                                                            <Col>
+                                                                <Form.Control placeholder="ARGS" name="args" onChange={(e) => onFormUpdate(e, index)} />
+                                                            </Col>
+                                                            <Col>
+                                                                <Badge style={{ justifyContent: 'center', alignItems: 'center', marginTop: 5 }} onClick={() => operationRemove(index, i)} variant="danger"  ><MdRemoveCircleOutline size={20} /></Badge>
+                                                            </Col>
 
-                                                            </Form.Row>
+                                                        </Form.Row>
 
-                                                        
+
 
                                                     ))
                                                 }
@@ -202,6 +202,7 @@ export default function Cadastro() {
                         </Jumbotron>
 
                         <Button onClick={handleCadastro} variant="success">Enviar</Button>
+                        
                     </Form>
                 </Col>
             </Row>

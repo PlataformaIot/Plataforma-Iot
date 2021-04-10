@@ -33,8 +33,8 @@ export default function Header() {
             }
         }) */
         const dev = await api.get('devices')
-        const response = await api.get(`data?limit=4&dev_addr=${dev}`)
-        dispatch(atualizarDevices(response.data))
+        //const response = await api.get(`data?limit=4&dev_addr=${dev}`)
+        dispatch(atualizarDevices(dev.data))
 
     }
 
