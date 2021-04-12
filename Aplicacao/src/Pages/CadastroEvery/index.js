@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './styles.css';
 import {
     Accordion,
@@ -10,7 +10,7 @@ import {
     Card,
     Badge,
     InputGroup,
-    FormControl
+    FormControl,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { BsFillTrashFill, BsPencil } from 'react-icons/bs'
@@ -21,6 +21,28 @@ import { IoMdArrowRoundBack, IoMdArrowRoundForward } from 'react-icons/io';
 
 
 export default function CadastroEvery() {
+    const [dispositivoEUI, setDispositivoEUI] = useState('');
+    const [aplicacaoEUI, setAplicacaoEUI] = useState('');
+    const [tags, setTags] = useState([]);
+    const [netWorkSessionKey, setNetWorkSessionKey] = useState('');
+    const [applicationSessionKey, setApplicationiSessionKey] = useState('');
+    const [cadastroEvery, setCadastroEvery] = useState('');
+    
+
+    console.log(cadastroEvery)
+    function CadastroEvery(){
+        const data ={
+            dispositivoEUI: dispositivoEUI,
+            aplicacaoEUI: aplicacaoEUI,
+            tags: tags,
+            netWorkSessionKey: netWorkSessionKey,
+            applicationSessionKey: applicationSessionKey
+        }
+
+        setCadastroEvery(data)
+    }
+
+
     return (
         <Container fluid>
             <div>
@@ -36,26 +58,43 @@ export default function CadastroEvery() {
 
 
                     <h4>Gerenciamento de Dispositivo</h4>
-                    <Form.Control style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
-                    <Form.Control style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
-                    <InputGroup className="mb-3">
-                        <FormControl
+                    <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
+                    <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
+                   
+                        <Form.Control
+                            className="TagForm"
+                            type="text"
                             placeholder="Tags"
+                            onKeyPress={event => {
+                                if (event.key === "Enter") {
+                                    setTags([...tags, event.target.value])
+                                    event.target.value = "";
+                                }
+                            }}
                         />
-                        <InputGroup.Append>
-                            <Button variant="outline-secondary">+</Button>
-                        </InputGroup.Append>
-                    </InputGroup>
+
+                        <ul className="TagList">
+                            {tags.map((tag, index) => (
+                                <li key={index} className="Tag">
+                                    {tag}
+                                    <BsFillTrashFill
+                                    size={20}
+                                    onClick={() => { setTags([...tags.filter(device => device !== tag)])}}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                   
 
 
                     <h4>Segurança</h4>
-                    <Form.Control style={{ marginBottom: '2%' }} placeholder="Network session key" />
-                    <Form.Control style={{ marginBottom: '2%' }} placeholder="Application session key" />
+                    <Form.Control value={netWorkSessionKey} onChange={(e) => setNetWorkSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Network session key" />
+                    <Form.Control value={applicationSessionKey} onChange={(e) => setApplicationiSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Application session key" />
 
 
 
                     <Link to="/cadastro/cadastrar-variaveis" className="nextCad">
-                        <Button variant="light">Cadastrar Variaveis<IoMdArrowRoundForward size={30} /></Button>
+                        <Button onClick={CadastroEvery} variant="light">Cadastrar Variaveis<IoMdArrowRoundForward size={30} /></Button>
                     </Link>
                 </Col>
 

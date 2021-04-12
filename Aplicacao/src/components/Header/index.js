@@ -38,9 +38,7 @@ export default function Header() {
 
     }
 
-    async function dataMaps(){
-        
-    }
+    
 
 
     return (

@@ -33,3 +33,32 @@
     font-size: 20px;
     font-weight: bold;
 }
+
+.TagForm{
+    
+}
+
+.TagList{
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2%;
+}
+
+.Tag{
+    background: rgb(47, 124, 3);
+    border-radius: 3px;
+    padding: 8px 12px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    color: #ffefef;
+}
+
+.Tag:not(:last-child){
+    margin-right: 8px;
+}

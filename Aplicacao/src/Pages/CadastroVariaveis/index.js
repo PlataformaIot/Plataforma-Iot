@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { MdRemoveCircleOutline } from 'react-icons/md';
 import { VscSymbolOperator } from 'react-icons/vsc';
+
 import './styles.css';
 
 export default function CadastroVariaveis() {
@@ -31,6 +32,7 @@ export default function CadastroVariaveis() {
     const [saveOrdemByte, setSaveOrdemByte] = useState(1);
     const [tamanhoByte, setTamanhoByte] = useState('');
     const [nome, setNome] = useState('');
+    
 
 
     const addNewCamp = () => {
@@ -98,8 +100,8 @@ export default function CadastroVariaveis() {
             tamanhoByte: tamanhoByte,
             nome: nome
         }
-
         setCadastro(params)
+
 
 
     }
