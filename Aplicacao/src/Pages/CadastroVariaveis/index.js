@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { MdRemoveCircleOutline } from 'react-icons/md';
 import { VscSymbolOperator } from 'react-icons/vsc';
+import {useSelector} from 'react-redux';
 
 import './styles.css';
 
@@ -32,6 +33,7 @@ export default function CadastroVariaveis() {
     const [saveOrdemByte, setSaveOrdemByte] = useState(1);
     const [tamanhoByte, setTamanhoByte] = useState('');
     const [nome, setNome] = useState('');
+    const cadastroEvery = useSelector((state) => state.devicesState.cadastroEvery);
     
 
 
@@ -98,7 +100,8 @@ export default function CadastroVariaveis() {
             card: form,
             ordemByte: saveOrdemByte,
             tamanhoByte: tamanhoByte,
-            nome: nome
+            nome: nome,
+            every: cadastroEvery
         }
         setCadastro(params)
 

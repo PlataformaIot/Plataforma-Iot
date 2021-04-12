@@ -11,3 +11,10 @@ export const selecionarDevice = evento => ({
     type: SELECT_DEVICE,
     payload: evento
 })
+
+export const CADASTRO_EVERY =  "CADASTRO_EVERY";
+
+export const cadastroEvery = evento =>({
+    type: CADASTRO_EVERY,
+    payload: evento
+})

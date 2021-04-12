@@ -16,10 +16,10 @@ export default function Header() {
     const [device, setDevice] = useState([]);
     const [selectDevice, setSelectDevice] = useState([])
     const [mapSelect, setMapSelect] = useState([]);
-    const dispatch = useDispatch()
     const devices = useSelector((state) => state.devicesState.devices)
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
     console.log(selectedDevice)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         handleDevices()
