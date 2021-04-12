@@ -1,11 +1,12 @@
 import datetime
 import json
 import requests
+import time
 from fastapi import APIRouter, Request, Response
 from requests.exceptions import HTTPError
 from typing import Optional
 from .db import *
-from .credentials import everynet_login
+from credentials import everynet_login
 
 router = APIRouter ()
 
@@ -41,8 +42,8 @@ async def new_device (request: Request, new_type: bool = False):
     return {'ERROR': f'{err}'}
 
   new_dev = {
-    'device': device ['dev_addr'],
-    'type': dev_type ['dev_type']
+    'device': body [0] ['dev_addr'],
+    'type': body [1] ['dev_type']
   }
 
   try:
@@ -74,29 +75,38 @@ async def get_devices (dev_addr: Optional [str] = None, dev_type: Optional [str]
     return response
 
 @router.get ('/data')
-async def get_data (dev_addr: Optional [str] = None, dev_type: Optional [str] = None, limit: Optional [int] = None):
+async def get_data (dev_addr: Optional [str] = None, dev_type: Optional [str] = None, date: Optional [str] = None, limit: Optional [int] = None):
   collection = MongodbConnector ().get_collection ('dados')
 
   if dev_addr:
-    if limit:
+    if date:
+      date = time.mktime (datetime.datetime.strptime (date, '%d/%m/%Y').timetuple ())
+      response = list (collection.find ({'device': dev_addr, 'ts': {'$gte': date}}, {'_id': False}).sort ('ts', -1))
+    elif limit:
       response = list (collection.find ({'device': dev_addr}, {'_id': False}, limit = limit).sort ('ts', -1))
     else:
       response = list (collection.find ({'device': dev_addr}, {'_id': False}).sort ('ts', -1))
 
-  if dev_type:
+  elif dev_type:
     collection_devices = MongodbConnector ().get_collection ('devices')
 
     list_of_devices = []
     for x in collection_devices.find ({'type': dev_type}, {'_id': False, 'type': False}):
       list_of_devices.append (x ['device'])
 
-    if limit:
+    if date:
+      date = time.mktime (datetime.datetime.strptime (date, '%d/%m/%Y').timetuple ())
+      response = list (collection.find ({'device': {'$in': list_of_devices}, 'ts': {'$gte': date}}, {'_id': False}).sort ('ts', -1))
+    elif limit:
       response = list (collection.find ({'device': {'$in': list_of_devices}}, {'_id': False}, limit = limit).sort ('ts', -1))
     else:
       response = list (collection.find ({'device': {'$in': list_of_devices}}, {'_id': False}).sort ('ts', -1))
 
   else:
-    if limit:
+    if date:
+      date = time.mktime (datetime.datetime.strptime (date, '%d/%m/%Y').timetuple ())
+      response = list (collection.find ({'ts': {'$gte': date}}, {'_id': False}).sort ('ts', -1))
+    elif limit:
       response = list (collection.find (projection = {'_id': False}, limit = limit).sort ('ts', -1))
     else:
       response = list (collection.find (projection = {'_id': False}).sort ('ts', -1))
