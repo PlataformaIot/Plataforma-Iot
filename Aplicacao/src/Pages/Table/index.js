@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 export default function Tabela() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
     const devices = useSelector((state) => state.devicesState.devices);
+    const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
 
     useEffect(() => {}, [selectedDevice])
 
@@ -27,20 +28,20 @@ export default function Tabela() {
                                 <th>ID</th>
                                 <th>Device</th>
                                 <th>Data</th>
-                                <th>Counter</th>
+                                <th>Type</th>
                                 <th>Latitude</th>
                                 <th>Longetude</th>
                                 <th>Bateria</th>
                             </tr>
                         </thead>
                         {
-                            devices.map((dev) => (
+                            dadosDevice.map((dev) => (
                                 <tbody>
                                     <tr>
-                                        <td>{dev.id}</td>
-                                        <td>{dev.devices}</td>
-                                        <td>{dev.data}</td>
-                                        <td>0</td>
+                                        <td>{dev.device}</td>
+                                        <td>{dev.device}</td>
+                                        <td>{dev.ts}</td>
+                                        <td>{dev.type}</td>
                                         <td>{dev.lat}</td>
                                         <td>{dev.long}</td>
                                         <td>{dev.bateria}</td>

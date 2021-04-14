@@ -52,7 +52,7 @@ export default function CadastroEvery() {
 
 
     return (
-        <Container fluid>
+        <Container style={{margin:'50px 20px', marginBottom:'20%'}} fluid>
             <div>
                 <Link to="/">
                     <Button variant="light" style={{ marginBottom: '2%' }}><IoMdArrowRoundBack size={30} /></Button>
@@ -60,70 +60,66 @@ export default function CadastroEvery() {
             </div>
 
             <Row>
-                <Col lg="6">
+                <Col lg="6" >
+                    
 
 
+                        <h4>Cadastro dispositivo</h4>
+                        <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
+                        <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
 
-                    <h4>Gerenciamento de Dispositivo</h4>
-                    <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
-                    <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
+                        <Form.Control
+                            className="TagForm"
+                            type="text"
+                            placeholder="Tags"
+                            onKeyPress={event => {
+                                if (event.key === "Enter") {
+                                    setTags([...tags, event.target.value])
+                                    event.target.value = "";
+                                }
+                            }}
+                        />
 
-                    <Form.Control
-                        className="TagForm"
-                        type="text"
-                        placeholder="Tags"
-                        onKeyPress={event => {
-                            if (event.key === "Enter") {
-                                setTags([...tags, event.target.value])
-                                event.target.value = "";
-                            }
-                        }}
-                    />
-
-                    <ul className="TagList">
-                        {tags.map((tag, index) => (
-                            <li key={index} className="Tag">
-                                {tag}
-                                <BsFillTrashFill
-                                    size={20}
-                                    onClick={() => { setTags([...tags.filter(device => device !== tag)]) }}
-                                />
-                            </li>
-                        ))}
-                    </ul>
-
-
-
-                    <h4>Segurança</h4>
-                    <Form.Control value={netWorkSessionKey} onChange={(e) => setNetWorkSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Network session key" />
-                    <Form.Control value={applicationSessionKey} onChange={(e) => setApplicationiSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Application session key" />
+                        <ul className="TagList">
+                            {tags.map((tag, index) => (
+                                <li key={index} className="Tag">
+                                    {tag}
+                                    <BsFillTrashFill
+                                        size={20}
+                                        onClick={() => { setTags([...tags.filter(device => device !== tag)]) }}
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                        
+                        <Form.Control value={netWorkSessionKey} onChange={(e) => setNetWorkSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Network session key" />
+                        <Form.Control value={applicationSessionKey} onChange={(e) => setApplicationiSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Application session key" />
 
 
-                    <Dropdown style={{ marginBottom: 30 }}>
-                        <Dropdown.Toggle
-                            id="dropdown-custom-components"
-                            style={{
-                                width: '50%',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                justifyContent: 'space-between'
-                            }}>
-                            Tipo
+                        <Dropdown>
+                            <Dropdown.Toggle
+                                id="dropdown-custom-components"
+                                style={{
+                                    width: '50%',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between',
+
+                                }}>
+                                Tipo
                         </Dropdown.Toggle>
-                        <Dropdown.Menu style={{ width: '50%' }}>
-                            <Dropdown.Item eventKey="1">Tipo 1</Dropdown.Item>
-                            <Dropdown.Item>Tipo 2</Dropdown.Item>
-                            <Dropdown.Item>Tipo 3</Dropdown.Item>
-                            <Link to="/cadastro/cadastrar-variaveis" className="nextCad">
-                                <Button onClick={CadastroEvery} variant="success"><IoMdAdd size={30} /> Cadastrar Tipo</Button>
-                            </Link>
-
-                        </Dropdown.Menu>
-                    </Dropdown>
-
+                            <Dropdown.Menu style={{ width: '50%', marginBottom: '-38%' }}>
+                                <Dropdown.Item eventKey="1">Tipo 1</Dropdown.Item>
+                                <Dropdown.Item>Tipo 2</Dropdown.Item>
+                                <Dropdown.Item>Tipo 3</Dropdown.Item>
+                                <Link to="/cadastro/cadastrar-variaveis" className="nextCad">
+                                    <Button onClick={CadastroEvery} variant="success"><IoMdAdd size={30} /> Cadastrar Tipo</Button>
+                                </Link>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    
                 </Col>
-
             </Row>
         </Container>
     )

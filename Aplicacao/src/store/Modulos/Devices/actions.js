@@ -18,3 +18,10 @@ export const cadastroEvery = evento =>({
     type: CADASTRO_EVERY,
     payload: evento
 })
+
+export const DADOS_DEVICE = "DADOS_DEVICE";
+
+export const dadosDevice = evento =>({
+    type: DADOS_DEVICE,
+    payload: evento
+})

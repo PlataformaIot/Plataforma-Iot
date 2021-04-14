@@ -11,6 +11,7 @@ import './styles.css';
 export default function Indicator() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);//chama um dispositivo especifico do Redux
     const devices = useSelector((state) => state.devicesState.devices)
+    const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
 
     useEffect(() => {}, [selectedDevice])//fica observando caso tenha alguma alteração
 
@@ -36,10 +37,10 @@ export default function Indicator() {
 
                         <ListGroup>
                             <ListGroup.Item>Dispositivo: {selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((device) => device.device === selectedDevice)[0].device} </ListGroup.Item>
-                            <ListGroup.Item>Data: {selectedDevice === '' ? (devices.length > 0 ? devices[0].data : "") :  devices.filter((device) => device.device === selectedDevice)[0].data} </ListGroup.Item>
-                            <ListGroup.Item>Latitude: {selectedDevice === '' ? (devices.length > 0 ? devices[0].lat : "") : devices.filter((device) =>  device.device === selectedDevice)[0].lat} </ListGroup.Item>
-                            <ListGroup.Item>Longitude: {selectedDevice === '' ? (devices.length > 0 ? devices[0].long : "") : devices.filter((device) => device.device === selectedDevice)[0].long}</ListGroup.Item>
-                            <ListGroup.Item>Bateria: {selectedDevice === '' ? (devices.length > 0 ? devices[0].bateria : "") : devices.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item>
+                            <ListGroup.Item>Data do ultimo envio: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].ts : "") :  dadosDevice.filter((device) => device.device === selectedDevice)[0].ts} </ListGroup.Item>
+                            <ListGroup.Item>Latitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].lat : "") : dadosDevice.filter((device) =>  device.device === selectedDevice)[0].lat} </ListGroup.Item>
+                            <ListGroup.Item>Longitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].long : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].long}</ListGroup.Item>
+                            <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item>
                         </ListGroup>
                         <Link to="/tabela">
                             <Button variant="warning" style={{ marginTop: '2%' }}>Historico</Button>

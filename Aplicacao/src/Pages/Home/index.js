@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 export default function Home() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
     const devices = useSelector((state) => state.devicesState.devices);
+    const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
 
     const [navigation, setNavigation] = useState([
         { id: '1', title: 'Adicionar dispositivo', info: 'Cadastrar novo didpositivo', icon: <RiAddFill size={40} />, nav: '/cadastro' },
@@ -61,7 +62,7 @@ export default function Home() {
                                 <Card.Body>
                                     <Card.Title>Temperatura</Card.Title>
                                     <Card.Text>
-                                        <h1><strong>{selectedDevice === '' ? (devices.length > 0 ? devices[0].temperatura : "") : devices.filter((device) => device.device === selectedDevice)[0].temperatura}ºC</strong></h1>
+                                           <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp}ºC</strong></h1>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -69,7 +70,7 @@ export default function Home() {
                                 <Card.Body>
                                     <Card.Title>Umidade</Card.Title>
                                     <Card.Text>
-                                        <h1><strong>{selectedDevice === '' ? (devices.length > 0 ? devices[0].umidade : "") : devices.filter((device) => device.device === selectedDevice)[0].umidade}%</strong></h1>
+                                        <h1><strong>{selectedDevice === '' ? (devices.length > 0 ? devices[0].hum : "") : devices.filter((device) => device.device === selectedDevice)[0].hum}%</strong></h1>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
@@ -77,7 +78,7 @@ export default function Home() {
                                 <Card.Body>
                                     <Card.Title>Bateria</Card.Title>
                                     <Card.Text>
-                                        <h1><strong>{selectedDevice === '' ? (devices.length > 0 ? devices[0].bateria : "") : devices.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
+                                        <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
