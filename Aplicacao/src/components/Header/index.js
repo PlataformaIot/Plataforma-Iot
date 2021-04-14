@@ -58,7 +58,7 @@ export default function Header() {
                     <option key={dev.device} value={dev.device}>{dev.device}</option>
                 )) :
                     (
-                        <div>Nenhum dispositivo</div>
+                        <option>Nenhum dispositivo</option>
                     )
                 }
             </Form.Control>
