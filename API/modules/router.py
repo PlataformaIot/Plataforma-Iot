@@ -63,15 +63,15 @@ async def get_devices (dev_addr: Optional [str] = None, dev_type: Optional [str]
   collection = MongodbConnector ().get_collection ('devices')
 
   if dev_addr:
-    response = collection.find_one ({'device': dev_addr})
+    response = collection.find_one ({'device': dev_addr}, {'_id': False})
     return response
 
   elif dev_type:
-    response = list (collection.find ({'type': dev_type}))
+    response = list (collection.find ({'type': dev_type}, {'_id': False}))
     return response
 
   else:
-    response = list (collection.find ())
+    response = list (collection.find (projection = {'_id': False}))
     return response
 
 @router.get ('/data')
