@@ -1,9 +1,24 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import { Form, Col, Row, Button } from 'react-bootstrap';
 import {FiSearch} from 'react-icons/fi';
 import './styles.css';
 
 export default function Mapa() {
+    const [days, setDays] = useState([]);
+    const [moth, setMoth] = useState([]);
+    const [yaear, setYear] = useState([]);
+
+    useEffect(() =>{
+        daysWeek()
+        console.log(days)
+    },[])
+
+    function daysWeek(day){
+        for(var day = 0; day < 30; day++){
+            setDays(day)
+        }
+    }
+    
     return (
         <div>
             <Row>
@@ -28,7 +43,7 @@ export default function Mapa() {
                 </Col>
             </Row>
                 <div className="mapStyle">
-                    <iframe src={`http://161.97.133.47:5000/day`} width="1150" height="450" />
+                    <iframe src={`http://161.97.133.47:5000/day`} width="1150" height="450" frameBorder="0" />
                 </div>
         </div>
 

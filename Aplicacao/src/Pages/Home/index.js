@@ -62,7 +62,8 @@ export default function Home() {
                                 <Card.Body>
                                     <Card.Title>Temperatura</Card.Title>
                                     <Card.Text>
-                                           <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp}ºC</strong></h1>
+                                        
+                                           <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : '') : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp}ºC</strong></h1>
                                     </Card.Text>
                                 </Card.Body>
                             </Card>

@@ -13,7 +13,7 @@ import { atualizarDevices, selecionarDevice, dadosDevice } from '../../store/Mod
 
 export default function Header() {
 
-   
+
     const devices = useSelector((state) => state.devicesState.devices)
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
     console.log(selectedDevice)
@@ -21,28 +21,35 @@ export default function Header() {
 
     useEffect(() => {
         handleDevices()
+        
     }, [])
 
     async function handleDevices() {
-        await api.get(`devices`)
-        .then((res) =>{
-            dispatch(atualizarDevices(res.data))
-        })
-        .catch((err) =>{
-            console.log(err)
-        })
-    
-        await api.get(`data?limit=1000&dev_addr`)
-        .then((res) =>{
-            dispatch(dadosDevice(res.data))
-        })
-        .catch((err)=>{
-            console.log(err)
-        })
         
+        await api.get(`devices`)
+            .then((res) => {
+                dispatch(atualizarDevices(res.data))
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        
+        
+
+        await api.get(`data?div_addr&limit=100`)
+            .then((res) => {
+                dispatch(dadosDevice(res.data))
+            
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            
     }
 
     
+
+
 
 
     return (
@@ -52,8 +59,8 @@ export default function Header() {
             </Link>
 
 
-            
-            <Form.Control style={{width:'13%'}} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
+
+            <Form.Control style={{ width: '13%' }} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
                 {devices.length && devices.length > 0 ? devices.map((dev) => (
                     <option key={dev.device} value={dev.device}>{dev.device}</option>
                 )) :
