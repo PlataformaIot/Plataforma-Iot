@@ -80,8 +80,10 @@ async def get_data (dev_addr: Optional [str] = None, dev_type: Optional [str] = 
 
   if dev_addr:
     if date:
+      date_max = f'{int (date [:2]) + 1}{date [2:]}'
       date = time.mktime (datetime.datetime.strptime (date, '%d/%m/%Y').timetuple ())
-      response = list (collection.find ({'device': dev_addr, 'ts': {'$gte': date}}, {'_id': False}).sort ('ts', -1))
+      date_max = time.mktime (datetime.datetime.strptime (date_max, '%d/%m/%Y').timetuple ())
+      response = list (collection.find ({'device': dev_addr, 'ts': {'$gte': date, '$lt': date_max}}, {'_id': False}).sort ('ts', -1))
     elif limit:
       response = list (collection.find ({'device': dev_addr}, {'_id': False}, limit = limit).sort ('ts', -1))
     else:
@@ -95,8 +97,10 @@ async def get_data (dev_addr: Optional [str] = None, dev_type: Optional [str] = 
       list_of_devices.append (x ['device'])
 
     if date:
+      date_max = f'{int (date [:2]) + 1}{date [2:]}'
       date = time.mktime (datetime.datetime.strptime (date, '%d/%m/%Y').timetuple ())
-      response = list (collection.find ({'device': {'$in': list_of_devices}, 'ts': {'$gte': date}}, {'_id': False}).sort ('ts', -1))
+      date_max = time.mktime (datetime.datetime.strptime (date_max, '%d/%m/%Y').timetuple ())
+      response = list (collection.find ({'device': {'$in': list_of_devices}, 'ts': {'$gte': date, '$lt': date_max}}, {'_id': False}).sort ('ts', -1))
     elif limit:
       response = list (collection.find ({'device': {'$in': list_of_devices}}, {'_id': False}, limit = limit).sort ('ts', -1))
     else:
@@ -104,8 +108,10 @@ async def get_data (dev_addr: Optional [str] = None, dev_type: Optional [str] = 
 
   else:
     if date:
+      date_max = f'{int (date [:2]) + 1}{date [2:]}'
       date = time.mktime (datetime.datetime.strptime (date, '%d/%m/%Y').timetuple ())
-      response = list (collection.find ({'ts': {'$gte': date}}, {'_id': False}).sort ('ts', -1))
+      date_max = time.mktime (datetime.datetime.strptime (date_max, '%d/%m/%Y').timetuple ())
+      response = list (collection.find ({'ts': {'$gte': date, '$lt': date_max}}, {'_id': False}).sort ('ts', -1))
     elif limit:
       response = list (collection.find (projection = {'_id': False}, limit = limit).sort ('ts', -1))
     else:
