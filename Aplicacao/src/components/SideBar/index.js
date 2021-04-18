@@ -5,6 +5,7 @@ import * as AiIcons from 'react-icons/ai';
 import {Link} from 'react-router-dom';
 import {SidebarData} from './SidebarData';
 import { IconContext } from 'react-icons';
+import {GiHamburgerMenu} from 'react-icons/gi'
 import './styles.css';
 
 export default function Sidebar(){
@@ -15,16 +16,15 @@ export default function Sidebar(){
     return(
         
           <IconContext.Provider value={{ color: '#FFF' }}>
-        <div className='navbar'>
-          <Link to='#' className='menu-bars'>
-            <FaIcons.FaBars onClick={showSidebar} />
+        <div>
+          <Link to='#' >
+            <GiHamburgerMenu size={35} onClick={showSidebar} />
           </Link>
         </div>
         <Nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>
             <li className='navbar-toggle'>
               <Link to='#' className='menu-bars'>
-                  
                 <AiIcons.AiOutlineClose size={20} />
               </Link>
             </li>

@@ -7,93 +7,75 @@ import { SiOpenstreetmap } from 'react-icons/si'
 import { RiAddFill } from 'react-icons/ri'
 import Graph from '../../Pages/Graph';
 import './styles.css';
-import api from '../../Connections/api';
-import Mapa from '../Map'
+import Mapa from '../Map';
+import Combo from '../../components/SelectDeviceCombo';
 
-import { useSelector } from 'react-redux';
+
+import { useSelector, useDispatch } from 'react-redux';
+
 
 export default function Home() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
     const devices = useSelector((state) => state.devicesState.devices);
-    const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
-
-    const [navigation, setNavigation] = useState([
-        { id: '1', title: 'Adicionar dispositivo', info: 'Cadastrar novo didpositivo', icon: <RiAddFill size={40} />, nav: '/cadastro' },
-        { id: '2', title: 'Indicador', info: 'Informações do Dispositivo', icon: <AiOutlineInfoCircle size={50} />, nav: '/indicator' },
-        { id: '3', title: 'Localização', info: 'Localização do dispositivo', icon: <SiOpenstreetmap size={50} />, nav: '/map' },
-    ]);
-
-
-
+    const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
+    const dispatch = useDispatch()
+    
 
     useEffect(() => { }, [selectedDevice])
 
-
+    
     return (
 
 
-        <Container fluid>
+        <Container fluid style={{margin:'40px 0px', marginBottom:'20%'}}>
+                <Combo/>
             <Row lg={true}>
-                <Col lg='3' >
-                    <Jumbotron>
-                        <CardDeck style={{ textAlign: 'center' }}>
-                            {navigation.map(dados => (
-                                <Link to={dados.nav} style={{ textDecoration: 'none' }}>
-                                    <Card style={{ marginBottom: '5%' }}>
-                                        <Card.Body>
-                                            <Card.Title>{dados.title}</Card.Title>
-                                            {dados.icon}
-                                            <Card.Text>
-                                                {dados.info}
-                                            </Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                </Link>
-                            ))}
-                        </CardDeck>
-                    </Jumbotron>
-
+                <Col lg="12" style={{ marginBottom: '5%' }}>
+                    <h2 style={{textAlign:'center', marginBottom:'2%'}}>Gráfico</h2>
+                    <Card>
+                        <Card.Body>
+                            <Graph />
+                        </Card.Body>
+                    </Card>
                 </Col>
-                <Col>
 
-                    <div className="info">
-                        <CardDeck>
-                            <Card bg="danger" text='light'>
-                                <Card.Body>
-                                    <Card.Title>Temperatura</Card.Title>
-                                    <Card.Text>
-                                        
-                                           <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : '') : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp}ºC</strong></h1>
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                            <Card bg="light">
-                                <Card.Body>
-                                    <Card.Title>Umidade</Card.Title>
-                                    <Card.Text>
-                                        <h1><strong>{selectedDevice === '' ? (devices.length > 0 ? devices[0].hum : "") : devices.filter((device) => device.device === selectedDevice)[0].hum}%</strong></h1>
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                            <Card bg="success" text='light'>
-                                <Card.Body>
-                                    <Card.Title>Bateria</Card.Title>
-                                    <Card.Text>
-                                        <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </CardDeck>
-                        <br></br>
-                        <Card>
+                <Col style={{ marginBottom: '5%' }}>
+                    <CardDeck>
+                        <Card bg="danger" text='light'>
                             <Card.Body>
-                                <Card.Title>Mapa</Card.Title>
-                                        <Graph />
+                                <Card.Title>Temperatura</Card.Title>
+                                <Card.Text>
+                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.temp === selectedDevice)[0].temp}%</strong></h1>
+                                </Card.Text>
                             </Card.Body>
                         </Card>
+                        <Card bg="light" text='black'>
+                            <Card.Body>
+                                <Card.Title>Umidade</Card.Title>
+                                <Card.Text>
+                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].hum : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].hum}%</strong></h1>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <Card bg="success" text='light'>
+                            <Card.Body>
+                                <Card.Title>Bateria</Card.Title>
+                                <Card.Text>
+                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        
+                    </CardDeck>
+                </Col>
 
-
-                    </div>
+                <Col lg="12">
+                            <h2 style={{textAlign:'center', marginBottom:'2%'}}>Mapa</h2>
+                    <Card>
+                        <Card.Body>
+                            <Mapa />
+                        </Card.Body>
+                    </Card>
                 </Col>
             </Row>
         </Container >

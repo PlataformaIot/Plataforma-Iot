@@ -3,6 +3,7 @@ import { Container, Table, Button, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { useSelector } from 'react-redux';
+import Combo from '../../components/SelectDeviceCombo'
 
 
 
@@ -18,7 +19,7 @@ export default function Tabela() {
             <Link to="/indicator">
                 <Button variant="light"><IoMdArrowRoundBack size={30} /></Button>
             </Link>
-
+            <Combo/>
             <Row lg={true} style={{ marginTop: '2%' }}>
 
                 <Col>
