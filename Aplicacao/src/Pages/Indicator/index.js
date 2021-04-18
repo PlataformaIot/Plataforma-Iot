@@ -5,7 +5,6 @@ import Logo from '../../assets/logo.svg'
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { useSelector } from 'react-redux'//necessario para usar o useSelector do redux
-import Combo from '../../components/SelectDeviceCombo';
 import './styles.css';
 
 
@@ -21,7 +20,7 @@ export default function Indicator() {
             <Link to="/" >
                 <Button variant="light" style={{ marginBottom: '2%' }}><IoMdArrowRoundBack size={30} /></Button>
             </Link>
-            <Combo/>
+      
             <Jumbotron>
 
                 <h1 className="titleInfo">Informações</h1>
@@ -41,7 +40,7 @@ export default function Indicator() {
                             <ListGroup.Item>Dispositivo: {selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((device) => device.device === selectedDevice)[0].device} </ListGroup.Item>
                             <ListGroup.Item>Data do ultimo envio: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].ts : "") :  dadosDevice.filter((device) => device.device === selectedDevice)[0].ts} </ListGroup.Item>
                             <ListGroup.Item>Latitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].lat : "") : dadosDevice.filter((device) =>  device.device === selectedDevice)[0].lat} </ListGroup.Item>
-                            <ListGroup.Item>Longitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].long : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].long}</ListGroup.Item>
+                            <ListGroup.Item>Longitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[1].long : "") : dadosDevice.filter((device) => device.device === selectedDevice)[1].long}</ListGroup.Item>
                             <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item>
                         </ListGroup>
                         <Link to="/tabela">

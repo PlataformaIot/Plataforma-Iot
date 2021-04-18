@@ -1,16 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Chart } from 'react-google-charts'
 import { Container, Form, Row, Col, Button, FormCheck } from 'react-bootstrap';
 import { FiSearch } from 'react-icons/fi'
+import {useDispatch, useSelector} from 'react-redux'; 
+
+
+
 
 export default function Graph() {
 
     const [dayCheck, setDayCheck] = useState(false);
+    const [graph, setGraph] = useState([])
+
+    const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
+    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
     
-
-
-
-
+    const bat = (selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria)
+    const temp = (selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp)
+    const umi = (selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].hum : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].hum)
+    
+    useEffect(() => {
+        dataGrafic()
+    },[selectedDevice])
+    
+    function dataGrafic(){
+        setGraph(vlr)
+    }
+    const vlr = [
+        ['umidade','temperatura'],
+        [temp, Math.floor(Math.random() * 40) + 1],
+        [umi, Math.floor(Math.random() * 40) + 1],
+        
+    ]
+    
+    
     return (
         <Container fluid>
 
@@ -57,25 +80,14 @@ export default function Graph() {
                 height={'470px'}
                 chartType="LineChart"
                 loader={<div>Carregando</div>}
-                data={
-                    [
-                        ['x', 'Umidade', 'Temperatura', 'Bateria'],
-                        [0, 0, 0, 100],
-                        [1, 10, 8, 90],
-                        [2, 23, 30, 90],
-                        [3, 17, 40, 89],
-                        [4, 18, 50, 80],
-                        [5, 9, 30, 75],
-                        [6, 11, 5, 60],
-                        [7, 27, 10, 58],
-                        [8, 33, 12, 50],
-                        [9, 40, 22, 48],
-                        [10, 32, 40, 40],
-                        [11, 35, 9, 30],
-                        [11, 50, 30, 90],
-                    ]
-                }
+                
+                data={graph}
                 options={{
+                    animation:{
+                        duration: 1000,
+                        easing:'out',
+                        startup: true
+                    },
                     hAxis: {
                         title: 'Tempo'
                     },

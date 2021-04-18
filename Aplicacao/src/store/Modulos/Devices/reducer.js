@@ -10,7 +10,6 @@ const initialState = {
 export default (state = initialState, { type, payload }) => {
     switch (type) {
         case ATUALIZAR_DEVICES:
-           
             return {
                 ...state,
                 devices: payload

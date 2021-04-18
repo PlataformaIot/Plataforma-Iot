@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';//uso ainda não foi definido
+import { useDispatch, useSelector } from 'react-redux';
 import './styles.css';
 
 import api from '../../Connections/api';
@@ -17,7 +17,7 @@ import { atualizarDevices, selecionarDevice, dadosDevice } from '../../store/Mod
 export default function Header() {
 
 
-    const devices = useSelector((state) => state.devicesState.devices)
+    /* const devices = useSelector((state) => state.devicesState.devices)
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
     console.log(selectedDevice)
     const dispatch = useDispatch()
@@ -29,7 +29,7 @@ export default function Header() {
     }, [])
 
     async function handleDevices() {
-
+        const id = selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device
         await api.get(`devices`)
             .then((res) => {
                 dispatch(atualizarDevices(res.data))
@@ -40,7 +40,7 @@ export default function Header() {
 
 
 
-        await api.get(`data?div_addr&limit=100`)
+        await api.get(`data?div_addr=${id}&limit=10`)
             .then((res) => {
                 dispatch(dadosDevice(res.data))
 
@@ -51,7 +51,7 @@ export default function Header() {
 
     }
 
-
+ */
 
 
 

@@ -3,7 +3,7 @@ import { Container, Table, Button, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { useSelector } from 'react-redux';
-import Combo from '../../components/SelectDeviceCombo'
+
 
 
 
@@ -12,21 +12,21 @@ export default function Tabela() {
     const devices = useSelector((state) => state.devicesState.devices);
     const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
 
-    useEffect(() => {}, [selectedDevice])
+    useEffect(() => {}, [selectedDevice, dadosDevice])
 
     return (
         <Container fluid>
             <Link to="/indicator">
                 <Button variant="light"><IoMdArrowRoundBack size={30} /></Button>
             </Link>
-            <Combo/>
+     
             <Row lg={true} style={{ marginTop: '2%' }}>
 
-                <Col>
+                <Col lg="12">
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>{selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device}</th>
                                 <th>Device</th>
                                 <th>Data</th>
                                 <th>Type</th>

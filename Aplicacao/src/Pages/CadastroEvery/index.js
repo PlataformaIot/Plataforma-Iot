@@ -26,10 +26,10 @@ import { cadastroEvery } from '../../store/Modulos/Devices/actions';
 export default function CadastroEvery() {
     const [dispositivoEUI, setDispositivoEUI] = useState('');
     const [aplicacaoEUI, setAplicacaoEUI] = useState('');
-    const [tags, setTags] = useState([]);
+    //const [tags, setTags] = useState([]);
     const [netWorkSessionKey, setNetWorkSessionKey] = useState('');
     const [applicationSessionKey, setApplicationiSessionKey] = useState('');
-    const [cadEvery, setCadEvery] = useState([]);
+    const [checkActivation, setCheckActivation] = useState(false);
     const dispatch = useDispatch()
 
     const cadastroEveryNet = useSelector((state) => state.devicesState.cadastroEvery);
@@ -41,9 +41,10 @@ export default function CadastroEvery() {
         const data = {
             dispositivoEUI: dispositivoEUI,
             aplicacaoEUI: aplicacaoEUI,
-            tags: tags,
+            //tags: tags,
             netWorkSessionKey: netWorkSessionKey,
-            applicationSessionKey: applicationSessionKey
+            applicationSessionKey: applicationSessionKey,
+            activation: checkActivation
         }
 
         dispatch(cadastroEvery(data))
@@ -51,8 +52,10 @@ export default function CadastroEvery() {
     }
 
 
+
+
     return (
-        <Container style={{margin:'50px 20px', marginBottom:'20%'}} fluid>
+        <Container style={{ margin: '20px 0px', marginBottom: '20%' }} fluid>
             <div>
                 <Link to="/">
                     <Button variant="light" style={{ marginBottom: '2%' }}><IoMdArrowRoundBack size={30} /></Button>
@@ -61,14 +64,31 @@ export default function CadastroEvery() {
 
             <Row>
                 <Col lg="6" >
-                    
 
 
-                        <h4>Cadastro dispositivo</h4>
-                        <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
-                        <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
 
-                        <Form.Control
+                    <h4>Cadastro dispositivo</h4>
+                    {
+                        checkActivation === false
+                            ?
+                            <Form>
+                                <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
+                                <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
+                                <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "OTAA" : "Activation ABP"}  style={{ marginBottom: '2%' }} />
+                            </Form>
+                            :
+
+                            <Form>
+                                <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
+                                <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
+                                <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "Activation OTAA" : "Activation ABP"} style={{ marginBottom: '2%' }} />
+                                <Form.Control value={netWorkSessionKey} onChange={(e) => setNetWorkSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Network session key" />
+                                <Form.Control value={applicationSessionKey} onChange={(e) => setApplicationiSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Application session key" />
+                            </Form>
+                    }
+
+
+                    {/* <Form.Control
                             className="TagForm"
                             type="text"
                             placeholder="Tags"
@@ -78,9 +98,9 @@ export default function CadastroEvery() {
                                     event.target.value = "";
                                 }
                             }}
-                        />
+                        /> */}
 
-                        <ul className="TagList">
+                    {/* <ul className="TagList">
                             {tags.map((tag, index) => (
                                 <li key={index} className="Tag">
                                     {tag}
@@ -90,36 +110,34 @@ export default function CadastroEvery() {
                                     />
                                 </li>
                             ))}
-                        </ul>
-                        
-                        <Form.Control value={netWorkSessionKey} onChange={(e) => setNetWorkSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Network session key" />
-                        <Form.Control value={applicationSessionKey} onChange={(e) => setApplicationiSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Application session key" />
+                        </ul> */}
+                    <Dropdown>
+                        <Dropdown.Toggle
+                            id="dropdown-custom-components"
+                            style={{
+                                width: '50%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
 
-
-                        <Dropdown>
-                            <Dropdown.Toggle
-                                id="dropdown-custom-components"
-                                style={{
-                                    width: '50%',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-
-                                }}>
-                                Tipo
+                            }}>
+                            Tipo
                         </Dropdown.Toggle>
-                            <Dropdown.Menu style={{ width: '50%', marginBottom: '-38%' }}>
-                                <Dropdown.Item eventKey="1">Tipo 1</Dropdown.Item>
-                                <Dropdown.Item>Tipo 2</Dropdown.Item>
-                                <Dropdown.Item>Tipo 3</Dropdown.Item>
-                                <Link to="/cadastro/cadastrar-variaveis" className="nextCad">
-                                    <Button onClick={CadastroEvery} variant="success"><IoMdAdd size={30} /> Cadastrar Tipo</Button>
-                                </Link>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    
+                        <Dropdown.Menu style={{ width: '50%', marginBottom: '-38%' }}>
+                            <Dropdown.Item eventKey="1">Tipo 1</Dropdown.Item>
+                            <Dropdown.Item>Tipo 2</Dropdown.Item>
+                            <Dropdown.Item>Tipo 3</Dropdown.Item>
+                            <Link to="/cadastro/cadastrar-variaveis" className="nextCad">
+                                <Button onClick={CadastroEvery} variant="success"><IoMdAdd size={30} /> Cadastrar Tipo</Button>
+                            </Link>
+                        </Dropdown.Menu>
+                    </Dropdown>
+
                 </Col>
+
+
+
             </Row>
         </Container>
     )
