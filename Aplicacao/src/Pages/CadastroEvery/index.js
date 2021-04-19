@@ -18,7 +18,7 @@ import { BsFillTrashFill, BsPencil } from 'react-icons/bs'
 import { FaPlusCircle } from 'react-icons/fa'
 import { IoMdArrowRoundBack, IoMdArrowRoundForward, IoMdAdd } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux'
-import { cadastroEvery } from '../../store/Modulos/Devices/actions';
+import { cadastroEvery, dadosDevice } from '../../store/Modulos/Devices/actions';
 
 
 
@@ -30,10 +30,13 @@ export default function CadastroEvery() {
     const [netWorkSessionKey, setNetWorkSessionKey] = useState('');
     const [applicationSessionKey, setApplicationiSessionKey] = useState('');
     const [checkActivation, setCheckActivation] = useState(false);
+    const [selectType, setSelectType] = useState('');
     const dispatch = useDispatch()
 
     const cadastroEveryNet = useSelector((state) => state.devicesState.cadastroEvery);
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
+    const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
+    const devices = useSelector((state) => state.devicesState.devices);
 
 
     console.log(cadastroEveryNet)
@@ -50,6 +53,8 @@ export default function CadastroEvery() {
         dispatch(cadastroEvery(data))
 
     }
+
+    console.log(selectType)
 
 
 
@@ -122,12 +127,19 @@ export default function CadastroEvery() {
                                 justifyContent: 'space-between',
 
                             }}>
-                            Tipo
+                            {selectedDevice === '' ? (devices.length > 0 ? devices[0].type : "") : devices.filter((dev) => dev.device === selectedDevice)[0].type}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ width: '50%', marginBottom: '-38%' }}>
-                            <Dropdown.Item eventKey="1">Tipo 1</Dropdown.Item>
-                            <Dropdown.Item>Tipo 2</Dropdown.Item>
-                            <Dropdown.Item>Tipo 3</Dropdown.Item>
+                            {
+                                devices.map((item) =>(
+                                    <Dropdown.Item  eventKey={event => {
+                                        if (event.key === "Click") {
+                                            setSelectType([...selectType, event.target.value])
+                                            event.target.value = "";
+                                        }
+                                    }}>{item.type}</Dropdown.Item>
+                                ))   
+                            }
                             <Link to="/cadastro/cadastrar-variaveis" className="nextCad">
                                 <Button onClick={CadastroEvery} variant="success"><IoMdAdd size={30} /> Cadastrar Tipo</Button>
                             </Link>

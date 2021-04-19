@@ -20,11 +20,12 @@ export default function Home() {
     const devices = useSelector((state) => state.devicesState.devices);
     const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
     const dispatch = useDispatch()
+    
 
-
-    useEffect(() => { console.log(dadosDevice) }, [selectedDevice, dadosDevice])
-
-
+    useEffect(() => {  }, [selectedDevice, dadosDevice])
+    
+    
+    console.log(dadosDevice.filter((device) => device.device === '98bb0a3a36f2e3e7'))
     return (
 
 

@@ -9,29 +9,42 @@ import {useDispatch, useSelector} from 'react-redux';
 
 export default function Graph() {
 
-    const [dayCheck, setDayCheck] = useState(false);
-    const [graph, setGraph] = useState([])
-
     const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
-    
     const bat = (selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria)
     const temp = (selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp)
     const umi = (selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].hum : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].hum)
+    const [dayCheck, setDayCheck] = useState(false);
+    const [graph, setGraph] = useState([
+        ['x','Umidade','Temperatura', 'Bateria'],
+        ['Umidade', bat, umi, temp],
+        ['Temperatura', bat, temp, umi],
+        ['Bateria', bat, umi, temp],
+        
+    ])
+
+    
     
     useEffect(() => {
-        dataGrafic()
-    },[selectedDevice])
+        function dadosAleterados(){
+            const dadosGrafico = graph.map((linha) =>{
+                if(Number.isInteger(linha[1])){
+                    linha[1] = Math.floor(Math.random() * 101)
+                    
+                }
+                return linha
+            })
+            setGraph(dadosGrafico)
+        }
+        const instervalId = setInterval(() => dadosAleterados(), 5000)
+
+        return() => {
+            //executa apenas quando o componente é destruido
+            clearInterval(instervalId);
+        }
+    },[selectedDevice, graph])
     
-    function dataGrafic(){
-        setGraph(vlr)
-    }
-    const vlr = [
-        ['umidade','temperatura'],
-        [temp, Math.floor(Math.random() * 40) + 1],
-        [umi, Math.floor(Math.random() * 40) + 1],
-        
-    ]
+    
     
     
     return (
