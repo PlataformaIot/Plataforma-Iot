@@ -206,7 +206,7 @@ export default function CadastroVariaveis() {
 
                         </Jumbotron>
 
-                        <Button onClick={handleCadastro} variant="success">Enviar</Button>
+                        <Button onClick={handleCadastro} variant="success">Adicionar tipo</Button>
                         
                     </Form>
                 </Col>

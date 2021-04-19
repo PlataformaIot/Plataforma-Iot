@@ -125,6 +125,7 @@ export default function CadastroEvery() {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 justifyContent: 'space-between',
+                                marginBottom:'2%'
 
                             }}>
                             {selectedDevice === '' ? (devices.length > 0 ? devices[0].type : "") : devices.filter((dev) => dev.device === selectedDevice)[0].type}
@@ -146,8 +147,8 @@ export default function CadastroEvery() {
                         </Dropdown.Menu>
                     </Dropdown>
 
+                            <Button  onClick={() =>{}} variant="success">Cadastrar Dispositivo</Button>
                 </Col>
-
 
 
             </Row>

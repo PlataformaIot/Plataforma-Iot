@@ -17,9 +17,9 @@ export default function Graph() {
     const [dayCheck, setDayCheck] = useState(false);
     const [graph, setGraph] = useState([
         ['x','Umidade','Temperatura', 'Bateria'],
-        ['Umidade', bat, umi, temp],
-        ['Temperatura', bat, temp, umi],
-        ['Bateria', bat, umi, temp],
+        ['Umidade', 13, 20, 10],
+        ['Temperatura', 10, 2, 10],
+        ['Bateria', 1, 5, 8],
         
     ])
 

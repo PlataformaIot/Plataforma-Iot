@@ -22,7 +22,7 @@ export default function Combo() {
     }, [selectedDevice])
 
     async function handleDevices() {
-        
+
         await api.get(`devices`)
             .then((res) => {
                 dispatch(atualizarDevices(res.data))
@@ -32,17 +32,30 @@ export default function Combo() {
             })
     }
 
-    async function selectData(){
+    function equacionarDadosDevices(dadosDevice) {
+        return dadosDevice.map((dados) => {
+            if (dados.type) {
+                return dados;
+            }
+            else {
+                return {
+                    ...dados,
+                    type: ""
+                }
+            }
+        })
+    }
+
+    async function selectData() {
         const id = selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device
         console.log(id)
         await api.get(`data?dev_addr=${id}&limit=100`)
-        .then((res) => {
-            dispatch(dadosDevice(res.data))
-            
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+            .then((res) => {
+                dispatch(dadosDevice(equacionarDadosDevices(res.data)));
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
     return (
         <div style={{ marginBottom: '2%' }}>

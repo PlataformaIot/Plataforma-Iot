@@ -20,11 +20,15 @@ export default function Home() {
     const devices = useSelector((state) => state.devicesState.devices);
     const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
     const dispatch = useDispatch()
-    
 
-    useEffect(() => {  }, [selectedDevice, dadosDevice])
-    
-    
+
+    useEffect(() => { 
+        console.log(dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
+        dadosDevice.filter((device) => device.device === selectedDevice)[0].type : "UNDEFINED");
+
+    }, [selectedDevice, dadosDevice])
+
+
     console.log(dadosDevice.filter((device) => device.device === '98bb0a3a36f2e3e7'))
     return (
 
@@ -43,45 +47,93 @@ export default function Home() {
                 <Col style={{ marginBottom: '5%' }}>
 
                     {
-                        (selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].type : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].type) === 'temp' ?
-                            <CardDeck>
-                                <Card bg="success" text='light'>
-                                    <Card.Body>
-                                        <Card.Title>Bateria</Card.Title>
-                                        <Card.Text>
-                                            <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                                <Card bg="danger" text='light'>
-                                    <Card.Body>
-                                        <Card.Title>Temperatura</Card.Title>
-                                        <Card.Text>
-                                            <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp}%</strong></h1>
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                                <Card bg="light" text='black'>
-                                    <Card.Body>
-                                        <Card.Title>Umidade</Card.Title>
-                                        <Card.Text>
-                                            <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].hum : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].hum}%</strong></h1>
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </CardDeck>
-                            :
-
-                            <CardDeck>
-                                <Card bg="success" text='light'>
-                                    <Card.Body>
-                                        <Card.Title>Bateria</Card.Title>
-                                        <Card.Text>
-                                            <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
-                                        </Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            </CardDeck>
+                        selectedDevice === "" ? (
+                            dadosDevice.length > 0 ? (
+                                dadosDevice[0].type ?
+                                    dadosDevice[0].type === "temp" ?
+                                        <CardDeck>
+                                            <Card bg="success" text='light'>
+                                                <Card.Body>
+                                                    <Card.Title>Consumo Bateria</Card.Title>
+                                                    <Card.Text>
+                                                        <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                            <Card bg="danger" text='light'>
+                                                <Card.Body>
+                                                    <Card.Title>Temperatura</Card.Title>
+                                                    <Card.Text>
+                                                        <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp}%</strong></h1>
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                            <Card bg="light" text='black'>
+                                                <Card.Body>
+                                                    <Card.Title>Umidade</Card.Title>
+                                                    <Card.Text>
+                                                        <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].hum : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].hum}%</strong></h1>
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </CardDeck>
+                                        :
+                                        <CardDeck>
+                                            <Card bg="success" text='light'>
+                                                <Card.Body>
+                                                    <Card.Title>Bateria</Card.Title>
+                                                    <Card.Text>
+                                                        <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
+                                                    </Card.Text>
+                                                </Card.Body>
+                                            </Card>
+                                        </CardDeck>
+                                    : ""
+                            )
+                                : ""
+                        ) : (
+                            dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
+                                dadosDevice.filter((device) => device.device === selectedDevice)[0].type === "temp" ?
+                                    <CardDeck>
+                                        <Card bg="success" text='light'>
+                                            <Card.Body>
+                                                <Card.Title>Consumo de Bateria</Card.Title>
+                                                <Card.Text>
+                                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                        <Card bg="danger" text='light'>
+                                            <Card.Body>
+                                                <Card.Title>Temperatura</Card.Title>
+                                                <Card.Text>
+                                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp}%</strong></h1>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                        <Card bg="light" text='black'>
+                                            <Card.Body>
+                                                <Card.Title>Umidade</Card.Title>
+                                                <Card.Text>
+                                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].hum : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].hum}%</strong></h1>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </CardDeck>
+                                    :
+                                    <CardDeck>
+                                        <Card bg="success" text='light'>
+                                            <Card.Body>
+                                                <Card.Title>Consumo de Bateria</Card.Title>
+                                                <Card.Text>
+                                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
+                                                </Card.Text>
+                                            </Card.Body>
+                                        </Card>
+                                    </CardDeck>
+                                :
+                                ""
+                        )
                     }
 
 
