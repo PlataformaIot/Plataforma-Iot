@@ -29,7 +29,7 @@ export default function CadastroVariaveis() {
             id: 4, name: "Máscara", value: "mask"
         },
     ]);
-    const [ordemByte, setOrdemBytes] = useState([{ id: 0, name: '', value: '' }, { id: 1, name: 'Little', value: 'little' }, { id: 2, name: 'Big', value: 'big' },])
+    const [ordemByte, setOrdemBytes] = useState([{ id: 0, name: '', value: '' }, { id: 1, name: 'Little-endian (trás p/ frente)', value: 'little' }, { id: 2, name: 'Big-endian (frente p/ trás)', value: 'big' },])
     const [saveOrdemByte, setSaveOrdemByte] = useState(1);
     const [tamanhoByte, setTamanhoByte] = useState('');
     const [nome, setNome] = useState('');
@@ -126,17 +126,17 @@ export default function CadastroVariaveis() {
                         <Jumbotron>
                             <Form.Row>
                                 <Col lg="3">
-                                    <Form.Label>Nome</Form.Label>
+                                    <Form.Label>Nome do Tipo</Form.Label>
                                     <Form.Control value={nome} onChange={(e) => setNome(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
                                 <Col lg="1">
-                                    <Form.Label>Tamanho</Form.Label>
+                                    <Form.Label>Tamanho em Bytes</Form.Label>
                                     <Form.Control value={tamanhoByte} onChange={(e) => setTamanhoByte(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
                             </Form.Row>
                             <Form.Row>
                                 <Col lg="2">
-                                    <Form.Label>Ordem dos Bits</Form.Label>
+                                    <Form.Label>Ordem dos bits de dados</Form.Label>
                                     <Form.Control value={saveOrdemByte} onChange={e => setSaveOrdemByte(e.target.value)} style={{ marginBottom: '10px' }} as="select" custom>
                                         {ordemByte.map((byte) => (
                                             <option key={byte.id} value={byte.value}>{byte.name}</option>

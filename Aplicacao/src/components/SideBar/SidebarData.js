@@ -16,7 +16,7 @@ export const SidebarData = [
     
   },
   {
-    title: 'Cadastrar dosispositivo',
+    title: 'Cadastrar Dispositivo',
     path: '/cadastro',
     icon: <RiAddFill.RiAddFill/>,
     cName: 'nav-text'

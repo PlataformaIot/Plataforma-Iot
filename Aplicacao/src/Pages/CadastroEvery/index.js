@@ -116,6 +116,7 @@ export default function CadastroEvery() {
                                 </li>
                             ))}
                         </ul> */}
+                    <Form.Label>Tipo do Dispositivo (Utilizado para definir tipos de dados a receber):</Form.Label>
                     <Dropdown>
                         <Dropdown.Toggle
                             id="dropdown-custom-components"
@@ -142,7 +143,7 @@ export default function CadastroEvery() {
                                 ))   
                             }
                             <Link to="/cadastro/cadastrar-variaveis" className="nextCad">
-                                <Button onClick={CadastroEvery} variant="success"><IoMdAdd size={30} /> Cadastrar Tipo</Button>
+                                <Button onClick={CadastroEvery} variant="success"><IoMdAdd size={30} /> Cadastrar Novo Tipo</Button>
                             </Link>
                         </Dropdown.Menu>
                     </Dropdown>
