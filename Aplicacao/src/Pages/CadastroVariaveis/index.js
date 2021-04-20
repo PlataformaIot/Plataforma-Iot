@@ -129,7 +129,7 @@ export default function CadastroVariaveis() {
                                     <Form.Label>Nome do Tipo</Form.Label>
                                     <Form.Control value={nome} onChange={(e) => setNome(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
-                                <Col lg="1">
+                                <Col lg="2">
                                     <Form.Label>Tamanho em Bytes</Form.Label>
                                     <Form.Control value={tamanhoByte} onChange={(e) => setTamanhoByte(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
