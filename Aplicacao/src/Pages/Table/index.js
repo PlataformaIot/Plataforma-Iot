@@ -5,8 +5,7 @@ import { IoMdArrowRoundBack } from 'react-icons/io';
 import { useSelector } from 'react-redux';
 
 
-function getDate(timeSecs)
-{
+function getDate(timeSecs){
     const dateObject = new Date(timeSecs * 1000)
     const humanDateFormat = dateObject.toLocaleString() //20/04/2021 10:30:15
 
