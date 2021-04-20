@@ -22,14 +22,11 @@ export default function Home() {
     const dispatch = useDispatch()
 
 
-    useEffect(() => { 
-        console.log(dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
+    useEffect(() => { }, [selectedDevice, dadosDevice])
+
+    console.log(dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
         dadosDevice.filter((device) => device.device === selectedDevice)[0].type : "UNDEFINED");
 
-    }, [selectedDevice, dadosDevice])
-
-
-    console.log(dadosDevice.filter((device) => device.device === '98bb0a3a36f2e3e7'))
     return (
 
 
@@ -45,8 +42,10 @@ export default function Home() {
                 </Col>
 
                 <Col style={{ marginBottom: '5%' }}>
+                    {/* <p>VARIÁVEL: {JSON.stringify(dadosDevice)}</p> */}
 
                     {
+
                         selectedDevice === "" ? (
                             dadosDevice.length > 0 ? (
                                 dadosDevice[0].type ?
@@ -54,9 +53,9 @@ export default function Home() {
                                         <CardDeck>
                                             <Card bg="success" text='light'>
                                                 <Card.Body>
-                                                    <Card.Title>Consumo Bateria</Card.Title>
+                                                    <Card.Title>Bateria</Card.Title>
                                                     <Card.Text>
-                                                        <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
+                                                        <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
                                                     </Card.Text>
                                                 </Card.Body>
                                             </Card>
@@ -97,9 +96,9 @@ export default function Home() {
                                     <CardDeck>
                                         <Card bg="success" text='light'>
                                             <Card.Body>
-                                                <Card.Title>Consumo de Bateria</Card.Title>
+                                                <Card.Title>Bateria</Card.Title>
                                                 <Card.Text>
-                                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
+                                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -124,9 +123,9 @@ export default function Home() {
                                     <CardDeck>
                                         <Card bg="success" text='light'>
                                             <Card.Body>
-                                                <Card.Title>Consumo de Bateria</Card.Title>
+                                                <Card.Title>Bateria</Card.Title>
                                                 <Card.Text>
-                                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
+                                                    <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
                                                 </Card.Text>
                                             </Card.Body>
                                         </Card>
@@ -134,7 +133,50 @@ export default function Home() {
                                 :
                                 ""
                         )
+
                     }
+
+                    {/* {
+                        (selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].type : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].type) === 'temp' ?
+                            <CardDeck>
+                                <Card bg="success" text='light'>
+                                    <Card.Body>
+                                        <Card.Title>Bateria</Card.Title>
+                                        <Card.Text>
+                                            <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card>
+                                <Card bg="danger" text='light'>
+                                    <Card.Body>
+                                        <Card.Title>Temperatura</Card.Title>
+                                        <Card.Text>
+                                            <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].temp : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].temp}%</strong></h1>
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card>
+                                <Card bg="light" text='black'>
+                                    <Card.Body>
+                                        <Card.Title>Umidade</Card.Title>
+                                        <Card.Text>
+                                            <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].hum : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].hum}%</strong></h1>
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            </CardDeck>
+                            :
+
+                            <CardDeck>
+                                <Card bg="success" text='light'>
+                                    <Card.Body>
+                                        <Card.Title>Bateria</Card.Title>
+                                        <Card.Text>
+                                            <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}%</strong></h1>
+                                        </Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            </CardDeck>
+                    } */}
 
 
 

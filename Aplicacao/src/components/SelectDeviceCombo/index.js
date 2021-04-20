@@ -7,14 +7,14 @@ import { selecionarDevice, atualizarDevices, dadosDevice } from '../../store/Mod
 import { MdPhotoSizeSelectLarge } from 'react-icons/md';
 
 export default function Combo() {
-   
+
 
     const devices = useSelector((state) => state.devicesState.devices)
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
     //const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
     //console.log(selectedDevice)
     const dispatch = useDispatch()
-    
+
 
     useEffect(() => {
         handleDevices()

@@ -1,10 +1,10 @@
-import { ATUALIZAR_DEVICES, SELECT_DEVICE, CADASTRO_EVERY, DADOS_DEVICE } from './actions';
+import { ATUALIZAR_DEVICES, SELECT_DEVICE, CADASTRO_EVERY, DADOS_DEVICE, dadosDevice } from './actions';
 
 const initialState = {
     devices: [],
     selectedDevice: '',
-    cadastroEvery:[],
-    dadosDevice:[]
+    cadastroEvery: [],
+    dadosDevice: []
 }
 
 export default (state = initialState, { type, payload }) => {
@@ -20,12 +20,12 @@ export default (state = initialState, { type, payload }) => {
                 selectedDevice: payload
             }
         case CADASTRO_EVERY:
-            return{
+            return {
                 ...state,
                 cadastroEvery: payload
             }
         case DADOS_DEVICE:
-            return{
+            return {
                 ...state,
                 dadosDevice: payload,
                 selectedDevice: payload[0].device
