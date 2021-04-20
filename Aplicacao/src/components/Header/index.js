@@ -1,57 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import './styles.css';
 
-import api from '../../Connections/api';
-import SideBar from '../SideBar';
-
 import LogoIBTI from '../../assets/Logo-IBTI.png';
-
+import {FaUserCircle} from 'react-icons/fa'
 
 import { Dropdown, Form, Button } from 'react-bootstrap';
-import { atualizarDevices, selecionarDevice, dadosDevice } from '../../store/Modulos/Devices/actions';
+
 
 
 
 export default function Header() {
 
 
-    /* const devices = useSelector((state) => state.devicesState.devices)
-    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
-    console.log(selectedDevice)
-    const dispatch = useDispatch()
-    
-
-    useEffect(() => {
-        handleDevices()
-
-    }, [])
-
-    async function handleDevices() {
-        const id = selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device
-        await api.get(`devices`)
-            .then((res) => {
-                dispatch(atualizarDevices(res.data))
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-
-
-
-        await api.get(`data?div_addr=${id}&limit=10`)
-            .then((res) => {
-                dispatch(dadosDevice(res.data))
-
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-
-    }
-
- */
+   
 
 
 
@@ -62,22 +24,7 @@ export default function Header() {
                 <Link to="/">
                     <img className="logo" src={LogoIBTI} width="100" height="100" />
                 </Link>
-                <SideBar/>
-
-
-                {/* <Form.Control style={{ width: '13%' }} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
-                    {devices.length && devices.length > 0 ? devices.map((dev) => (
-                        <option key={dev.device} value={dev.device}>{dev.device}</option>
-                    )) :
-                        (
-                            <option>Nenhum dispositivo</option>
-                        )
-                    }
-                </Form.Control> */}
-                
-
-
-
+                <FaUserCircle size={50} color="#FFF"/>
             </header>
         </div>
     )

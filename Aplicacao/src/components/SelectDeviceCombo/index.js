@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Form } from 'react-bootstrap';
+import { Form, Card, CardDeck, Row, Col } from 'react-bootstrap';
 import api from '../../Connections/api';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { Link } from 'react-router-dom';
+import './styles.css';
 import { selecionarDevice, atualizarDevices, dadosDevice } from '../../store/Modulos/Devices/actions';
+
 import { MdPhotoSizeSelectLarge } from 'react-icons/md';
+import { AiOutlineHome } from 'react-icons/ai';
+import { BsPlusSquare } from 'react-icons/bs';
+import { GiRiotShield } from 'react-icons/gi';
+import { BsInfoCircle } from 'react-icons/bs';
 
 export default function Combo() {
 
@@ -58,16 +64,59 @@ export default function Combo() {
             })
     }
     return (
-        <div style={{ marginBottom: '2%' }}>
-            <Form.Control style={{ width: '16%', marginLeft: '83%' }} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
-                {devices.length && devices.length > 0 ? devices.map((dev) => (
-                    <option key={dev.device} value={dev.device}>{dev.device}</option>
-                )) :
-                    (
-                        <option>Nenhum dispositivo</option>
-                    )
-                }
-            </Form.Control>
+        <div>
+            <Row>
+                <Col lg="7" style={{justifyContent:'center', alignItems:'center', margin:'auto'}}>
+                    <CardDeck className="menuCard">
+                        <Link to="/" style={{ textDecoration: 'none' }}>
+                            <Card>
+                                <Card.Body className="cardBody">
+                                    <AiOutlineHome className="icons" size={40} />
+                                    <Card.Text>Home</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Link>
+                        <Link to="/cadastro" style={{ textDecoration: 'none' }}>
+                            <Card>
+                                <Card.Body className="cardBody">
+                                    <BsPlusSquare className="icons" size={40} />
+                                    <Card.Text>Cadastrar</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Link>
+                        <Link to="/cadastro" style={{ textDecoration: 'none' }}>
+                            <Card>
+                                <Card.Body className="cardBody">
+                                    <GiRiotShield className="icons" size={40} />
+                                    <Card.Text>Dispositivos</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Link>
+                        <Link to="/indicator" style={{ textDecoration: 'none' }}>
+                            <Card>
+                                <Card.Body className="cardBody">
+                                    <BsInfoCircle className="icons" size={40} />
+                                    <Card.Text>Informações</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Link>
+                    </CardDeck>
+                </Col>
+                
+                    <Form.Control style={{ width: '16%', marginLeft: '80%', marginTop: '-6%' }} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
+                        {devices.length && devices.length > 0 ? devices.map((dev) => (
+                            <option key={dev.device} value={dev.device}>{dev.device}</option>
+                        )) :
+                            (
+                                <option>Nenhum dispositivo</option>
+                            )
+                        }
+                    </Form.Control>
+               
+            </Row>
+
+
+
         </div>
     )
 }
