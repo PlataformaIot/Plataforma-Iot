@@ -39,7 +39,7 @@ export default function Home() {
                                                 <CardDeck>
                                                     <Card bg="success" text='light'>
                                                         <Card.Body>
-                                                            <Card.Title>Consumo de Bateria</Card.Title>
+                                                            <Card.Title>Tensão da Bateria</Card.Title>
                                                             <Card.Text>
                                                                 <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
                                                             </Card.Text>
@@ -79,9 +79,9 @@ export default function Home() {
                                                 <Jumbotron>
                                                     <Col>
                                                         <CardDeck>
-                                                            <Card bg="success" text='light'>
+                                                            <Card bg="success" text='light' >
                                                                 <Card.Body>
-                                                                    <Card.Title>Consumo de Bateria</Card.Title>
+                                                                    <Card.Title>Tensão da Bateria</Card.Title>
                                                                     <Card.Text>
                                                                         <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
                                                                     </Card.Text>
@@ -113,7 +113,7 @@ export default function Home() {
                                             <CardDeck style={{ marginBottom: '2%' }}>
                                                 <Card bg="success" text='light'>
                                                     <Card.Body>
-                                                        <Card.Title>Consumo de Bateria</Card.Title>
+                                                        <Card.Title>Tensão da Bateria</Card.Title>
                                                         <Card.Text>
                                                             <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
                                                         </Card.Text>
@@ -153,17 +153,25 @@ export default function Home() {
                                         <Jumbotron>
 
                                             <Col>
-                                                <h2 style={{ textAlign: 'center', marginBottom: '2%' }}>Informações do Dispositivo</h2>
-                                                <CardDeck>
-                                                    <Card bg="success" text='light'>
+                                                <h2 style={{ textAlign: 'center', marginBottom: '2%'  }}>Informações do Dispositivo</h2>
+                                                
+                                                <CardDeck style={{ textAlign: 'center', marginBottom: '2%' }}>
+                                                <Container >
+                                                <Row>
+                                                    <Col sm={12} style={{ marginLeft: '290px'}}>  
+                                                    <Card bg="success" text='light' >
                                                         <Card.Body>
-                                                            <Card.Title>Consumo de Bateria</Card.Title>
+                                                            <Card.Title>Tensão da Bateria</Card.Title>
                                                             <Card.Text>
                                                                 <h1><strong>{selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria}v</strong></h1>
                                                             </Card.Text>
                                                         </Card.Body>
                                                     </Card>
+                                                    </Col>
+                                                    </Row>
+                                                </Container>
                                                 </CardDeck>
+                                               
                                             </Col>
                                         </Jumbotron>
 
