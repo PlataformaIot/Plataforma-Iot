@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button, Jumbotron, Form, Modal, Badge, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { MdRemoveCircleOutline } from 'react-icons/md';
 import { VscSymbolOperator } from 'react-icons/vsc';
-import {useSelector} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { cadastroEvery, dadosDevice } from '../../store/Modulos/Devices/actions';
 
 import './styles.css';
 
-export default function CadastroVariaveis() {
+export default function CadastroVariaveis({ navigation }) {
 
     const [form, setForm] = useState({ cards: [] });
     const [cadastro, setCadastro] = useState();
@@ -33,8 +34,10 @@ export default function CadastroVariaveis() {
     const [saveOrdemByte, setSaveOrdemByte] = useState(1);
     const [tamanhoByte, setTamanhoByte] = useState('');
     const [nome, setNome] = useState('');
-    const cadastroEvery = useSelector((state) => state.devicesState.cadastroEvery);
-    
+
+
+    const dispatch = useDispatch()
+
 
 
     const addNewCamp = () => {
@@ -93,17 +96,17 @@ export default function CadastroVariaveis() {
 
 
 
+    console.log(cadastroEvery)
+
     function handleCadastro() {
-        console.log(cadastro)
 
         const params = {
             card: form,
             ordemByte: saveOrdemByte,
             tamanhoByte: tamanhoByte,
             nome: nome,
-            every: cadastroEvery
         }
-        setCadastro(params)
+        dispatch(cadastroEvery(params))
 
 
 
@@ -205,9 +208,10 @@ export default function CadastroVariaveis() {
 
 
                         </Jumbotron>
+                        <Link to="/cadastro">
+                            <Button onClick={handleCadastro} variant="success">Adicionar tipo</Button>
+                        </Link>
 
-                        <Button onClick={handleCadastro} variant="success">Adicionar tipo</Button>
-                        
                     </Form>
                 </Col>
             </Row>

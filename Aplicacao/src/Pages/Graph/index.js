@@ -9,7 +9,7 @@ import { FiSearch } from 'react-icons/fi'
 
 export default function Graph() {
 
-    
+
     const [dayCheck, setDayCheck] = useState(false);
     const [graph, setGraph] = useState([
         ['x', 'Umidade', 'Temperatura', 'Bateria'],
@@ -38,7 +38,7 @@ export default function Graph() {
             //executa apenas quando o componente é destruido
             clearInterval(instervalId);
         }
-    }, [ graph])
+    }, [graph])
 
 
 
@@ -59,29 +59,38 @@ export default function Graph() {
                         </Form.Group>
                     </Col>
                     :
+                    <div>
+                        <Col lg="12">
+                            <Form.Group as={Row} style={{ display: 'flex', alignItems: 'center', marginLeft: '1px' }}>
+                                <Form.Control style={{ width: 200 }} as="select">
+                                    <option>semanas</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </Form.Control>
+                                <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
+                            </Form.Group>
+                        </Col>
 
+                        <Col style={{ flexDirection: 'row', display: 'flex', marginBottom: '2%' }}>
+                            <Form.Control style={{ width: 200 }} as="select">
+                                <option>dia</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </Form.Control>
 
-                    <Col style={{ flexDirection: 'row', display: 'flex', marginBottom: '2%' }}>
-                        <Form.Control style={{ width: 200 }} as="select">
-                            <option>dia</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </Form.Control>
-
-                        <Form.Control style={{ width: 200, marginLeft: '2%' }} as="select">
-                            <option>mês</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </Form.Control>
-                        <Form.Control style={{ width: 200, marginLeft: '2%' }} as="select">
-                            <option>ano</option>
-                            <option>2</option>
-                            <option>3</option>
-                        </Form.Control>
-                        <Button style={{ marginLeft: 30, alignItems: 'center', display: 'flex', }} variant="success"><FiSearch size={20} />Buscar</Button>
-                        <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%', top: 8, display: "flex", flexDirection: 'row' }} />
-                    </Col>
-
+                            <Form.Control style={{ width: 200, marginLeft: '2%' }} as="select">
+                                <option>mês</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </Form.Control>
+                            <Form.Control style={{ width: 200, marginLeft: '2%' }} as="select">
+                                <option>ano</option>
+                                <option>2</option>
+                                <option>3</option>
+                            </Form.Control>
+                            <Button style={{ marginLeft: 30, alignItems: 'center', display: 'flex', }} variant="success"><FiSearch size={20} />Buscar</Button>
+                        </Col>
+                    </div>
             }
 
             <Chart

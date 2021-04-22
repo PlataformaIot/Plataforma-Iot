@@ -1,68 +1,70 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Col, Row, Button, FormCheck } from 'react-bootstrap';
 import { FiSearch } from 'react-icons/fi';
+import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
+import {useSelector} from 'react-redux';
 import './styles.css';
 
 export default function Mapa() {
+    const [data, setData] = useState([]);
     const [days, setDays] = useState([]);
-    const [moth, setMoth] = useState([]);
-    const [yaear, setYear] = useState([]);
-    const [dayCheck, setDayCheck] = useState(false);
+    const [month, setMonth] = useState([]);
+    const [year, setYear] = useState([]);
+    const [idDevice, setIdDevice] = useState([]);
+
+    const devices = useSelector((state) => state.devicesState.devices)
+    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
 
     useEffect(() => {
-        daysWeek()
-        console.log(days)
-    }, [])
+        dia()
+        mes()
+        ano()
+        selectDevice()
+    }, [data])
 
-    function daysWeek(day) {
-        for (var day = 0; day < 30; day++) {
-            setDays(day)
-        }
+    
+    
+    
+    function dia(){
+        let day = data.slice(8,10)
+        setDays(day)
     }
+
+    function mes(){
+        let month = data.slice(5,7)
+        setMonth(month)
+    }
+
+    function ano(){
+        let years = data.slice(0,4)
+        setYear(years)
+    }
+
+    function selectDevice(){
+        const id = selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device
+        setIdDevice(id)
+    }
+    
+    
+
+
+
 
     return (
         <div>
             <Row>
-            {
-                dayCheck === false ? 
-                    <Col lg="12">
-                        <Form.Group as={Row} style={{ display: 'flex', alignItems: 'center', marginLeft: '17px' }}>
-                            <Form.Control style={{ width: 200 }} as="select">
-                                <option>semanas</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Form.Control>
-                            <FormCheck  value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-                        </Form.Group>
-                    </Col>
-                 :
-                    
-    
-                        <Col style={{ flexDirection: 'row', display: 'flex', marginBottom: '2%', marginLeft:'17px' }}>
-                            <Form.Control style={{ width: 200 }} as="select">
-                                <option>dia</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Form.Control>
 
-                            <Form.Control style={{ width: 200, marginLeft: '2%' }} as="select">
-                                <option>mês</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Form.Control>
-                            <Form.Control style={{ width: 200, marginLeft: '2%' }} as="select">
-                                <option>ano</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Form.Control>
-                            <Button style={{ marginLeft: 30, alignItems: 'center', display: 'flex', }} variant="success"><FiSearch size={20} />Buscar</Button>
-                            <FormCheck defaultChecked  value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%', top:8, display:"flex", flexDirection:'row' }} />
-                        </Col>
-                    
-            }
+
+                <Form.Control type="date" value={data} onChange={(e) => setData(e.target.value)} style={{ marginBottom: '2%', padding: '0 12px', margin: '10px 12px' }} />
+
+
+
+
+
             </Row>
             <div className="mapStyle">
-                <iframe src={`http://161.97.133.47:5000/day`} width="1150" height="450" frameBorder="0" />
+                <iframe src={`http://161.97.133.47:5000/path/${idDevice}/day/${days}/${month}/${year}`} width="1150" height="450" frameBorder="0" />
             </div>
         </div>
 

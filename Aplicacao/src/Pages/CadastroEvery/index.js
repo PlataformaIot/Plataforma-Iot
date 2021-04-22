@@ -31,6 +31,7 @@ export default function CadastroEvery() {
     const [applicationSessionKey, setApplicationiSessionKey] = useState('');
     const [checkActivation, setCheckActivation] = useState(false);
     const [selectType, setSelectType] = useState('');
+    const [cadasto, setCadastro] = useState()
     const dispatch = useDispatch()
 
     const cadastroEveryNet = useSelector((state) => state.devicesState.cadastroEvery);
@@ -39,19 +40,21 @@ export default function CadastroEvery() {
     const devices = useSelector((state) => state.devicesState.devices);
 
 
-    console.log(cadastroEveryNet)
-    function CadastroEvery() {
+    console.log(cadasto)
+    console.log(checkActivation)
+    function Cadastro() {
         const data = {
             dispositivoEUI: dispositivoEUI,
             aplicacaoEUI: aplicacaoEUI,
             //tags: tags,
             netWorkSessionKey: netWorkSessionKey,
             applicationSessionKey: applicationSessionKey,
-            activation: checkActivation
+            activation: checkActivation,
+            cadastroVariavel: cadastroEveryNet
         }
 
-        dispatch(cadastroEvery(data))
-
+        setCadastro(data)
+        setCadastro('')
     }
 
     console.log(selectType)
@@ -142,13 +145,13 @@ export default function CadastroEvery() {
                                     }}>{item.type}</Dropdown.Item>
                                 ))   
                             }
-                            <Link to="/cadastro/cadastrar-variaveis" className="nextCad">
-                                <Button onClick={CadastroEvery} variant="success"><IoMdAdd size={30} /> Cadastrar Novo Tipo</Button>
+                            <Link to="/cadastro/cadastrar-variaveis" className="nextCad" style={{textDecoration:'none'}}>
+                                <Button  variant="success"><IoMdAdd size={30} /> Cadastrar Novo Tipo</Button>
                             </Link>
                         </Dropdown.Menu>
                     </Dropdown>
 
-                            <Button  onClick={() =>{}} variant="success">Cadastrar Dispositivo</Button>
+                            <Button  onClick={Cadastro} variant="success">Cadastrar Dispositivo</Button>
                 </Col>
 
 
