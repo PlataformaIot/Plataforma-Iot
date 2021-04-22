@@ -8,14 +8,12 @@ export function GetDadosDevice(){
     const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
 
     useEffect(() => {}, [selectedDevice, dadosDevice])
+   
+    //alert( JSON.stringify( dadosDevice[0] ))
 
-    const device = selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device
-    const propsDevice = Object.keys(dadosDevice[0])
-    //alert( JSON.stringify( propsDevice ))
-
-    return {device: selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device,
+    return {device: (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : "",
         dadosDevice: dadosDevice,
-        propsDevice: Object.keys(dadosDevice[0])}
+        propsDevice: (dadosDevice.length > 0) ? Object.keys(dadosDevice[0]) : []}
 }
 
 export function getDate(unixTimestamp){
