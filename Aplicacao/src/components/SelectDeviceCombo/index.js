@@ -103,7 +103,7 @@ export default function Combo() {
                     </CardDeck>
                 </Col>
                 
-                    <Form.Control style={{ width: '16%', marginLeft: '80%', marginTop: '-6%' }} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
+                    <Form.Control style={{ width: '16%', marginLeft: '80%'}} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
                         {devices.length && devices.length > 0 ? devices.map((dev) => (
                             <option key={dev.device} value={dev.device}>{dev.device}</option>
                         )) :
