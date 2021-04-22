@@ -8,7 +8,7 @@ export default function Tabela() {
     const {device,dadosDevice,propsDevice} = GetDadosDevice()
 
 
-    if(device) return (
+    return (
         <Container fluid>
             <Link to="/indicator">
                 <Button variant="light"><IoMdArrowRoundBack size={30} /></Button>
