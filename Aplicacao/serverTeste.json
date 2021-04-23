@@ -1,0 +1,38 @@
+{
+    "devices": [
+      {
+        "id": "48bec18e0405f370",
+        "device": "Dispositivo 1",
+        "temperatura": "45",
+        "umidade": "50",
+        "bateria": "90",
+        "data":"20/04/2021",
+        "latitude":"0.1254785",
+        "longetude":"-1.85475",
+        "status": true
+      },
+      {
+        "id": "949e1a494f73aaaf",
+        "device": "Dispositivo 2",
+        "temperatura": "45",
+        "umidade": "20",
+        "bateria": "10",
+        "data":"20/04/2021",
+        "latitude":"0.124556",
+        "longetude":"-1.54147",
+        "status": true
+      },
+      {
+        "id": "98bb0a3a36f2e3e7",
+        "device": "Dispositivo 3",
+        "temperatura": "15",
+        "umidade": "100",
+        "bateria": "100",
+        "data":"20/04/2021",
+        "latitude":"0.751141",
+        "longetude":"-1.854752",
+        "status": true
+      }
+    ]
+  }
+  

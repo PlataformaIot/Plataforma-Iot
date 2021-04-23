@@ -1,0 +1,29 @@
+{
+    "devices": [
+      {
+        "id": 1,
+        "device": "Dispositivo 1",
+        "temperatura": "45",
+        "umidade": "50",
+        "bateria": "90",
+        "status": true
+      },
+      {
+        "id": 4,
+        "device": "Dispositivo 2",
+        "temperatura": "25",
+        "umidade": "20",
+        "bateria": "10",
+        "status": true
+      },
+      {
+        "id": 22,
+        "device": "Dispositivo 3",
+        "temperatura": "15",
+        "umidade": "100",
+        "bateria": "100",
+        "status": true
+      }
+    ]
+  }
+  
