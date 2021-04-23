@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-
 export function GetDadosDevice(){
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
     const devices = useSelector((state) => state.devicesState.devices);
@@ -13,7 +12,8 @@ export function GetDadosDevice(){
 
     return {device: (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : "",
         dadosDevice: dadosDevice,
-        propsDevice: (dadosDevice.length > 0) ? Object.keys(dadosDevice[0]) : []}
+        propsDevice: (dadosDevice.length > 0) ? Object.keys(dadosDevice[0]) : [],
+        selectedDevice: selectedDevice }
 }
 
 export function getDate(unixTimestamp){
