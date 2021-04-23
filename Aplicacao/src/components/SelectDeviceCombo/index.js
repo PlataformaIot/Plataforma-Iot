@@ -53,7 +53,7 @@ export default function Combo() {
     }
 
     async function selectData() {
-        const id = selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device
+        const id = (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : ""
         console.log(id)
         await api.get(`data?dev_addr=${id}&limit=100`)
             .then((res) => {
