@@ -98,7 +98,6 @@ async def new_type (request: Request):
 @router.get ('/types')
 async def get_types ():
   collection = MongodbConnector ().get_collection ('tipos')
-  return list (collection.find (projection = {'_id': False}))
   list_of_types = []
 
   query = list (collection.find (projection = {'name': True, '_id': False}))
