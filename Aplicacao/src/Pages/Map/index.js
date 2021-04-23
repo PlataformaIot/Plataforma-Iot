@@ -42,7 +42,7 @@ export default function Mapa() {
     }
 
     function selectDevice(){
-        const id = selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device
+        const id = devices.length > 0 ?(selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((dev) => dev.device === selectedDevice)[0].device) : ""
         setIdDevice(id)
     }
     

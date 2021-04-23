@@ -16,8 +16,6 @@ export default function Router(){
             <Route path="/" exact component={Home}/>
             <Route path="/tabela" component={Tabela}/>
             <Route path="/indicator" component={Indicador}/>
-            <Route path="/map" component={Mapa}/>
-            <Route path="/graph" component={Graph}/>
             <Route path="/cadastro/cadastrar-variaveis" component={CadastroVariaveis}/>
             <Route path="/cadastro" component={CadastroEvery}/>
         </Switch>
