@@ -49,47 +49,19 @@ export default function Graph() {
             {
                 dayCheck === false ?
                     <Col lg="12">
-                        <Form.Group as={Row} style={{ display: 'flex', alignItems: 'center', marginLeft: '1px' }}>
-                            <Form.Control style={{ width: 200 }} as="select">
-                                <option>semanas</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Form.Control>
-                            <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-                        </Form.Group>
+                        <Form.Control type="week" />
+                        <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
+
                     </Col>
                     :
                     <div>
                         <Col lg="12">
-                            <Form.Group as={Row} style={{ display: 'flex', alignItems: 'center', marginLeft: '1px' }}>
-                                <Form.Control style={{ width: 200 }} as="select">
-                                    <option>semanas</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </Form.Control>
-                                <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-                            </Form.Group>
+                            <Form.Control type="date" />
+                            <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
+
                         </Col>
 
-                        <Col style={{ flexDirection: 'row', display: 'flex', marginBottom: '2%' }}>
-                            <Form.Control style={{ width: 200 }} as="select">
-                                <option>dia</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Form.Control>
 
-                            <Form.Control style={{ width: 200, marginLeft: '2%' }} as="select">
-                                <option>mês</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Form.Control>
-                            <Form.Control style={{ width: 200, marginLeft: '2%' }} as="select">
-                                <option>ano</option>
-                                <option>2</option>
-                                <option>3</option>
-                            </Form.Control>
-                            <Button style={{ marginLeft: 30, alignItems: 'center', display: 'flex', }} variant="success"><FiSearch size={20} />Buscar</Button>
-                        </Col>
                     </div>
             }
 

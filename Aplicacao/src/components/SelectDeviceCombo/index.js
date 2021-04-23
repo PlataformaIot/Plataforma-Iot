@@ -84,7 +84,7 @@ export default function Combo() {
                                 </Card.Body>
                             </Card>
                         </Link>
-                        <Link to="/cadastro" style={{ textDecoration: 'none' }}>
+                        <Link to="/dispositivos-cadastrados" style={{ textDecoration: 'none' }}>
                             <Card>
                                 <Card.Body className="cardBody">
                                     <GiRiotShield className="icons" size={40} />
