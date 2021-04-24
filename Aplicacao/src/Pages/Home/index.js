@@ -18,6 +18,23 @@ export default function Home() {
          return (selDevice.length > 0) ? selDevice[0][prop] : ""
     }
 
+    return (
+        <Container fluid style={{ margin: '40px 0px', marginBottom: '20%' }}>
+            <Row lg={true}>
+                <Col style={{ marginBottom: '5%' }}>
+                    {
+                        (dadosDevice.length > 0) ?
+                        (
+                            dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
+                                dadosDevice.filter((device) => device.device === selectedDevice)[0].type === "temp" ?
+                                    drawInfoPanel3() : drawInfoPanel1() : ""
+                        ) : ""
+                    }
+                </Col>
+            </Row>
+        </Container >
+    )
+    
     function drawInfoPanel1(){
         return (
             <div>
@@ -105,38 +122,4 @@ export default function Home() {
         </div>
         )
     }
-
-    return (
-
-
-        <Container fluid style={{ margin: '40px 0px', marginBottom: '20%' }}>
-            <Row lg={true}>
-                <Col style={{ marginBottom: '5%' }}>
-                    {/* <p>VARIÁVEL: {JSON.stringify(dadosDevice)}</p> */}
-
-                    {
-                        selectedDevice === "" ? (
-                            dadosDevice.length > 0 ? (
-                                dadosDevice[0].type ?
-                                    dadosDevice[0].type === "temp" ?
-                                        drawInfoPanel3()
-                                        :
-                                        drawInfoPanel1()
-                                    : ""
-                            )
-                                : ""
-                        ) : (
-                            dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
-                                dadosDevice.filter((device) => device.device === selectedDevice)[0].type === "temp" ?
-                                    drawInfoPanel3()
-                                    :
-                                    drawInfoPanel1()
-                                :
-                                ""
-                        )
-                    }
-                </Col>
-            </Row>
-        </Container >
-    )
 }
