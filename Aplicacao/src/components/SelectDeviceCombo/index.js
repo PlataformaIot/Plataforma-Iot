@@ -13,7 +13,7 @@ import { GiRiotShield } from 'react-icons/gi';
 import { BsInfoCircle } from 'react-icons/bs';
 
 export default function Combo() {
-
+    
 
     const devices = useSelector((state) => state.devicesState.devices)
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
@@ -21,6 +21,7 @@ export default function Combo() {
     //console.log(selectedDevice)
     const dispatch = useDispatch()
 
+    if(devices[0]) devices[0].nome="Disp 1"
 
     useEffect(() => {
         handleDevices()
@@ -76,19 +77,19 @@ export default function Combo() {
                                 </Card.Body>
                             </Card>
                         </Link>
+                        <Link to="/dispositivos-cadastrados" style={{ textDecoration: 'none' }}>
+                            <Card>
+                                <Card.Body className="cardBody">
+                                    <GiRiotShield className="icons" size={40}/>
+                                    <Card.Text>Gerenciar Dispositivos</Card.Text>
+                                </Card.Body>
+                            </Card>
+                        </Link>
                         <Link to="/cadastro" style={{ textDecoration: 'none' }}>
                             <Card>
                                 <Card.Body className="cardBody">
                                     <BsPlusSquare className="icons" size={40} />
-                                    <Card.Text>Cadastrar</Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Link>
-                        <Link to="/dispositivos-cadastrados" style={{ textDecoration: 'none' }}>
-                            <Card>
-                                <Card.Body className="cardBody">
-                                    <GiRiotShield className="icons" size={40} />
-                                    <Card.Text>Dispositivos</Card.Text>
+                                    <Card.Text>Cadastrar Dispositivo</Card.Text>
                                 </Card.Body>
                             </Card>
                         </Link>
@@ -102,17 +103,17 @@ export default function Combo() {
                         </Link>
                     </CardDeck>
                 </Col>
-                
+
                     <Form.Control style={{ width: '16%', marginLeft: '80%'}} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
-                        {devices.length && devices.length > 0 ? devices.map((dev) => (
-                            <option key={dev.device} value={dev.device}>{dev.device}</option>
+                        {devices.length && (devices.length > 0) ? devices.map((dev) => (
+                            <option key={dev.nome ? dev.nome:dev.device} value={dev.device}>{dev.nome ? dev.nome:dev.device}</option>
                         )) :
                             (
                                 <option>Nenhum dispositivo</option>
                             )
                         }
                     </Form.Control>
-               
+
             </Row>
 
 
