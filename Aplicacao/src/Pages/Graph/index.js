@@ -5,13 +5,11 @@ import { FiSearch } from 'react-icons/fi'
 import { Chart } from 'react-google-charts'
 import { getpropsDevice } from '../../store/functions'
 
-const variaveis = {
+const textoVars = { '': '',
     'temp': 'Temperatura',
-    'hum': 'Humidade',
+    'hum': 'Umidade',
     'velocidade': 'Velocidade',
-    'bateria': 'Tensão da bateria',
-    '': ''
-}
+    'bateria': 'Tensão da bateria'}
 
 export default function Graph() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
@@ -21,23 +19,23 @@ export default function Graph() {
     const [selectedVar, setSelectedVar] = useState("");
     const [dayCheck, setDayCheck] = useState(false);
 
-    const varsDevice = Object.keys(variaveis).filter((prop) => {
+    const varsDevice = Object.keys(textoVars).filter((prop) => {
         return propsDevice.includes(prop)
     })
     //alert( JSON.stringify( varsDevice) )
 
     const [graph, setGraph] = useState([
-        ['x', 'Umidade', 'Temperatura', variaveis['bateria']],
+        ['x', 'Umidade', 'Temperatura', textoVars['bateria']],
         [0, 10, 0, 20],
         [10, 41, 0, 50],
         [50, 0, 1, 2],
     ])
 
-    var grafFixo = 1
+    //const points = dadosDevice.map((dev) => ([dev['ts'],dev['bateria']] ))
+    var grafFixo = true
 
-    
     useEffect(() => {
-        function dadosAleterados() {
+        function dadosAlterados() {
             const dadosGrafico = graph.map((linha) => {
                 if (Number.isInteger(linha[1])) {
                     linha[1] = Math.floor(Math.random() * 101)
@@ -47,7 +45,7 @@ export default function Graph() {
             })
             setGraph(dadosGrafico)
         }
-        const instervalId = setInterval(() => dadosAleterados(), 5000)
+        const instervalId = setInterval(() => dadosAlterados(), grafFixo ? 120*1000 : 2000)
 
         return () => {
             //executa apenas quando o componente é destruido
@@ -59,7 +57,7 @@ export default function Graph() {
         return (
             <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar} onChange={(e) => setSelectedVar(e.target.value)} as="select">
                 {(varsDevice.length > 0) ? varsDevice.map((prop) => (
-                    <option key={variaveis[prop]} value={prop}>{variaveis[prop]}</option>
+                    <option key={textoVars[prop]} value={prop}>{textoVars[prop]}</option>
                 )) : (
                     <option>Nenhuma variável</option>
                 )}
@@ -70,6 +68,7 @@ export default function Graph() {
 
     return (
         <Container fluid>
+            <p>{/*JSON.stringify( (dadosDevice.map((dev) => ([dev['ts'],dev['bateria']]))) )*/}</p>
             {
                 <Col style={{marginBottom:'2%'}}>
                     {drawDropdownVar()}
@@ -110,7 +109,7 @@ export default function Graph() {
                         title: 'Tempo'
                     },
                     vAxis: {
-                        title: variaveis[selectedVar]
+                        title: textoVars[selectedVar]
                     },
                     series: {
                         2: { curveType: 'function' },
