@@ -6,11 +6,24 @@
 .cardImg{
     margin: 20px 15px;
     height: 190px;
-
-    
     background-color: #000;
 }
 
 .tableStyle{
    width: 100%; 
+}
+
+.btnFooter{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 1px 15px;
+    margin-top: -2%;
+}
+
+.btnFooter button{
+    margin: 10px 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
 }

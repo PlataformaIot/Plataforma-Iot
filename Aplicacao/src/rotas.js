@@ -14,7 +14,6 @@ export default function Router(){
         <Switch>
             <Route path="/" exact component={Home}/>
             <Route path="/tabela" component={Tabela}/>
-            <Route path="/indicator" component={Indicador}/>
             <Route path="/cadastro/cadastrar-variaveis" component={CadastroVariaveis}/>
             <Route path="/cadastro" component={CadastroEvery}/>
             <Route path="/dispositivos-cadastrados" component={Dispositivo}/>
