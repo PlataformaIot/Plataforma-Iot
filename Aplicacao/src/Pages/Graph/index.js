@@ -27,12 +27,15 @@ export default function Graph() {
     //alert( JSON.stringify( varsDevice) )
 
     const [graph, setGraph] = useState([
-        ['x', 'Umidade', 'Temperatura', 'Bateria'],
+        ['x', 'Umidade', 'Temperatura', variaveis['bateria']],
         [0, 10, 0, 20],
         [10, 41, 0, 50],
         [50, 0, 1, 2],
     ])
 
+    var grafFixo = 1
+
+    
     useEffect(() => {
         function dadosAleterados() {
             const dadosGrafico = graph.map((linha) => {
@@ -107,7 +110,7 @@ export default function Graph() {
                         title: 'Tempo'
                     },
                     vAxis: {
-                        title: 'Temperatura e Umidade'
+                        title: variaveis[selectedVar]
                     },
                     series: {
                         2: { curveType: 'function' },
