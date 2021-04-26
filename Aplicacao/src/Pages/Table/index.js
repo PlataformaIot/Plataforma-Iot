@@ -1,11 +1,13 @@
+import { useSelector } from 'react-redux';
 import { Container, Table, Button, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import {getDate, GetDadosDevice} from '../../store/functions'
+import {getDate, getpropsDevice} from '../../store/functions'
 
 
 export default function Tabela() {
-    const {device,dadosDevice,propsDevice} = GetDadosDevice()
+    const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
+    const propsDevice = getpropsDevice(dadosDevice);
 
 
     return (
@@ -32,11 +34,9 @@ export default function Tabela() {
                             </tr>
                         </thead>
                         {
-                            //{if(1) Device}
                             dadosDevice.map((dev) => (
                                 <tbody>
                                     <tr>
-                                        {/* <td>{dev.device}</td> */}
                                         <td>{dev.device}</td>
                                         <td>{dev.type}</td>
                                         <td>{getDate(dev.ts)}</td>

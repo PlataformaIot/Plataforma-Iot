@@ -1,25 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { Chart } from 'react-google-charts'
+import { useSelector } from 'react-redux';
 import { Container, Form, Row, Col, Button, FormCheck } from 'react-bootstrap';
 import { FiSearch } from 'react-icons/fi'
+import { Chart } from 'react-google-charts'
+import {getpropsDevice} from '../../store/functions'
 
-
-
-
+const variaveis = {
+    'temp': 'Temperatura',
+    'hum': 'Humidade',
+    'velocidade': 'Velocidade',
+    'bateria': 'Tensão da bateria',
+    '':''}
 
 export default function Graph() {
+    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
+    const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
+    const propsDevice = getpropsDevice(dadosDevice);
 
-
+    const [selectedVar, setSelectedVar] = useState("");
     const [dayCheck, setDayCheck] = useState(false);
+
+    const varsDevice = Object.keys(variaveis).filter((prop) => {
+        return propsDevice.includes(prop)
+    })
+    //alert( JSON.stringify( varsDevice) )
+
     const [graph, setGraph] = useState([
         ['x', 'Umidade', 'Temperatura', 'Bateria'],
         [0, 10, 0, 20],
         [10, 41, 0, 50],
         [50, 0, 1, 2],
-
-    ])
-
-
+        ])
 
     useEffect(() => {
         function dadosAleterados() {
@@ -40,13 +51,24 @@ export default function Graph() {
         }
     }, [graph])
 
+    function drawDropdownVar() {
+        return(
+            <Form.Control style={{ width: '16%', marginLeft: '2%'}} value={selectedVar} onChange={(e) => setSelectedVar(e.target.value)} as="select">
+                {(varsDevice.length > 0) ? varsDevice.map((prop) => (
+                    <option key={variaveis[prop]} value={prop}>{variaveis[prop]}</option>
+                )) : (
+                    <option>Nenhuma variável</option>
+                )}
+            </Form.Control>
+        )
+    }
 
 
-
-    return (
+    return (varsDevice.length > 2) ? (
         <Container fluid>
-
             {
+                drawDropdownVar()
+            }{
                 dayCheck === false ?
                     <Col lg="12">
                         <Form.Control type="week" />
@@ -94,5 +116,5 @@ export default function Graph() {
 
 
         </Container>
-    )
+    ) : ""
 }

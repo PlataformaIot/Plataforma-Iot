@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Container, CardDeck, Card, Jumbotron, Form } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import Graph from '../../Pages/Graph';
 import './styles.css';
+import {getDevice, getpropsDevice} from '../../store/functions'
+import Graph from '../../Pages/Graph';
 import Mapa from '../Map';
-import { GetDadosDevice} from '../../store/functions'
 
 
 const maiorVbat=3.7, menorVbat=2.5;
 
 export default function Home() {
-    const {device,dadosDevice,propsDevice,selectedDevice} = GetDadosDevice()
+    const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
+    const devices = useSelector((state) => state.devicesState.devices);
+    const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
+    const device = getDevice(devices, selectedDevice);
+    const propsDevice = getpropsDevice(dadosDevice);
+    useEffect(() => {}, [selectedDevice, dadosDevice])
 
-    console.log(dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
-        dadosDevice.filter((device) => device.device === selectedDevice)[0].type : "UNDEFINED");
+    console.log(device.type ? device.type : "UNDEFINED");
+
 
     function verificaLista(lista,prop){
          const selDevice = (lista.length > 0) ? (selectedDevice === '' ? lista[0].device : lista.filter((dev) => dev.device === selectedDevice)) : []
          return (selDevice.length > 0) & selDevice[0][prop] ? selDevice[0][prop] : 0.0
     }
+
 
     return (
         <Container fluid style={{ margin: '40px 0px', marginBottom: '20%' }}>
@@ -35,6 +41,7 @@ export default function Home() {
             </Row>
         </Container >
     )
+
 
     function drawInfoPanel(){
         var cargaBateria = verificaLista(dadosDevice,"bateria") - menorVbat;
