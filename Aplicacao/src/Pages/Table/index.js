@@ -12,7 +12,7 @@ export default function Tabela() {
 
     return (
         <Container fluid>
-            <Link to="/indicator">
+            <Link to="/">
                 <Button variant="light"><IoMdArrowRoundBack size={30} /></Button>
             </Link>
      

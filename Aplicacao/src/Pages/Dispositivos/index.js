@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardDeck, Table } from 'react-bootstrap';
+import { Container, Row, Col, Card, CardDeck, Table, ListGroup } from 'react-bootstrap';
 import ReactIcon from '../../assets/logo.svg';
 import './styles.css';
 
@@ -13,17 +13,13 @@ export default function Dispositivos() {
                     <Card >
                         <Card.Header>Device 1</Card.Header>
                         <Card.Body className="cardDirection" >
-                            <Card.Img src={ReactIcon} className="cardImg" />
-                                <Table striped bordered hover className="tableStyle">
-                                    <tbody>
-                                        <tr>
-                                            <td>Nome:</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nome: dasdasd</td>
-                                        </tr>
-                                    </tbody>
-                                </Table>
+                            <Card.Img src={ReactIcon} className="cardImg" style={{width:'18rem'}} />
+                                <ListGroup className="tableStyle">
+                                    <ListGroup.Item>Dispositivo:</ListGroup.Item>
+                                    <ListGroup.Item>Dispositivo:</ListGroup.Item>
+                                    <ListGroup.Item>Dispositivo:</ListGroup.Item>
+                                    <ListGroup.Item>Dispositivo:</ListGroup.Item>
+                                </ListGroup>
                       
                         </Card.Body>
                     </Card>

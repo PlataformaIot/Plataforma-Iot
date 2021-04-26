@@ -1,10 +1,12 @@
 .cardDirection {
+    display: flex;
+    align-items: center;
 }
 
 .cardImg{
-    width: 100px;
-    height: 100px;
-   
+    margin: 20px 15px;
+    height: 190px;
+
     
     background-color: #000;
 }

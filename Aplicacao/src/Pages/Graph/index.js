@@ -3,18 +3,19 @@ import { useSelector } from 'react-redux';
 import { Container, Form, Row, Col, Button, FormCheck } from 'react-bootstrap';
 import { FiSearch } from 'react-icons/fi'
 import { Chart } from 'react-google-charts'
-import {getpropsDevice} from '../../store/functions'
+import { getpropsDevice } from '../../store/functions'
 
 const variaveis = {
     'temp': 'Temperatura',
     'hum': 'Humidade',
     'velocidade': 'Velocidade',
     'bateria': 'Tensão da bateria',
-    '':''}
+    '': ''
+}
 
 export default function Graph() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
-    const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
+    const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
     const propsDevice = getpropsDevice(dadosDevice);
 
     const [selectedVar, setSelectedVar] = useState("");
@@ -30,7 +31,7 @@ export default function Graph() {
         [0, 10, 0, 20],
         [10, 41, 0, 50],
         [50, 0, 1, 2],
-        ])
+    ])
 
     useEffect(() => {
         function dadosAleterados() {
@@ -52,8 +53,8 @@ export default function Graph() {
     }, [graph])
 
     function drawDropdownVar() {
-        return(
-            <Form.Control style={{ width: '16%', marginLeft: '2%'}} value={selectedVar} onChange={(e) => setSelectedVar(e.target.value)} as="select">
+        return (
+            <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar} onChange={(e) => setSelectedVar(e.target.value)} as="select">
                 {(varsDevice.length > 0) ? varsDevice.map((prop) => (
                     <option key={variaveis[prop]} value={prop}>{variaveis[prop]}</option>
                 )) : (
@@ -67,17 +68,19 @@ export default function Graph() {
     return (varsDevice.length > 2) ? (
         <Container fluid>
             {
-                drawDropdownVar()
+                <Col style={{marginBottom:'2%'}}>
+                    {drawDropdownVar()}
+                </Col>
             }{
                 dayCheck === false ?
-                    <Col lg="12">
+                    <Col lg="3"  style={{marginLeft:'2%'}}>
                         <Form.Control type="week" />
                         <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
 
                     </Col>
                     :
                     <div>
-                        <Col lg="12">
+                        <Col lg="3" style={{marginLeft:'2%'}}>
                             <Form.Control type="date" />
                             <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
 

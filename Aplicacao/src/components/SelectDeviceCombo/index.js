@@ -93,14 +93,6 @@ export default function Combo() {
                                 </Card.Body>
                             </Card>
                         </Link>
-                        <Link to="/indicator" style={{ textDecoration: 'none' }}>
-                            <Card>
-                                <Card.Body className="cardBody">
-                                    <BsInfoCircle className="icons" size={40} />
-                                    <Card.Text>Informações</Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Link>
                     </CardDeck>
                 </Col>
 

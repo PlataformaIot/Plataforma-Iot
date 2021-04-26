@@ -34,7 +34,7 @@ export default function Indicator() {
 
             <Jumbotron>
 
-                <h1 className="titleInfo">Informações</h1>
+                <h4 className="titleInfo">Informações do dispositivo: {selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((device) => device.device === selectedDevice)[0].device}</h4>
                 <Row>
 
                     <Col lg="3">
@@ -56,7 +56,8 @@ export default function Indicator() {
                                             <ListGroup>
                                                 <ListGroup.Item>Dispositivo: {selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((device) => device.device === selectedDevice)[0].device} </ListGroup.Item>
                                                 <ListGroup.Item>Data do ultimo envio: {getDate(selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].ts : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].ts)} </ListGroup.Item>
-                                                <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item>
+                                                <ListGroup.Item>Tipo do dispositivo: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].type : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].type} </ListGroup.Item>
+                                                {/* <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item> */}
                                             </ListGroup>
                                             :
                                             <ListGroup>
@@ -64,7 +65,8 @@ export default function Indicator() {
                                                 <ListGroup.Item>Data do ultimo envio: {getDate( selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].ts : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].ts)} </ListGroup.Item>
                                                 <ListGroup.Item>Latitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].lat : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].lat} </ListGroup.Item>
                                                 <ListGroup.Item>Longitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].long : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].long}</ListGroup.Item>
-                                                <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item>
+                                                <ListGroup.Item>Tipo do dispositivo: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].type : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].type} </ListGroup.Item>
+                                                {/* <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item> */}
                                             </ListGroup>
                                         : ""
                                 )
@@ -75,7 +77,8 @@ export default function Indicator() {
                                         <ListGroup>
                                             <ListGroup.Item>Dispositivo: {selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((device) => device.device === selectedDevice)[0].device} </ListGroup.Item>
                                             <ListGroup.Item>Data do ultimo envio: {getDate( selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].ts : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].ts)} </ListGroup.Item>
-                                            <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item>
+                                            <ListGroup.Item>Tipo do dispositivo: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].type : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].type} </ListGroup.Item>
+                                            {/* <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item> */}
                                         </ListGroup>
                                         :
                                         <ListGroup>
@@ -83,7 +86,8 @@ export default function Indicator() {
                                             <ListGroup.Item>Data do ultimo envio: {getDate( selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].ts : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].ts)} </ListGroup.Item>
                                             <ListGroup.Item>Latitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].lat : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].lat} </ListGroup.Item>
                                             <ListGroup.Item>Longitude: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].long : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].long}</ListGroup.Item>
-                                            <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item>
+                                            <ListGroup.Item>Tipo do dispositivo: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].type : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].type} </ListGroup.Item>
+                                            {/* <ListGroup.Item>Bateria: {selectedDevice === '' ? (dadosDevice.length > 0 ? dadosDevice[0].bateria : "") : dadosDevice.filter((device) => device.device === selectedDevice)[0].bateria} </ListGroup.Item> */}
                                         </ListGroup>
                                     :
                                     ""
