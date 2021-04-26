@@ -40,12 +40,53 @@ export default function Home() {
                                 dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
                                     drawInfoPanel() : ""
                             ) : ""
+                    }{
+                        (propsDevice.includes('temp') || propsDevice.includes('hum')) ? (
+                            drawGraphPanel()
+                        ) : ""
+                    }{
+                        (propsDevice.includes('lat') || propsDevice.includes('long')) ? (
+                            drawMapPanel()
+                        ) : ""
                     }
                 </Col>
             </Row>
         </Container >
     )
+    
+    function drawGraphPanel() {
+        return (
+            <div>
+        <Jumbotron>
+            <Col lg="12" style={{ marginBottom: '5%' }}>
+                <h2 style={{ textAlign: 'center', marginBottom: '2%' }}>Gráfico</h2>
+                <Card>
+                    <Card.Body>
+                        <Graph />
+                    </Card.Body>
+                </Card>
+            </Col>
+        </Jumbotron>
+        </div>
+        )
+    }
 
+    function drawMapPanel() {
+        return (
+        <div>
+            <Jumbotron>
+                <Col style={{ textAlign: 'center', marginBottom: '2%' }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '2%' }}>Mapa</h2>
+                    <Card>
+                        <Card.Body>
+                            <Mapa />
+                        </Card.Body>
+                    </Card>
+                </Col>
+            </Jumbotron>
+        </div>
+        )
+    }
 
     function drawInfoPanel() {
         var cargaBateria = verificaLista(dadosDevice, "bateria") - menorVbat;
@@ -98,31 +139,7 @@ export default function Home() {
                             </Card>
                         ) : ""}                </CardDeck>
                 </Jumbotron>
-                <Jumbotron>
-                    <Col lg="12" style={{ marginBottom: '5%' }}>
-                        <h2 style={{ textAlign: 'center', marginBottom: '2%' }}>Gráfico</h2>
-                        <Card>
-                            <Card.Body>
-                                <Graph />
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Jumbotron>
-
-                { (propsDevice.includes('lat') || propsDevice.includes('long')) ? (
-                    <Jumbotron>
-                        <Col style={{ textAlign: 'center', marginBottom: '2%' }}>
-                            <h2 style={{ textAlign: 'center', marginBottom: '2%' }}>Mapa</h2>
-                            <Card>
-                                <Card.Body>
-                                    <Mapa />
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Jumbotron>
-                ) : ""}
-
-            </div>
+                </div>
         )
     }
 }

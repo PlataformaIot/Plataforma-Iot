@@ -65,7 +65,7 @@ export default function Graph() {
     }
 
 
-    return (varsDevice.length > 2) ? (
+    return (
         <Container fluid>
             {
                 <Col style={{marginBottom:'2%'}}>
@@ -119,5 +119,5 @@ export default function Graph() {
 
 
         </Container>
-    ) : ""
+    )
 }

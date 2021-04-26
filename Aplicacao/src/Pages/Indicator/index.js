@@ -6,12 +6,14 @@ import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { useSelector } from 'react-redux'//necessario para usar o useSelector do redux
 import './styles.css';
+import { getDevice } from '../../store/functions'
 
 
 export default function Indicator() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);//chama um dispositivo especifico do Redux
     const devices = useSelector((state) => state.devicesState.devices)
     const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
+    const device = getDevice(devices, selectedDevice);
 
     useEffect(() => {
         console.log(dadosDevice.filter((device) => device.device === selectedDevice)[0] ?
@@ -34,7 +36,7 @@ export default function Indicator() {
 
             <Jumbotron>
 
-                <h4 className="titleInfo">Informações do dispositivo: {selectedDevice === '' ? (devices.length > 0 ? devices[0].device : "") : devices.filter((device) => device.device === selectedDevice)[0].device}</h4>
+                <h4 className="titleInfo">Informações do dispositivo: {device}</h4>
                 <Row>
 
                     <Col lg="3">
