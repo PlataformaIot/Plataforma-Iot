@@ -24,28 +24,18 @@ export default function Graph() {
     })
     //alert( JSON.stringify( varsDevice) )
 
-    const [graph, setGraph] = useState([
-        ['x', 'Umidade', 'Temperatura', textoVars['bateria']],
-        [0, 10, 0, 20],
-        [10, 41, 0, 50],
-        [50, 0, 1, 2],
-    ])
+    function getDataGraph() {
+        var dadosGrafico = dadosDevice.map((dev) => ([dev['ts'],dev[selectedVar] ]) )
+        dadosGrafico.unshift(['x', textoVars[selectedVar]])
+        return dadosGrafico
+    }
+    const [graph, setGraph] = useState(getDataGraph())
 
-    //const points = dadosDevice.map((dev) => ([dev['ts'],dev['bateria']] ))
-    var grafFixo = true
+    var grafFixo = false
 
     useEffect(() => {
-        function dadosAlterados() {
-            const dadosGrafico = graph.map((linha) => {
-                if (Number.isInteger(linha[1])) {
-                    linha[1] = Math.floor(Math.random() * 101)
-
-                }
-                return linha
-            })
-            setGraph(dadosGrafico)
-        }
-        const instervalId = setInterval(() => dadosAlterados(), grafFixo ? 120*1000 : 2000)
+        const dadosGrafico = getDataGraph()
+        const instervalId = setInterval(() => setGraph(dadosGrafico), grafFixo ? 120*1000 : 2500)
 
         return () => {
             //executa apenas quando o componente é destruido
@@ -68,7 +58,7 @@ export default function Graph() {
 
     return (
         <Container fluid>
-            <p>{/*JSON.stringify( (dadosDevice.map((dev) => ([dev['ts'],dev['bateria']]))) )*/}</p>
+            <p>{/*JSON.stringify( graph )*/}</p>
             {
                 <Col style={{marginBottom:'2%'}}>
                     {drawDropdownVar()}
