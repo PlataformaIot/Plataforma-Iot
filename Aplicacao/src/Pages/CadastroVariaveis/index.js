@@ -8,11 +8,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { cadastroEvery, dadosDevice } from '../../store/Modulos/Devices/actions';
 
 import './styles.css';
+import api from '../../Connections/api';
 
 export default function CadastroVariaveis({ navigation }) {
 
     const [form, setForm] = useState({ cards: [] });
     const [cadastro, setCadastro] = useState();
+    const [args, setArgs] = useState([]);
     const [operations, setOperations] = useState([
         {
             id: 0, name: 'Operação', value: null
@@ -46,19 +48,23 @@ export default function CadastroVariaveis({ navigation }) {
             variavel: "",
             bitInicial: "",
             bitFinal: "",
-            args: "",
+            saveArgs: [],
             operationsSelects: []
         }
         newForm.cards.push(newCard);
         setForm(newForm)
     }
 
+   
+
     const addNewOperation = (index) => {
         let newForm = { ...form }
         let newOperationSelect = {
-            operacao: []
+            operacao: [],
+            args:[]
         }
         newForm.cards[index].operationsSelects.push(newOperationSelect);
+        newForm.cards[index].saveArgs.push(newOperationSelect);
         setForm(newForm)
     }
 
@@ -71,6 +77,11 @@ export default function CadastroVariaveis({ navigation }) {
     function onOperationSelectUpdate(e, cardIndex, selectIndex) {
         let newForm = { ...form };
         newForm.cards[cardIndex].operationsSelects[selectIndex].operacao = e.target.value;
+        setForm(newForm);
+    }
+    function newArgs(e, cardIndex, selectIndex) {
+        let newForm = { ...form };
+        newForm.cards[cardIndex].saveArgs[selectIndex].args = e.target.value;
         setForm(newForm);
     }
 
@@ -96,21 +107,43 @@ export default function CadastroVariaveis({ navigation }) {
 
 
 
-    console.log(cadastroEvery)
+    console.log(cadastro)
 
-    function handleCadastro() {
+    async function handleCadastro() {
+        /*  await form.cards.map((i) => {
+              const params = {
+                  name: nome,
+                  /* variables: i.variavel,
+                  bitInicial: i.bitInicial,
+                  bitFinal: i.bitFinal,
+                  operacao: operations,
+                  args: i.args */
+        //variavel: form
+        /* ordemByte: saveOrdemByte,
+        tamanhoByte: tamanhoByte, 
+    }
+
+    api.post(`types/`, params)
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch((err) => {
+            console.log('Erro: ' + err)
+        })
+}) */
 
         const params = {
-            card: form,
-            ordemByte: saveOrdemByte,
-            tamanhoByte: tamanhoByte,
-            nome: nome,
+            name: nome,
+            variavel: form
+            /* ordemByte: saveOrdemByte,
+            tamanhoByte: tamanhoByte, */
         }
-        dispatch(cadastroEvery(params))
 
+        setCadastro(params)
 
 
     }
+
 
 
 
@@ -124,7 +157,7 @@ export default function CadastroVariaveis({ navigation }) {
             <Row lg="12">
 
                 <Col>
-                    <h3 style={{ textAlign: 'center' }}>Dados do Dispositivo</h3>
+                    <h3 style={{ textAlign: 'center' }}>Cadastro do Tipo</h3>
                     <Form onSubmit={handleCadastro}>
                         <Jumbotron>
                             <Form.Row>
@@ -133,7 +166,7 @@ export default function CadastroVariaveis({ navigation }) {
                                     <Form.Control value={nome} onChange={(e) => setNome(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
                                 <Col lg="2">
-                                    <Form.Label>Tamanho em Bytes</Form.Label>
+                                    <Form.Label>Tamanho do Bytes</Form.Label>
                                     <Form.Control value={tamanhoByte} onChange={(e) => setTamanhoByte(e.target.value)} style={{ marginBottom: '10px' }} maxLength={10} />
                                 </Col>
                             </Form.Row>
@@ -176,7 +209,7 @@ export default function CadastroVariaveis({ navigation }) {
 
 
                                                             <Col>
-                                                                <Form.Control placeholder="ARGS" name="args" onChange={(e) => onFormUpdate(e, index)} />
+                                                                <Form.Control placeholder="ARGS" name="saveArgs"  onChange={(e) => newArgs(e, index, i)} />
                                                             </Col>
                                                             <Col>
                                                                 <Badge style={{ justifyContent: 'center', alignItems: 'center', marginTop: 5 }} onClick={() => operationRemove(index, i)} variant="danger"  ><MdRemoveCircleOutline size={20} /></Badge>
@@ -208,8 +241,8 @@ export default function CadastroVariaveis({ navigation }) {
 
 
                         </Jumbotron>
+                        <Button onClick={handleCadastro} variant="success">Adicionar tipo</Button>
                         <Link to="/cadastro">
-                            <Button onClick={handleCadastro} variant="success">Adicionar tipo</Button>
                         </Link>
 
                     </Form>

@@ -54,7 +54,7 @@ export default function CadastroEvery() {
         }
 
         setCadastro(data)
-        setCadastro('')
+        
     }
 
     console.log(selectType)

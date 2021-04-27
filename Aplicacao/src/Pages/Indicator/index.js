@@ -37,18 +37,13 @@ export default function Indicator() {
             <Jumbotron>
 
                 <h4 className="titleInfo">Informações do dispositivo: {device}</h4>
-                <Row>
-
-                    <Col lg="3">
-
-                        <Card style={{ marginTop: '6%' }}>
-                            <Card.Body>
-                                <Card.Img src={Logo} />
-                            </Card.Body>
+                <Row className="Info">
+                    <Col>
+                        <Card>
+                                <Card.Img src={Logo}/>
                         </Card>
                     </Col>
                     <Col>
-
                         {
 
                             selectedDevice === "" ? (
