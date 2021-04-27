@@ -5,41 +5,55 @@ import { FiSearch } from 'react-icons/fi'
 import { Chart } from 'react-google-charts'
 import { getpropsDevice } from '../../store/functions'
 
-const textoVars = { '': '',
+const nomeVars = { '': '',
     'temp': 'Temperatura',
     'hum': 'Umidade',
     'velocidade': 'Velocidade',
     'bateria': 'Tensão da bateria'}
+const textoVars = { '': '',
+    'temp': 'Temperatura [°C]',
+    'hum': 'Umidade [%]',
+    'velocidade': 'Velocidade [km/h]',
+    'bateria': 'Tensão da bateria [V]'}
 
 export default function Graph() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
     const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
     const propsDevice = getpropsDevice(dadosDevice);
-
-    const [selectedVar, setSelectedVar] = useState("");
-    const [dayCheck, setDayCheck] = useState(false);
-
-    const varsDevice = Object.keys(textoVars).filter((prop) => {
+    const varsDevice = Object.keys(nomeVars).filter((prop) => {
         return propsDevice.includes(prop)
     })
     //alert( JSON.stringify( varsDevice) )
 
+    function getVariable(){
+        const lVar = (varsDevice.length > 0) ? (selectedVar === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar)) : []
+        return (lVar.length > 0) ? lVar[0] : ''
+    }
     function getDataGraph() {
-        var dadosGrafico = dadosDevice.map((dev) => ([dev['ts'],dev[selectedVar] ]) )
-        dadosGrafico.unshift(['x', textoVars[selectedVar]])
+        var dadosGrafico = dadosDevice.map((dev) => ([ new Date(dev['ts']*1000), dev[selectedVar] ]) )
+        dadosGrafico.unshift(['t', nomeVars[selectedVar]])
         return dadosGrafico
     }
+    
+    const [selectedVar, setSelectedVar] = useState("");
     const [graph, setGraph] = useState(getDataGraph())
+    const variable = getVariable()
+    const [dayCheck, setDayCheck] = useState(false);
+    const [grafFixo, setGrafFixo] = useState(false);
 
-    var grafFixo = false
 
     useEffect(() => {
-        const dadosGrafico = getDataGraph()
-        const instervalId = setInterval(() => setGraph(dadosGrafico), grafFixo ? 120*1000 : 2500)
+  }, [selectedVar])
+
+    useEffect(() => {
+          const instervalId = setInterval(() => setGraph(getDataGraph()), grafFixo ? 120*1000 : 2500)
 
         return () => {
             //executa apenas quando o componente é destruido
             clearInterval(instervalId);
+            const dadosGrafico = getDataGraph()
+            setGraph(dadosGrafico)
+
         }
     }, [graph])
 
@@ -47,7 +61,7 @@ export default function Graph() {
         return (
             <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar} onChange={(e) => setSelectedVar(e.target.value)} as="select">
                 {(varsDevice.length > 0) ? varsDevice.map((prop) => (
-                    <option key={textoVars[prop]} value={prop}>{textoVars[prop]}</option>
+                    <option key={nomeVars[prop]} value={prop}>{nomeVars[prop]}</option>
                 )) : (
                     <option>Nenhuma variável</option>
                 )}
@@ -58,6 +72,7 @@ export default function Graph() {
 
     return (
         <Container fluid>
+            <p>{/*variable*/}</p>
             <p>{/*JSON.stringify( graph )*/}</p>
             {
                 <Col style={{marginBottom:'2%'}}>
@@ -86,15 +101,19 @@ export default function Graph() {
                 width={'100%'}
                 height={'470px'}
                 chartType="LineChart"
-                loader={<div>Carregando</div>}
+                loader={<div>Carregando...</div>}
 
                 data={graph}
                 options={{
-                    animation: {
+                        timeline: {
+      colorByRowLabel: true,
+    },
+                    legend: 'none',
+                    /*animation: {
                         duration: 1000,
                         easing: 'out',
                         startup: true
-                    },
+                    },*/
                     hAxis: {
                         title: 'Tempo'
                     },
