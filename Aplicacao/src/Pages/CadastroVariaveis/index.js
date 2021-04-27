@@ -134,9 +134,9 @@ export default function CadastroVariaveis({ navigation }) {
 
         const params = {
             name: nome,
-            variavel: form
-            /* ordemByte: saveOrdemByte,
-            tamanhoByte: tamanhoByte, */
+            tamanhoByte: tamanhoByte,
+            ordemByte: saveOrdemByte,
+            variavel: form,
         }
 
         setCadastro(params)
