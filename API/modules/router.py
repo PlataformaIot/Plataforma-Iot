@@ -60,25 +60,33 @@ async def new_device (request: Request):
     return Response ('Failed to insert new device onto database.', 500)
 
 @router.get ('/devices')
-async def get_devices (dev_addr: Optional [str] = None, dev_type: Optional [str] = None):
+async def get_devices (dev_addr: Optional [str] = None, dev_type: Optional [str] = None, status: Optional [int] = None):
   collection = MongodbConnector ().get_collection ('devices')
 
   if dev_addr:
-    response = collection.find_one ({'device': dev_addr}, {'_id': False})
-    return response
+    if status:
+      response = collection.find_one ({'device': dev_addr, 'status': status}, {'_id': False})
+    else:
+      response = collection.find_one ({'device': dev_addr}, {'_id': False})
 
   elif dev_type:
-    response = list (collection.find ({'type': dev_type}, {'_id': False}))
-    return response
+    if status:
+      response = list (collection.find ({'type': dev_type, 'status': status}, {'_id': False}))
+    else:
+      response = list (collection.find ({'type': dev_type}, {'_id': False}))
 
   else:
     response = list (collection.find (projection = {'_id': False}))
-    return response
+
+  return response
 
 @router.post ('/types')
 async def new_type (request: Request):
   try:
     body = await request.json ()
+    print (type (body ['variavel'] ['cards']))
+    print (body)
+    return body
   except:
     return Response ('Failed to parse request body.', 204)
 
@@ -95,16 +103,53 @@ async def new_type (request: Request):
   except:
     return Response ('Failed to insert new type onto database.', 500)
 
+@router.post ('/types_debug')
+async def new_type_debug (request: Request):
+  body = await request.json ()
+
+  var_list = []
+  for i in body ['variables'] ['var']:
+    var_list.append (i)
+
+  bytes_list = {}
+  for i in range (len (var_list)):
+    bytes_list [var_list [i]] = body ['bytes'] [var_list [i]]
+
+  opr_list = {}
+  for i in range (len (var_list)):
+    opr_list [var_list [i]] = body ['operations'] [var_list [i]]
+
+  args_list = {}
+  for i in range (len (var_list)):
+    args_list [var_list [i]] = body ['args'] [var_list [i]]
+
+  response = {
+    'name': body ['name'],
+    'variables': {
+      'var': var_list
+    },
+    'bytes': bytes_list,
+    'operations': opr_list,
+    'args': args_list,
+    'size': body ['size'],
+    'order': body ['order']
+  }
+  return response
+
 @router.get ('/types')
-async def get_types ():
+async def get_types (type_name: Optional [str] = None):
   collection = MongodbConnector ().get_collection ('tipos')
-  list_of_types = []
 
-  query = list (collection.find (projection = {'name': True, '_id': False}))
-  for i in query:
-    list_of_types.append (i ['name'])
+  if type_name:
+    response = collection.find_one ({'name': type_name}, {'_id': False})
+    return response
+  else:
+    list_of_types = []
+    query = list (collection.find (projection = {'name': True, '_id': False}))
+    for i in query:
+      list_of_types.append (i ['name'])
 
-  return list_of_types
+    return list_of_types
 
 @router.get ('/data')
 async def get_data (dev_addr: Optional [str] = None, dev_type: Optional [str] = None, date: Optional [str] = None, from_date: Optional [str] = None, limit: Optional [int] = None):

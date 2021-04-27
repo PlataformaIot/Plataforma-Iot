@@ -21,8 +21,6 @@ export default function Combo() {
     //console.log(selectedDevice)
     const dispatch = useDispatch()
 
-    if(devices[0]) devices[0].nome="Disp 1"
-
     useEffect(() => {
         handleDevices()
         selectData()
@@ -98,7 +96,7 @@ export default function Combo() {
 
                     <Form.Control style={{ width: '16%', marginLeft: '80%'}} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
                         {devices.length && (devices.length > 0) ? devices.map((dev) => (
-                            <option key={dev.nome ? dev.nome:dev.device} value={dev.device}>{dev.nome ? dev.nome:dev.device}</option>
+                            <option key={dev.name ? dev.name:dev.device} value={dev.device}>{dev.name ? dev.name:dev.device}</option>
                         )) :
                             (
                                 <option>Nenhum dispositivo</option>

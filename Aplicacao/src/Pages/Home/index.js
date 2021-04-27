@@ -45,7 +45,7 @@ export default function Home() {
                             drawGraphPanel()
                         ) : ""
                     }{
-                        (propsDevice.includes('lat') || propsDevice.includes('long')) ? (
+                        (propsDevice.includes('lat') && propsDevice.includes('long')) ? (
                             drawMapPanel()
                         ) : ""
                     }
@@ -96,7 +96,7 @@ export default function Home() {
         return (
             <div>
                 <Jumbotron>
-                    <h2 style={{ textAlign: 'center' }}>Informações do Dispositivo</h2>
+                    {/* <h2 style={{ textAlign: 'center' }}>Informações do Dispositivo</h2> */}
                     <CardDeck style={{ marginBottom: '2%' }}>
                         {propsDevice.includes('bateria') ? (
                             <Card bg="success" text='light'>
@@ -131,7 +131,7 @@ export default function Home() {
                         {propsDevice.includes('velocidade') ? (
                             <Card bg="warning" text='black'>
                                 <Card.Body>
-                                    <Card.Title>Umidade</Card.Title>
+                                    <Card.Title>Velocidade</Card.Title>
                                     <Card.Text>
                                         <h1><strong>{verificaLista(dadosDevice, "velocidade")}km/h</strong></h1>
                                     </Card.Text>
