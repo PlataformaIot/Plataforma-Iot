@@ -4,7 +4,7 @@ import api from '../../Connections/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './styles.css';
-import { selecionarDevice, atualizarDevices, dadosDevice } from '../../store/Modulos/Devices/actions';
+import { selecionarDevice, atualizarDevices, dadosDevice, dadosType } from '../../store/Modulos/Devices/actions';
 
 import { MdPhotoSizeSelectLarge } from 'react-icons/md';
 import { AiOutlineHome } from 'react-icons/ai';
@@ -17,6 +17,7 @@ export default function Combo() {
 
     const devices = useSelector((state) => state.devicesState.devices)
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
+    const dadosTypes = useSelector((state) =>  state.devicesState.dadosType)
     //const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
     //console.log(selectedDevice)
     const dispatch = useDispatch()
@@ -24,6 +25,8 @@ export default function Combo() {
     useEffect(() => {
         handleDevices()
         selectData()
+        selectDeviveTypes()
+        
     }, [selectedDevice])
 
     async function handleDevices() {
@@ -35,6 +38,16 @@ export default function Combo() {
             .catch((err) => {
                 console.log(err)
             })
+    }
+
+    async function selectDeviveTypes(){
+        await api.get(`types`)
+        .then((res) => {
+            dispatch(dadosType(res.data))
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
     }
 
     function equacionarDadosDevices(dadosDevice) {

@@ -34,6 +34,7 @@ export default function Mapa() {
     function dia() {
         let day = data.slice(8, 10)
         setDays(day)
+        console.log(day)
     }
 
     function mes() {

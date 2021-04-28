@@ -18,12 +18,13 @@ import { BsFillTrashFill, BsPencil } from 'react-icons/bs'
 import { FaPlusCircle } from 'react-icons/fa'
 import { IoMdArrowRoundBack, IoMdArrowRoundForward, IoMdAdd } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux'
-import { cadastroEvery, dadosDevice } from '../../store/Modulos/Devices/actions';
+
 
 
 
 
 export default function CadastroEvery() {
+    const [nameDevice, setNameDevice] = useState('');
     const [dispositivoEUI, setDispositivoEUI] = useState('');
     const [aplicacaoEUI, setAplicacaoEUI] = useState('');
     //const [tags, setTags] = useState([]);
@@ -34,26 +35,27 @@ export default function CadastroEvery() {
     const [cadasto, setCadastro] = useState()
     const dispatch = useDispatch()
 
-    const cadastroEveryNet = useSelector((state) => state.devicesState.cadastroEvery);
+    //const cadastroEveryNet = useSelector((state) => state.devicesState.cadastroEvery);
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
-    const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
-    const devices = useSelector((state) => state.devicesState.devices);
+    const dadosTypes = useSelector((state) => state.devicesState.dadosType);
+    //const devices = useSelector((state) => state.devicesState.devices);
 
 
     console.log(cadasto)
     console.log(checkActivation)
     function Cadastro() {
         const data = {
+            nameDevice: nameDevice,
             dispositivoEUI: dispositivoEUI,
             aplicacaoEUI: aplicacaoEUI,
             //tags: tags,
             netWorkSessionKey: netWorkSessionKey,
             applicationSessionKey: applicationSessionKey,
             activation: checkActivation,
-            cadastroVariavel: cadastroEveryNet
+            
         }
 
-        setCadastro(data)
+        
         
     }
 
@@ -80,6 +82,7 @@ export default function CadastroEvery() {
                         checkActivation === false
                             ?
                             <Form>
+                                <Form.Control value={nameDevice} onChange={(e) => setNameDevice(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Nome do Dispositivo"/>
                                 <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
                                 <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
                                 <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "OTAA" : "Activation ABP"}  style={{ marginBottom: '2%' }} />
@@ -87,6 +90,7 @@ export default function CadastroEvery() {
                             :
 
                             <Form>
+                                <Form.Control value={nameDevice} onChange={(e) => setNameDevice(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Nome do Dispositivo"/>
                                 <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
                                 <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
                                 <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "Activation OTAA" : "Activation ABP"} style={{ marginBottom: '2%' }} />
@@ -132,17 +136,18 @@ export default function CadastroEvery() {
                                 marginBottom:'2%'
 
                             }}>
-                            {selectedDevice === '' ? (devices.length > 0 ? devices[0].type : "") : devices.filter((dev) => dev.device === selectedDevice)[0].type}
+                            Type: {selectType} {dadosTypes === '' ? (dadosTypes.length > 0 ? dadosTypes[0] : "") : dadosTypes.filter((device) => device.device === dadosTypes)}
                         </Dropdown.Toggle>
                         <Dropdown.Menu style={{ width: '50%', marginBottom: '-38%' }}>
                             {
-                                devices.map((item) =>(
+                                
+                                dadosTypes.map((item) =>(
                                     <Dropdown.Item  eventKey={event => {
                                         if (event.key === "Click") {
-                                            setSelectType([...selectType, event.target.value])
+                                            setSelectType(dadosTypes)
                                             event.target.value = "";
                                         }
-                                    }}>{item.type}</Dropdown.Item>
+                                    }}>{item}</Dropdown.Item>
                                 ))   
                             }
                             <Link to="/cadastro/cadastrar-variaveis" className="nextCad" style={{textDecoration:'none'}}>

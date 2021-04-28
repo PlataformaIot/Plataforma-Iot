@@ -4,8 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import { MdRemoveCircleOutline } from 'react-icons/md';
 import { VscSymbolOperator } from 'react-icons/vsc';
-import { useSelector, useDispatch } from 'react-redux';
-import { cadastroEvery, dadosDevice } from '../../store/Modulos/Devices/actions';
+
+
 
 import './styles.css';
 import api from '../../Connections/api';
@@ -38,7 +38,7 @@ export default function CadastroVariaveis({ navigation }) {
     const [nome, setNome] = useState('');
 
 
-    const dispatch = useDispatch()
+    
 
 
 
@@ -110,18 +110,13 @@ export default function CadastroVariaveis({ navigation }) {
     console.log(cadastro)
 
     async function handleCadastro() {
-        /*  await form.cards.map((i) => {
-              const params = {
-                  name: nome,
-                  /* variables: i.variavel,
-                  bitInicial: i.bitInicial,
-                  bitFinal: i.bitFinal,
-                  operacao: operations,
-                  args: i.args */
-        //variavel: form
-        /* ordemByte: saveOrdemByte,
-        tamanhoByte: tamanhoByte, 
-    }
+         
+        const params = {
+            name: nome,
+            tamanhoByte: tamanhoByte,
+            ordemByte: saveOrdemByte,
+            variables: form,
+        }
 
     api.post(`types/`, params)
         .then(res => {
@@ -130,18 +125,6 @@ export default function CadastroVariaveis({ navigation }) {
         .catch((err) => {
             console.log('Erro: ' + err)
         })
-}) */
-
-        const params = {
-            name: nome,
-            tamanhoByte: tamanhoByte,
-            ordemByte: saveOrdemByte,
-            variavel: form,
-        }
-
-        setCadastro(params)
-
-
     }
 
 

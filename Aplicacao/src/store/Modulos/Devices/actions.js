@@ -12,10 +12,10 @@ export const selecionarDevice = evento => ({
     payload: evento
 })
 
-export const CADASTRO_EVERY =  "CADASTRO_EVERY";
+export const DADOS_TYPE =  "DADOS_TYPE";
 
-export const cadastroEvery = evento =>({
-    type: CADASTRO_EVERY,
+export const dadosType = evento =>({
+    type: DADOS_TYPE,
     payload: evento
 })
 
