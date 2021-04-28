@@ -28,32 +28,31 @@ export default function Graph() {
     function getVariable(){
         const lVar = (varsDevice.length > 0) ? (selectedVar === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar)) : []
         return (lVar.length > 0) ? lVar[0] : ''
-    }
+    }    
+    const [selectedVar, setSelectedVar] = useState("");
+    const variable = getVariable()
+
     function getDataGraph() {
-        var dadosGrafico = dadosDevice.map((dev) => ([ new Date(dev['ts']*1000), dev[selectedVar] ]) )
-        dadosGrafico.unshift(['t', nomeVars[selectedVar]])
+        var dadosGrafico = dadosDevice.map((dev) => ([ new Date(dev['ts']*1000), dev[variable] ]) )
+        dadosGrafico.unshift(['t', nomeVars[variable]])
         return dadosGrafico
     }
-    
-    const [selectedVar, setSelectedVar] = useState("");
     const [graph, setGraph] = useState(getDataGraph())
-    const variable = getVariable()
     const [dayCheck, setDayCheck] = useState(false);
-    const [grafFixo, setGrafFixo] = useState(false);
+    const [grafFixo, setGrafFixo] = useState(true);
 
 
     useEffect(() => {
+        const dadosGrafico = getDataGraph()
+        setGraph(dadosGrafico)
   }, [selectedVar])
 
     useEffect(() => {
-          const instervalId = setInterval(() => setGraph(getDataGraph()), grafFixo ? 120*1000 : 2500)
+        const instervalId = grafFixo ? 0 : setInterval(() => setGraph(getDataGraph()), 5000)
 
         return () => {
             //executa apenas quando o componente é destruido
             clearInterval(instervalId);
-            const dadosGrafico = getDataGraph()
-            setGraph(dadosGrafico)
-
         }
     }, [graph])
 
@@ -72,7 +71,6 @@ export default function Graph() {
 
     return (
         <Container fluid>
-            <p>{/*variable*/}</p>
             <p>{/*JSON.stringify( graph )*/}</p>
             {
                 <Col style={{marginBottom:'2%'}}>
@@ -83,18 +81,13 @@ export default function Graph() {
                     <Col lg="3"  style={{marginLeft:'2%'}}>
                         <Form.Control type="week" />
                         <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-
+                        <FormCheck defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '2%' }} />
                     </Col>
                     :
-                    <div>
                         <Col lg="3" style={{marginLeft:'2%'}}>
                             <Form.Control type="date" />
                             <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-
                         </Col>
-
-
-                    </div>
             }
 
             <Chart
@@ -105,20 +98,17 @@ export default function Graph() {
 
                 data={graph}
                 options={{
-                        timeline: {
-      colorByRowLabel: true,
-    },
                     legend: 'none',
-                    /*animation: {
+                    animation: {
                         duration: 1000,
                         easing: 'out',
                         startup: true
-                    },*/
+                    },
                     hAxis: {
                         title: 'Tempo'
                     },
                     vAxis: {
-                        title: textoVars[selectedVar]
+                        title: textoVars[variable]
                     },
                     series: {
                         2: { curveType: 'function' },
