@@ -5,37 +5,50 @@ import { FiSearch } from 'react-icons/fi'
 import { Chart } from 'react-google-charts'
 import { getpropsDevice } from '../../store/functions'
 
-const textoVars = { '': '',
+const nomeVars = { '': '',
     'temp': 'Temperatura',
     'hum': 'Umidade',
     'velocidade': 'Velocidade',
     'bateria': 'Tensão da bateria'}
+const textoVars = { '': '',
+    'temp': 'Temperatura [°C]',
+    'hum': 'Umidade [%]',
+    'velocidade': 'Velocidade [km/h]',
+    'bateria': 'Tensão da bateria [V]'}
 
 export default function Graph() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
     const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
     const propsDevice = getpropsDevice(dadosDevice);
-
-    const [selectedVar, setSelectedVar] = useState("");
-    const [dayCheck, setDayCheck] = useState(false);
-
-    const varsDevice = Object.keys(textoVars).filter((prop) => {
+    const varsDevice = Object.keys(nomeVars).filter((prop) => {
         return propsDevice.includes(prop)
     })
     //alert( JSON.stringify( varsDevice) )
 
+    function getVariable(){
+        const lVar = (varsDevice.length > 0) ? (selectedVar === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar)) : []
+        return (lVar.length > 0) ? lVar[0] : ''
+    }    
+    const [selectedVar, setSelectedVar] = useState("");
+    const variable = getVariable()
+
     function getDataGraph() {
-        var dadosGrafico = dadosDevice.map((dev) => ([dev['ts'],dev[selectedVar] ]) )
-        dadosGrafico.unshift(['x', textoVars[selectedVar]])
+        var dadosGrafico = dadosDevice.map((dev) => ([ new Date(dev['ts']*1000), dev[variable] ]) )
+        dadosGrafico.unshift(['t', nomeVars[variable]])
         return dadosGrafico
     }
     const [graph, setGraph] = useState(getDataGraph())
+    const [dayCheck, setDayCheck] = useState(false);
+    const [grafFixo, setGrafFixo] = useState(true);
 
-    var grafFixo = false
 
     useEffect(() => {
         const dadosGrafico = getDataGraph()
-        const instervalId = setInterval(() => setGraph(dadosGrafico), grafFixo ? 120*1000 : 2500)
+        setGraph(dadosGrafico)
+  }, [selectedVar])
+
+    useEffect(() => {
+        const instervalId = grafFixo ? 0 : setInterval(() => setGraph(getDataGraph()), 5000)
 
         return () => {
             //executa apenas quando o componente é destruido
@@ -47,7 +60,7 @@ export default function Graph() {
         return (
             <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar} onChange={(e) => setSelectedVar(e.target.value)} as="select">
                 {(varsDevice.length > 0) ? varsDevice.map((prop) => (
-                    <option key={textoVars[prop]} value={prop}>{textoVars[prop]}</option>
+                    <option key={nomeVars[prop]} value={prop}>{nomeVars[prop]}</option>
                 )) : (
                     <option>Nenhuma variável</option>
                 )}
@@ -68,28 +81,24 @@ export default function Graph() {
                     <Col lg="3"  style={{marginLeft:'2%'}}>
                         <Form.Control type="week" />
                         <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-
+                        <FormCheck defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '2%' }} />
                     </Col>
                     :
-                    <div>
                         <Col lg="3" style={{marginLeft:'2%'}}>
                             <Form.Control type="date" />
                             <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-
                         </Col>
-
-
-                    </div>
             }
 
             <Chart
                 width={'100%'}
                 height={'470px'}
                 chartType="LineChart"
-                loader={<div>Carregando</div>}
+                loader={<div>Carregando...</div>}
 
                 data={graph}
                 options={{
+                    legend: 'none',
                     animation: {
                         duration: 1000,
                         easing: 'out',
@@ -99,7 +108,7 @@ export default function Graph() {
                         title: 'Tempo'
                     },
                     vAxis: {
-                        title: textoVars[selectedVar]
+                        title: textoVars[variable]
                     },
                     series: {
                         2: { curveType: 'function' },
