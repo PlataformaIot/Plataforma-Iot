@@ -16,6 +16,8 @@ async def new_device (request: Request):
     body = await request.json ()
     device = json.dumps (body [0])
     dev_type = json.dumps (body [1])
+    print (body)
+    return Response ('DEBUG', 200)
   except:
     return Response ('Failed to parse request body.', 204)
 
@@ -84,9 +86,45 @@ async def get_devices (dev_addr: Optional [str] = None, dev_type: Optional [str]
 async def new_type (request: Request):
   try:
     body = await request.json ()
-    print (type (body ['variavel'] ['cards']))
-    print (body)
-    return body
+
+    var_data = body ['variables'] ['cards']
+
+    var_list = []
+    for v in var_data:
+      var_list.append (v ['variavel'])
+
+    var_count = len (var_list)
+
+    bytes_list = {}
+    for i in range (var_count):
+      bytes_list [var_list [i]] = []
+      bytes_list [var_list [i]].append (int (var_data [i] ['bitInicial']))
+      bytes_list [var_list [i]].append (int (var_data [i] ['bitFinal']))
+
+    operations = {}
+    for i in range (var_count):
+      operations [var_list [i]] = []
+      for o in var_data [i] ['operationsSelects']:
+        operations [var_list [i]].append (o ['operacao'])
+
+    args = {}
+    for i in range (var_count):
+      args [var_list [i]] = []
+      for a in var_data [i] ['operationsSelects']:
+        args [var_list [i]].append (int (a ['args']))
+
+    body = {
+      'name': body ['name'],
+      'variables': {
+        'var': var_list
+      },
+      'bytes': bytes_list,
+      'operations': operations,
+      'args': args,
+      'size': int (body ['tamanhoByte']),
+      'order': body ['ordemByte']
+    }
+
   except:
     return Response ('Failed to parse request body.', 204)
 
@@ -102,39 +140,6 @@ async def new_type (request: Request):
 
   except:
     return Response ('Failed to insert new type onto database.', 500)
-
-@router.post ('/types_debug')
-async def new_type_debug (request: Request):
-  body = await request.json ()
-
-  var_list = []
-  for i in body ['variables'] ['var']:
-    var_list.append (i)
-
-  bytes_list = {}
-  for i in range (len (var_list)):
-    bytes_list [var_list [i]] = body ['bytes'] [var_list [i]]
-
-  opr_list = {}
-  for i in range (len (var_list)):
-    opr_list [var_list [i]] = body ['operations'] [var_list [i]]
-
-  args_list = {}
-  for i in range (len (var_list)):
-    args_list [var_list [i]] = body ['args'] [var_list [i]]
-
-  response = {
-    'name': body ['name'],
-    'variables': {
-      'var': var_list
-    },
-    'bytes': bytes_list,
-    'operations': opr_list,
-    'args': args_list,
-    'size': body ['size'],
-    'order': body ['order']
-  }
-  return response
 
 @router.get ('/types')
 async def get_types (type_name: Optional [str] = None):
