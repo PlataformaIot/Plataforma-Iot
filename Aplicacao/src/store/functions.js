@@ -12,3 +12,19 @@ export function getDate(unixTimestamp){
 
     return humanDateFormat
 }
+
+export function getlatitude(num){
+    const hemis = (num < 0) ? 'S' : (num > 0) ? 'N' : '';
+    if(Math.abs(num) > 90)
+        return '???';
+    else
+        return parseFloat(Math.abs(num)).toFixed(3)+'° '+hemis
+}
+
+export function getlongitude(num){
+    const hemis = (num < 0) ? 'O' : (num > 0) ? 'L' : '';
+    if(Math.abs(num) > 180)
+        return '???';
+    else
+        return parseFloat(Math.abs(num)).toFixed(3)+'° '+hemis
+}

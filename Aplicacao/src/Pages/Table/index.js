@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Container, Table, Button, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { IoMdArrowRoundBack } from 'react-icons/io';
-import {getDate, getpropsDevice} from '../../store/functions'
+import {getDate, getpropsDevice, getlatitude, getlongitude} from '../../store/functions'
 
 
 export default function Tabela() {
@@ -42,8 +42,8 @@ export default function Tabela() {
                                         <td>{getDate(dev.ts)}</td>
                                         {propsDevice.includes('temp')       ? <td>{parseFloat(dev.temp).toFixed(1)}°C</td>:""}
                                         {propsDevice.includes('hum')        ? <td>{parseFloat(dev.hum).toFixed(1)}%</td>:""}
-                                        {propsDevice.includes('lat')        ? <td>{parseFloat(dev.lat).toFixed(3)}°</td>:""}
-                                        {propsDevice.includes('long')       ? <td>{parseFloat(dev.long).toFixed(3)}°</td>:""}
+                                        {propsDevice.includes('lat')        ? <td>{getlatitude(dev.lat)}</td>:""}
+                                        {propsDevice.includes('long')       ? <td>{getlongitude(dev.long)}</td>:""}
                                         {propsDevice.includes('velocidade') ? <td>{dev.velocidade} km/h</td>:""}
                             {propsDevice.includes('bateria')    ? <td>{parseFloat(dev.bateria).toFixed(2)}V</td>:""}
                                     </tr>
