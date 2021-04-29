@@ -15,15 +15,22 @@ export default function Mapa() {
         return (selDevice.length > 0) ? selDevice[0][prop] ? selDevice[0][prop] : 0.0 : []
     }
 
-    const lastDate = new Date( verificaLista(dadosDevice, "ts") * 1000 )
-    //alert(getDate(lastDate/1000))
-    
-    const [days, setDays] = useState([ lastDate.getDate() ]);
-    const [month, setMonth] = useState([ lastDate.getMonth()+1 ]);
-    const [year, setYear] = useState([ lastDate.getFullYear() ]);
-    const [data, setData] = useState([year+'-'+(month<10 ? ('0'+month):month )+'-'+days]);
+   
+    const [days, setDays] = useState([]);
+    const [month, setMonth] = useState([]);
+    const [year, setYear] = useState([]);
+    const [data, setData] = useState([]);
     const [idDevice, setIdDevice] = useState([]);
     
+    useEffect(() => {
+        const lastDate = new Date( verificaLista(dadosDevice, "ts") * 1000 )
+
+        const da = lastDate.getDate()
+        const mo = lastDate.getMonth()+1
+        const yr = lastDate.getFullYear()
+        setData(yr+'-'+(mo<10 ? ('0'+mo):mo )+'-'+da)
+    }, [dadosDevice])
+
     useEffect(() => {
         dia()
         mes()
@@ -53,10 +60,6 @@ export default function Mapa() {
     }
 
 
-
-
-
-
     return (
         <div>
             <Row>
@@ -66,6 +69,7 @@ export default function Mapa() {
 
             </Row>
             <div className="mapStyle">
+                <p>{/*`http://161.97.133.47:5000/path/${idDevice}/day/${days}/${month}/${year}/`*/}</p>
                 <iframe src={`http://161.97.133.47:5000/path/${idDevice}/day/${days}/${month}/${year}`} width="1150" height="450" frameBorder="0" />
             </div>
         </div>
