@@ -15,6 +15,11 @@ const textoVars = { '': '',
     'hum': 'Umidade [%]',
     'velocidade': 'Velocidade [km/h]',
     'bateria': 'Tensão da bateria [V]'}
+const colorVars = { '': 'gray',
+    'temp': 'red',
+    'hum': 'gray',
+    'velocidade': 'gold',
+    'bateria': 'green'}
 
 export default function Graph() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
@@ -25,16 +30,22 @@ export default function Graph() {
     })
     //alert( JSON.stringify( varsDevice) )
 
-    function getVariable(){
-        const lVar = (varsDevice.length > 0) ? (selectedVar === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar)) : []
+    function getVar1(){
+        const lVar = (varsDevice.length > 0) ? (selectedVar1 === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar1)) : []
         return (lVar.length > 0) ? lVar[0] : ''
     }    
-    const [selectedVar, setSelectedVar] = useState("");
-    const variable = getVariable()
+    function getVar2(){
+        const lVar = (varsDevice.length > 0) ? (selectedVar2 === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar2)) : []
+        return (lVar.length > 0) ? lVar[0] : ''
+    }    
+    const [selectedVar1, setSelectedVar1] = useState(varsDevice[0]);
+    const [selectedVar2, setSelectedVar2] = useState(varsDevice[1]);
+    const var1 = getVar1()
+    const var2 = getVar2()
 
     function getDataGraph() {
-        var dadosGrafico = dadosDevice.map((dev) => ([ new Date(dev['ts']*1000), dev[variable] ]) )
-        dadosGrafico.unshift(['t', nomeVars[variable]])
+        var dadosGrafico = dadosDevice.map((dev) => ([ new Date(dev['ts']*1000), dev[var1], dev[var2] ]) )
+        dadosGrafico.unshift(['t', nomeVars[var1], nomeVars[var2]])
         return dadosGrafico
     }
     const [graph, setGraph] = useState(getDataGraph())
@@ -45,7 +56,7 @@ export default function Graph() {
     useEffect(() => {
         const dadosGrafico = getDataGraph()
         setGraph(dadosGrafico)
-  }, [selectedVar])
+  }, [selectedVar1,selectedVar2])
 
     useEffect(() => {
         const instervalId = grafFixo ? 0 : setInterval(() => setGraph(getDataGraph()), 5000)
@@ -56,9 +67,20 @@ export default function Graph() {
         }
     }, [graph])
 
-    function drawDropdownVar() {
+    function drawDropdownVar1() {
         return (
-            <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar} onChange={(e) => setSelectedVar(e.target.value)} as="select">
+            <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar1} onChange={(e) => setSelectedVar1(e.target.value)} as="select">
+                {(varsDevice.length > 0) ? varsDevice.map((prop) => (
+                    <option key={nomeVars[prop]} value={prop}>{nomeVars[prop]}</option>
+                )) : (
+                    <option>Nenhuma variável</option>
+                )}
+            </Form.Control>
+        )
+    }
+    function drawDropdownVar2() {
+        return (
+            <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar2} onChange={(e) => setSelectedVar2(e.target.value)} as="select">
                 {(varsDevice.length > 0) ? varsDevice.map((prop) => (
                     <option key={nomeVars[prop]} value={prop}>{nomeVars[prop]}</option>
                 )) : (
@@ -74,7 +96,8 @@ export default function Graph() {
             <p>{/*JSON.stringify( graph )*/}</p>
             {
                 <Col style={{marginBottom:'2%'}}>
-                    {drawDropdownVar()}
+                    {drawDropdownVar1()}
+                    {drawDropdownVar2()}
                 </Col>
             }{
                 dayCheck === false ?
@@ -92,7 +115,7 @@ export default function Graph() {
 
             <Chart
                 width={'100%'}
-                height={'470px'}
+                height={'500px'}
                 chartType="LineChart"
                 loader={<div>Carregando...</div>}
 
@@ -104,20 +127,19 @@ export default function Graph() {
                         easing: 'out',
                         startup: true
                     },
-                    hAxis: {
-                        title: 'Tempo'
-                    },
-                    vAxis: {
-                        title: textoVars[variable]
-                    },
                     series: {
-                        2: { curveType: 'function' },
-
+                        0: { curveType: 'function', targetAxisIndex: 0},
+                        1: { curveType: 'function', targetAxisIndex: 1},
                     },
+                    hAxis: { title: 'Tempo' },
+                    vAxes: {
+                        0: {title: textoVars[var1]},
+                        1: {title: textoVars[var2]}
+                    },
+                    colors: [colorVars[var1],colorVars[var2]],
                 }}
                 rootProps={{ 'data-testid': '1' }}
             />
-
 
         </Container>
     )
