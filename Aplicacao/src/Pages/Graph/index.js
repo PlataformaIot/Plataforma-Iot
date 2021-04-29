@@ -99,8 +99,8 @@ export default function Graph() {
 
     return (
         <Container fluid>
-            <p>{/*JSON.stringify( graph )*/}</p>
-            <div style={{ display: 'flex', justifyContent: 'center', width: '170%' }}>
+            {/*<p>{JSON.stringify( graph )}</p>*/}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '200%' }}>
                 <Col>
 
                     {
@@ -116,21 +116,27 @@ export default function Graph() {
                 <Col>
                     {
                         dayCheck === false ?
-
-
-                            <Col lg="3" style={{ display: 'flex', justifyContent: 'center', marginLeft: '-56%' }}>
-                                <Form.Control type="week" />
-                                <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '6%', justifyContent:'center' }} />
-                                <FormCheck defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '2%' }} />
-
-                            </Col>
+                            <Row>
+                                <Col lg="3" style={{ display: 'flex', marginLeft: '-63%' }}>
+                                    <Form.Control  type="week" />
+                                <Col lg="3" style={{ display: 'flex', marginLeft: '-2%' }}>
+                                    <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '6%', justifyContent:'center' }} />
+                                </Col>
+                                <Col lg="3" style={{ display: 'flex', marginLeft: '-2%' }}>
+                                    <FormCheck defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '82%' }} />
+                                    </Col>
+                                </Col>
+                            </Row>
 
                             :
                             <Row>
-
-                                <Col lg="3" style={{ displya: 'flex', marginLeft: '-63%' }}>
+                                <Col lg="3" style={{ display: 'flex', marginLeft: '-63%' }}>
                                     <Form.Control type="date" />
-                                    <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
+                                <Col lg="3" style={{ display: 'flex', marginLeft: '-2%' }}>
+                                    <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '6%' }} />
+                                </Col>
+                                <Col lg="3" style={{ display: 'flex', marginLeft: '-2%' }}>
+                                    </Col>
                                 </Col>
                             </Row>
                     }
