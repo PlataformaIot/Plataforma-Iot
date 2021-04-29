@@ -34,6 +34,7 @@ export default function CadastroEvery() {
     const [checkActivation, setCheckActivation] = useState(false);
     const [selectType, setSelectType] = useState('');
     const [deviceAddr, setDeviceAddr] = useState('');
+    const [appKey, setAppKey] = useState(null);
     const [cadasto, setCadastro] = useState()
     const dispatch = useDispatch()
 
@@ -43,9 +44,14 @@ export default function CadastroEvery() {
     //const devices = useSelector((state) => state.devicesState.devices);
 
 
+
     console.log(cadasto)
     console.log(checkActivation)
+
     async function Cadastro() {
+        if(checkActivation === false){
+            setAppKey(null)
+        }
         const data = {
             name: nameDevice,
             dev_addr: deviceAddr,
@@ -55,20 +61,23 @@ export default function CadastroEvery() {
             nwkskey: netWorkSessionKey,
             appskey: applicationSessionKey,
             activation: checkActivation === false ? 'ABP' : 'OTAA',
-            type: selectType
+            type: selectType,
+            app_key: appKey
 
         }
+        
 
-        await api.post('devices/', data)
+        /* await api.post('devices/', data)
         .then((res) => {
             console.log(res.data)
         })
         .catch((err) => {
             console.log(err)
-        })
-        //setCadastro(data)
+        }) */
+        setCadastro(data)
 
     }
+
 
     console.log(selectType)
 
@@ -97,17 +106,22 @@ export default function CadastroEvery() {
                                 <Form.Control value={deviceAddr} onChange={(e) => setDeviceAddr(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Device Address" />
                                 <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
                                 <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
+                                <Form.Control value={netWorkSessionKey} onChange={(e) => setNetWorkSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Network session key" />
+                                <Form.Control value={applicationSessionKey} onChange={(e) => setApplicationiSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Application session key" />
                                 <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "OTAA" : "Activation ABP"} style={{ marginBottom: '2%' }} />
                             </Form>
                             :
 
                             <Form>
                                 <Form.Control value={nameDevice} onChange={(e) => setNameDevice(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Nome do Dispositivo" />
+                                <Form.Control value={deviceAddr} onChange={(e) => setDeviceAddr(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Device Address" />
                                 <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
                                 <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
-                                <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "Activation OTAA" : "Activation ABP"} style={{ marginBottom: '2%' }} />
                                 <Form.Control value={netWorkSessionKey} onChange={(e) => setNetWorkSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Network session key" />
                                 <Form.Control value={applicationSessionKey} onChange={(e) => setApplicationiSessionKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Application session key" />
+                                <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "Activation OTAA" : "Activation ABP"} style={{ marginBottom: '2%' }} />
+                                <Form.Control value={appKey} onChange={(e) => setAppKey(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Application Key" />
+                                
                             </Form>
                     }
 
