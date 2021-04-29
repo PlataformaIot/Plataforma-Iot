@@ -97,7 +97,7 @@ export default function Home() {
             <div>
                 <Jumbotron>
                     {/* <h2 style={{ textAlign: 'center' }}>Informações do Dispositivo</h2> */}
-                    <CardDeck style={{ marginBottom: '2%' }}>
+                    <CardDeck style={{ textAlign: 'center', marginBottom: '2%' }}>
                         {propsDevice.includes('bateria') ? (
                             <Card bg="success" text='light'>
                                 <Card.Body>
@@ -128,7 +128,8 @@ export default function Home() {
                                 </Card.Body>
                             </Card>
                         ) : ""}
-                        {propsDevice.includes('velocidade') ? (
+                        {propsDevice.includes('velocidade') ? ( 
+                            propsDevice.includes('bateria') ?(
                             <Card bg="warning" text='black'>
                                 <Card.Body>
                                     <Card.Title>Velocidade</Card.Title>
@@ -137,7 +138,25 @@ export default function Home() {
                                     </Card.Text>
                                 </Card.Body>
                             </Card>
-                        ) : ""}                </CardDeck>
+                        ) : (
+                            <Container >
+                            <Row>
+                            <Col sm={12} style={{ marginLeft: '290px'}}>  
+                            <Card bg="warning" text='black'>
+                                <Card.Body>
+                                    <Card.Title>Velocidade</Card.Title>
+                                    <Card.Text>
+                                        <h1><strong>{verificaLista(dadosDevice, "velocidade")}km/h</strong></h1>
+                                    </Card.Text>
+                                </Card.Body>
+                            </Card>
+                            </Col>
+                            </Row>
+                            </Container>
+                        )
+
+                        ) : ""}
+                    </CardDeck>
                 </Jumbotron>
                 </div>
         )
