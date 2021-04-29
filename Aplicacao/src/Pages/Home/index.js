@@ -28,8 +28,8 @@ export default function Home() {
 
 
     return (
-        <Container fluid style={{ margin: '40px 0px', marginBottom: '20%' }}>
-            <Row lg={true}>
+        <Container fluid style={{ marginBottom: '20%' }}>
+            <Row >
                 <Col lg="12">
                     <Info />
                 </Col>
