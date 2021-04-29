@@ -14,10 +14,34 @@ router = APIRouter ()
 async def new_device (request: Request):
   try:
     body = await request.json ()
-    device = json.dumps (body [0])
-    dev_type = json.dumps (body [1])
-    print (body)
-    return Response ('DEBUG', 200)
+
+    everynet_payload = {
+      'dev_eui': body ['dev_eui'],
+      'app_eui': body ['app_eui'],
+      'tags': ['Renato', 'Fantasma'],
+      'activation': body ['activation'],
+      'encryption': 'NS',
+      'dev_addr': body ['dev_addr'],
+      'app_key': body ['app_key'],
+      'nwkskey': body ['nwkskey'],
+      'appskey': body ['appskey'],
+      'dev_class': 'A',
+      'counters_size': 4,
+      'adr': {
+        'tx_power': None,
+        'datarate': None,
+        'mode': 'on'
+      },
+      'band': 'LA915-928A'
+    }
+
+    database_payload = {
+      'device': body ['dev_addr'],
+      'type': body ['type'],
+      'name': body ['name'],
+      'status': 1
+    }
+
   except:
     return Response ('Failed to parse request body.', 204)
 
@@ -34,7 +58,7 @@ async def new_device (request: Request):
     response = requests.post ('https://ns.atc.everynet.io/api/v1.0/devices',
       params = {'access_token': f'{token}'},
       headers = {'accept': 'application/json', 'Content-Type': 'application/json'},
-      data = device)
+      data = json.dumps (everynet_payload))
 
   except HTTPError as http_err:
     return {'HTTP ERROR': f'{http_err}'}
@@ -43,21 +67,15 @@ async def new_device (request: Request):
   except Exception as err:
     return {'ERROR': f'{err}'}
 
-  new_dev = {
-    'device': body [0] ['dev_addr'],
-    'type': body [1] ['dev_type']
-  }
-
   try:
-    collection_devices = db.get_collection ('devices')
-    redundant_device = collection.find_one ({'device': new_dev ['device']}, {'device': True, '_id': False})
+    collection_devices = MongodbConnector ().get_collection ('devices')
+    redundant_device = collection_devices.find_one ({'device': database_payload ['device']}, {'device': True, '_id': False})
 
     if not redundant_device:
-      collection_devices.insert_one (new_dev)
+      collection_devices.insert_one (database_payload)
       return Response ('New device registered successfully.', 201)
     else:
       return Response ('Device already registered.', 400)
-
   except:
     return Response ('Failed to insert new device onto database.', 500)
 
@@ -80,7 +98,6 @@ async def get_devices (dev_addr: Optional [str] = None, dev_type: Optional [str]
     else:
       response = list (collection.find (projection = {'_id': False}))
 
-  print ('sending response...')
   return response
 
 @router.post ('/types')
