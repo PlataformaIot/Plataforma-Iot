@@ -5,21 +5,27 @@ import { FiSearch } from 'react-icons/fi'
 import { Chart } from 'react-google-charts'
 import { getpropsDevice } from '../../store/functions'
 
-const nomeVars = { '': '',
+const nomeVars = {
+    '': '',
     'temp': 'Temperatura',
     'hum': 'Umidade',
     'velocidade': 'Velocidade',
-    'bateria': 'Tensão da bateria'}
-const textoVars = { '': '',
+    'bateria': 'Tensão da bateria'
+}
+const textoVars = {
+    '': '',
     'temp': 'Temperatura [°C]',
     'hum': 'Umidade [%]',
     'velocidade': 'Velocidade [km/h]',
-    'bateria': 'Tensão da bateria [V]'}
-const colorVars = { '': 'gray',
+    'bateria': 'Tensão da bateria [V]'
+}
+const colorVars = {
+    '': 'gray',
     'temp': 'red',
     'hum': 'gray',
     'velocidade': 'gold',
-    'bateria': 'green'}
+    'bateria': 'green'
+}
 
 export default function Graph() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
@@ -30,21 +36,21 @@ export default function Graph() {
     })
     //alert( JSON.stringify( varsDevice) )
 
-    function getVar1(){
+    function getVar1() {
         const lVar = (varsDevice.length > 0) ? (selectedVar1 === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar1)) : []
         return (lVar.length > 0) ? lVar[0] : ''
-    }    
-    function getVar2(){
+    }
+    function getVar2() {
         const lVar = (varsDevice.length > 0) ? (selectedVar2 === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar2)) : []
         return (lVar.length > 0) ? lVar[0] : ''
-    }    
+    }
     const [selectedVar1, setSelectedVar1] = useState(varsDevice[0]);
     const [selectedVar2, setSelectedVar2] = useState(varsDevice[1]);
     const var1 = getVar1()
     const var2 = getVar2()
 
     function getDataGraph() {
-        var dadosGrafico = dadosDevice.map((dev) => ([ new Date(dev['ts']*1000), dev[var1], dev[var2] ]) )
+        var dadosGrafico = dadosDevice.map((dev) => ([new Date(dev['ts'] * 1000), dev[var1], dev[var2]]))
         dadosGrafico.unshift(['t', nomeVars[var1], nomeVars[var2]])
         return dadosGrafico
     }
@@ -56,7 +62,7 @@ export default function Graph() {
     useEffect(() => {
         const dadosGrafico = getDataGraph()
         setGraph(dadosGrafico)
-  }, [selectedVar1,selectedVar2])
+    }, [selectedVar1, selectedVar2])
 
     useEffect(() => {
         const instervalId = grafFixo ? 0 : setInterval(() => setGraph(getDataGraph()), 5000)
@@ -94,24 +100,42 @@ export default function Graph() {
     return (
         <Container fluid>
             <p>{/*JSON.stringify( graph )*/}</p>
-            {
-                <Col style={{marginBottom:'2%'}}>
-                    {drawDropdownVar1()}
-                    {drawDropdownVar2()}
+            <div style={{ display: 'flex', justifyContent: 'center', width: '170%' }}>
+                <Col>
+
+                    {
+                        <div>
+                            <Col style={{ display: 'flex' }}>
+                                {drawDropdownVar1()}
+
+                                {drawDropdownVar2()}
+                            </Col>
+                        </div>
+                    }
                 </Col>
-            }{
-                dayCheck === false ?
-                    <Col lg="3"  style={{marginLeft:'2%'}}>
-                        <Form.Control type="week" />
-                        <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-                        <FormCheck defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '2%' }} />
-                    </Col>
-                    :
-                        <Col lg="3" style={{marginLeft:'2%'}}>
-                            <Form.Control type="date" />
-                            <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
-                        </Col>
-            }
+                <Col>
+                    {
+                        dayCheck === false ?
+
+
+                            <Col lg="3" style={{ display: 'flex', justifyContent: 'center', marginLeft: '-56%' }}>
+                                <Form.Control type="week" />
+                                <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '6%', justifyContent:'center' }} />
+                                <FormCheck defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '2%' }} />
+
+                            </Col>
+
+                            :
+                            <Row>
+
+                                <Col lg="3" style={{ displya: 'flex', marginLeft: '-63%' }}>
+                                    <Form.Control type="date" />
+                                    <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%' }} />
+                                </Col>
+                            </Row>
+                    }
+                </Col>
+            </div>
 
             <Chart
                 width={'100%'}
@@ -128,15 +152,15 @@ export default function Graph() {
                         startup: true
                     },
                     series: {
-                        0: { curveType: 'function', targetAxisIndex: 0},
-                        1: { curveType: 'function', targetAxisIndex: 1},
+                        0: { curveType: 'function', targetAxisIndex: 0 },
+                        1: { curveType: 'function', targetAxisIndex: 1 },
                     },
                     hAxis: { title: 'Tempo' },
                     vAxes: {
-                        0: {title: textoVars[var1]},
-                        1: {title: textoVars[var2]}
+                        0: { title: textoVars[var1] },
+                        1: { title: textoVars[var2] }
                     },
-                    colors: [colorVars[var1],colorVars[var2]],
+                    colors: [colorVars[var1], colorVars[var2]],
                 }}
                 rootProps={{ 'data-testid': '1' }}
             />

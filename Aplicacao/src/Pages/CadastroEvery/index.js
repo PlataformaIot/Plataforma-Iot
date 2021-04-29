@@ -18,6 +18,7 @@ import { BsFillTrashFill, BsPencil } from 'react-icons/bs'
 import { FaPlusCircle } from 'react-icons/fa'
 import { IoMdArrowRoundBack, IoMdArrowRoundForward, IoMdAdd } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux'
+import api from '../../Connections/api';
 
 
 
@@ -32,6 +33,7 @@ export default function CadastroEvery() {
     const [applicationSessionKey, setApplicationiSessionKey] = useState('');
     const [checkActivation, setCheckActivation] = useState(false);
     const [selectType, setSelectType] = useState('');
+    const [deviceAddr, setDeviceAddr] = useState('');
     const [cadasto, setCadastro] = useState()
     const dispatch = useDispatch()
 
@@ -43,20 +45,29 @@ export default function CadastroEvery() {
 
     console.log(cadasto)
     console.log(checkActivation)
-    function Cadastro() {
+    async function Cadastro() {
         const data = {
-            nameDevice: nameDevice,
-            dispositivoEUI: dispositivoEUI,
-            aplicacaoEUI: aplicacaoEUI,
+            name: nameDevice,
+            dev_addr: deviceAddr,
+            dev_eui: dispositivoEUI,
+            app_eui: aplicacaoEUI,
             //tags: tags,
-            netWorkSessionKey: netWorkSessionKey,
-            applicationSessionKey: applicationSessionKey,
-            activation: checkActivation,
-            
+            nwkskey: netWorkSessionKey,
+            appskey: applicationSessionKey,
+            activation: checkActivation === false ? 'ABP' : 'OTAA',
+            type: selectType
+
         }
 
-        
-        
+        await api.post('devices/', data)
+        .then((res) => {
+            console.log(res.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        //setCadastro(data)
+
     }
 
     console.log(selectType)
@@ -82,15 +93,16 @@ export default function CadastroEvery() {
                         checkActivation === false
                             ?
                             <Form>
-                                <Form.Control value={nameDevice} onChange={(e) => setNameDevice(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Nome do Dispositivo"/>
+                                <Form.Control value={nameDevice} onChange={(e) => setNameDevice(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Nome do Dispositivo" />
+                                <Form.Control value={deviceAddr} onChange={(e) => setDeviceAddr(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Device Address" />
                                 <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
                                 <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
-                                <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "OTAA" : "Activation ABP"}  style={{ marginBottom: '2%' }} />
+                                <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "OTAA" : "Activation ABP"} style={{ marginBottom: '2%' }} />
                             </Form>
                             :
 
                             <Form>
-                                <Form.Control value={nameDevice} onChange={(e) => setNameDevice(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Nome do Dispositivo"/>
+                                <Form.Control value={nameDevice} onChange={(e) => setNameDevice(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Nome do Dispositivo" />
                                 <Form.Control value={dispositivoEUI} onChange={(e) => setDispositivoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Disposito EUI" />
                                 <Form.Control value={aplicacaoEUI} onChange={(e) => setAplicacaoEUI(e.target.value)} style={{ marginBottom: '2%' }} placeholder="Aplicação EUI" />
                                 <Form.Check value={checkActivation} onChange={(e) => setCheckActivation(e.target.checked)} type="switch" id="custom-switch" label={checkActivation === true ? "Activation OTAA" : "Activation ABP"} style={{ marginBottom: '2%' }} />
@@ -123,40 +135,35 @@ export default function CadastroEvery() {
                                 </li>
                             ))}
                         </ul> */}
+
                     <Form.Label>Tipo do Dispositivo (Utilizado para definir tipos de dados a receber):</Form.Label>
-                    <Dropdown>
-                        <Dropdown.Toggle
-                            id="dropdown-custom-components"
-                            style={{
-                                width: '50%',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                justifyContent: 'space-between',
-                                marginBottom:'2%'
-
-                            }}>
-                            Type: {selectType} {dadosTypes === '' ? (dadosTypes.length > 0 ? dadosTypes[0] : "") : dadosTypes.filter((device) => device.device === dadosTypes)}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu style={{ width: '50%', marginBottom: '-38%' }}>
-                            {
-                                
-                                dadosTypes.map((item) =>(
-                                    <Dropdown.Item  eventKey={event => {
-                                        if (event.key === "Click") {
-                                            setSelectType(dadosTypes)
-                                            event.target.value = "";
+                    <div style={{display:'flex', alignItems:'center'}}>
+                       
+                            <Form style={{margin:'1px 1px', padding:'8px 2px', width:'100%'}}>
+                                <Form.Group controlId="exampleForm.SelectCustom">
+                                    <Form.Label>Tipo</Form.Label>
+                                    <Form.Control as="select" custom onChange={(e) => setSelectType(e.target.value)}>
+                                        {
+                                     dadosTypes.length && (dadosTypes.length > 0) ? dadosTypes.map((item) => (
+                                                <option key={item} value={item}>{item}</option>
+                                            )) :
+                                            <option>Nenhum type cadastrado</option>
                                         }
-                                    }}>{item}</Dropdown.Item>
-                                ))   
-                            }
-                            <Link to="/cadastro/cadastrar-variaveis" className="nextCad" style={{textDecoration:'none'}}>
-                                <Button  variant="success"><IoMdAdd size={30} /> Cadastrar Novo Tipo</Button>
-                            </Link>
-                        </Dropdown.Menu>
-                    </Dropdown>
 
-                            <Button  onClick={Cadastro} variant="success">Cadastrar Dispositivo</Button>
+                                    </Form.Control>
+                                </Form.Group>
+                            </Form>
+                            <Link to="/cadastro/cadastrar-variaveis" style={{ textDecoration: 'none', marginTop:'2%' }}>
+                                <Button variant="success"><IoMdAdd size={28} /></Button>
+                            </Link>
+                        
+                       
+
+                        
+                    </div>
+
+
+                    <Button onClick={Cadastro} variant="success">Cadastrar Dispositivo</Button>
                 </Col>
 
 
