@@ -66,20 +66,21 @@ async def get_devices (dev_addr: Optional [str] = None, dev_type: Optional [str]
   collection = MongodbConnector ().get_collection ('devices')
 
   if dev_addr:
-    if status:
-      response = collection.find_one ({'device': dev_addr, 'status': status}, {'_id': False})
-    else:
-      response = collection.find_one ({'device': dev_addr}, {'_id': False})
+    response = collection.find_one ({'device': dev_addr}, {'_id': False})
 
   elif dev_type:
-    if status:
+    if status is not None:
       response = list (collection.find ({'type': dev_type, 'status': status}, {'_id': False}))
     else:
       response = list (collection.find ({'type': dev_type}, {'_id': False}))
 
   else:
-    response = list (collection.find (projection = {'_id': False}))
+    if status is not None:
+      response = list (collection.find ({'status': status}, {'_id': False}))
+    else:
+      response = list (collection.find (projection = {'_id': False}))
 
+  print ('sending response...')
   return response
 
 @router.post ('/types')
