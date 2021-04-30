@@ -1,9 +1,10 @@
+import api from '../../Connections/api';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Container, Form, Row, Col, Button, FormCheck } from 'react-bootstrap';
-import { FiSearch } from 'react-icons/fi'
 import { Chart } from 'react-google-charts'
 import { getpropsDevice } from '../../store/functions'
+
 
 const nomeVars = {
     '': '',
@@ -27,8 +28,10 @@ const colorVars = {
     'bateria': 'green'
 }
 
+
 export default function Graph() {
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice);
+    const devices = useSelector((state) => state.devicesState.devices)
     const dadosDevice = useSelector((state) => state.devicesState.dadosDevice);
     const propsDevice = getpropsDevice(dadosDevice);
     const varsDevice = Object.keys(nomeVars).filter((prop) => {
@@ -49,23 +52,40 @@ export default function Graph() {
     const var1 = getVar1()
     const var2 = getVar2()
 
-    function getDataGraph() {
-        var dadosGrafico = dadosDevice.map((dev) => ([new Date(dev['ts'] * 1000), dev[var1], dev[var2]]))
-        dadosGrafico.unshift(['t', nomeVars[var1], nomeVars[var2]])
-        return dadosGrafico
-    }
-    const [graph, setGraph] = useState(getDataGraph())
+    const [dadosGrafico, setDadosGrafico] = useState(dadosDevice)
+    const [graph, setGraph] = useState([])
     const [dayCheck, setDayCheck] = useState(false);
     const [grafFixo, setGrafFixo] = useState(true);
 
+    async function selectData() {
+        const id = (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : ""
+        //await api.get(`data?dev_addr=${id}&from_date=29/04/2021&to_date=29/04/2021`)
+        await api.get(`data?dev_addr=${id}&limit=1000`)
+            .then((res) => {
+                setDadosGrafico(((res.data)));
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+    function getPointsGraph() {
+        var pointsGraph = dadosGrafico.map((dev) => ([new Date(dev['ts'] * 1000), dev[var1], dev[var2]]))
+        pointsGraph.unshift(['t', nomeVars[var1], nomeVars[var2]])
+        return pointsGraph
+    }
 
     useEffect(() => {
-        const dadosGrafico = getDataGraph()
-        setGraph(dadosGrafico)
-    }, [selectedVar1, selectedVar2])
+        selectData()
+    }, [selectedDevice])
 
     useEffect(() => {
-        const instervalId = grafFixo ? 0 : setInterval(() => setGraph(getDataGraph()), 5000)
+        const pointsGraph = getPointsGraph()
+        setGraph(pointsGraph)
+    }, [selectedVar1, selectedVar2, dadosGrafico])
+
+    useEffect(() => {
+        const instervalId = grafFixo ? 0 : setInterval(() => setGraph(getPointsGraph()), 5000)
 
         return () => {
             //executa apenas quando o componente é destruido
@@ -100,49 +120,39 @@ export default function Graph() {
     return (
         <Container fluid>
             {/*<p>{JSON.stringify( graph )}</p>*/}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '200%' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
                 <Col>
-
-                    {
+                {
+                    <Col lg="12" style={{ display: 'flex' , marginLeft: '10%'}}>
+                        {drawDropdownVar1()}
+                        {drawDropdownVar2()}
+                        {
+                    dayCheck === false ?
                         <div>
-                            <Col style={{ display: 'flex' }}>
-                                {drawDropdownVar1()}
-
-                                {drawDropdownVar2()}
-                            </Col>
+                        <div style={{ display: 'flex' }}>
+                        <Form.Control style={{ width: '30%', marginLeft: '12%' }} type="week" />
+                        <FormCheck  defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '6%' }} />
+                        </div>
+                        <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '6%'}} />
+                        </div>
+                        :
+                        <div>
+                        <Form.Control style={{ width: '100%', marginLeft: '22%' }} type="date" />
+                        <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '15%' }} />
                         </div>
                     }
-                </Col>
-                <Col>
-                    {
-                        dayCheck === false ?
-                            <Row>
-                                <Col lg="3" style={{ display: 'flex', marginLeft: '-63%' }}>
-                                    <Form.Control  type="week" />
-                                <Col lg="3" style={{ display: 'flex', marginLeft: '-2%' }}>
-                                    <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '6%', justifyContent:'center' }} />
-                                </Col>
-                                <Col lg="3" style={{ display: 'flex', marginLeft: '-2%' }}>
-                                    <FormCheck defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '82%' }} />
-                                    </Col>
-                                </Col>
-                            </Row>
-
-                            :
-                            <Row>
-                                <Col lg="3" style={{ display: 'flex', marginLeft: '-63%' }}>
-                                    <Form.Control type="date" />
-                                <Col lg="3" style={{ display: 'flex', marginLeft: '-2%' }}>
-                                    <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '6%' }} />
-                                </Col>
-                                <Col lg="3" style={{ display: 'flex', marginLeft: '-2%' }}>
-                                    </Col>
-                                </Col>
-                            </Row>
-                    }
+                    </Col>
+                }
                 </Col>
             </div>
+            {
+                (dadosGrafico.length > 0) ? drawGraph() :
+                <p>Baixando Dados...</p>}
+        </Container>
+    )
 
+    function drawGraph() {
+        return (
             <Chart
                 width={'100%'}
                 height={'500px'}
@@ -171,6 +181,7 @@ export default function Graph() {
                 rootProps={{ 'data-testid': '1' }}
             />
 
-        </Container>
-    )
+        )
+    }
+
 }
