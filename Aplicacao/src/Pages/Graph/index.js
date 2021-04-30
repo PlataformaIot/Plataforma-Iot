@@ -56,11 +56,12 @@ export default function Graph() {
     const [graph, setGraph] = useState([])
     const [dayCheck, setDayCheck] = useState(false);
     const [grafFixo, setGrafFixo] = useState(true);
+    const [timeWindow, setTimeWindow] = useState(1);
 
     async function selectData() {
         const id = (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : ""
-        //await api.get(`data?dev_addr=${id}&from_date=29/04/2021&to_date=29/04/2021`)
-        await api.get(`data?dev_addr=${id}&limit=1000`)
+        await api.get(`data?dev_addr=${id}&date=30/04/2021`)
+        //await api.get(`data?dev_addr=${id}&limit=1000`)
             .then((res) => {
                 setDadosGrafico(((res.data)));
             })
@@ -71,13 +72,13 @@ export default function Graph() {
 
     function getPointsGraph() {
         var pointsGraph = dadosGrafico.map((dev) => ([new Date(dev['ts'] * 1000), dev[var1], dev[var2]]))
-        pointsGraph.unshift(['t', nomeVars[var1], nomeVars[var2]])
+        pointsGraph.unshift(['t', textoVars[var1], textoVars[var2]])
         return pointsGraph
     }
 
     useEffect(() => {
         selectData()
-    }, [selectedDevice])
+    }, [selectedDevice, dayCheck])
 
     useEffect(() => {
         const pointsGraph = getPointsGraph()
@@ -115,6 +116,18 @@ export default function Graph() {
             </Form.Control>
         )
     }
+    function drawDropdownTime() {
+        return (
+            <Form.Control style={{ width: '10%', marginLeft: '2%' }} value={timeWindow} onChange={(e) => setTimeWindow(e.target.value)} as="select">
+                    <option key={"1 dia"}     value={1}>{"1 dia"}</option>
+                    <option key={"2 dias"}    value={2}>{"2 dias"}</option>
+                    <option key={"4 dias"}    value={4}>{"4 dias"}</option>
+                    <option key={"1 semana"}  value={7}>{"1 semana"}</option>
+                    <option key={"2 semanas"} value={14}>{"2 semanas"}</option>
+                    <option key={"3 semanas"} value={21}>{"3 semanas"}</option>
+            </Form.Control>
+        )
+    }
 
 
     return (
@@ -126,6 +139,7 @@ export default function Graph() {
                     <Col lg="12" style={{ display: 'flex' , marginLeft: '10%'}}>
                         {drawDropdownVar1()}
                         {drawDropdownVar2()}
+                        {/*drawDropdownTime()*/}
                         {
                     dayCheck === false ?
                         <div>
@@ -161,7 +175,7 @@ export default function Graph() {
 
                 data={graph}
                 options={{
-                    legend: 'none',
+                    //legend: 'none',
                     animation: {
                         duration: 1000,
                         easing: 'out',
@@ -173,8 +187,8 @@ export default function Graph() {
                     },
                     hAxis: { title: 'Tempo' },
                     vAxes: {
-                        0: { title: textoVars[var1] },
-                        1: { title: textoVars[var2] }
+                        //0: { title: textoVars[var1] },
+                        //1: { title: textoVars[var2] }
                     },
                     colors: [colorVars[var1], colorVars[var2]],
                 }}
