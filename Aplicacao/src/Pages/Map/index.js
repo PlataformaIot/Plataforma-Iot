@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Form, Col, Row, Button, FormCheck } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import './styles.css';
-import {getDate } from '../../store/functions'
 
 
 export default function Mapa() {
@@ -14,7 +13,6 @@ export default function Mapa() {
         const selDevice = (lista.length > 0) ? (selectedDevice === '' ? lista[0].device : lista.filter((dev) => dev.device === selectedDevice)) : []
         return (selDevice.length > 0) ? selDevice[0][prop] ? selDevice[0][prop] : 0.0 : []
     }
-
    
     const [days, setDays] = useState([]);
     const [month, setMonth] = useState([]);
@@ -25,31 +23,32 @@ export default function Mapa() {
     useEffect(() => {
         const lastDate = new Date( verificaLista(dadosDevice, "ts") * 1000 )
 
-        const da = lastDate.getDate()
-        const mo = lastDate.getMonth()+1
-        const yr = lastDate.getFullYear()
-        setData(yr+'-'+(mo<10 ? ('0'+mo):mo )+'-'+da)
+        const day = lastDate.getDate()
+        const month = lastDate.getMonth()+1
+        const year = lastDate.getFullYear()
+        //setData(year+'-'+(month<10 ? ('0'+month):month )+'-'+(day<10) ? ('0'+day):day)
+        setData(`${year}-${(month<10) ? ('0'+month):month}-${(day<10) ? ('0'+day):day}`)
     }, [dadosDevice])
 
     useEffect(() => {
-        dia()
-        mes()
-        ano()
+        setDia()
+        setMes()
+        setAno()
         selectDevice()
     }, [data])
 
-    function dia() {
+    function setDia() {
         let day = data.slice(8, 10)
         setDays(day)
         console.log(day)
     }
 
-    function mes() {
+    function setMes() {
         let month = data.slice(5, 7)
         setMonth(month)
     }
 
-    function ano() {
+    function setAno() {
         let years = data.slice(0, 4)
         setYear(years)
     }

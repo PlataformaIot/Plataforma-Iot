@@ -58,10 +58,10 @@ export default function Graph() {
     const [grafFixo, setGrafFixo] = useState(true);
     const [timeWindow, setTimeWindow] = useState(1);
 
-    async function selectData() {
+    async function downloadData() {
         const id = (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : ""
-        await api.get(`data?dev_addr=${id}&date=30/04/2021`)
-        //await api.get(`data?dev_addr=${id}&limit=1000`)
+        //await api.get(`data?dev_addr=${id}&from_date=30/04/2021&to_date=01/05/2021`)
+        await api.get(`data?dev_addr=${id}&limit=1000`)
             .then((res) => {
                 setDadosGrafico(((res.data)));
             })
@@ -72,13 +72,13 @@ export default function Graph() {
 
     function getPointsGraph() {
         var pointsGraph = dadosGrafico.map((dev) => ([new Date(dev['ts'] * 1000), dev[var1], dev[var2]]))
-        pointsGraph.unshift(['t', textoVars[var1], textoVars[var2]])
+        pointsGraph.unshift(['t', textoVars[var1], textoVars[var2] ])
         return pointsGraph
     }
 
     useEffect(() => {
-        selectData()
-    }, [selectedDevice, dayCheck])
+        downloadData()
+    }, [selectedDevice])
 
     useEffect(() => {
         const pointsGraph = getPointsGraph()
@@ -86,11 +86,13 @@ export default function Graph() {
     }, [selectedVar1, selectedVar2, dadosGrafico])
 
     useEffect(() => {
-        const instervalId = grafFixo ? 0 : setInterval(() => setGraph(getPointsGraph()), 5000)
 
-        return () => {
-            //executa apenas quando o componente é destruido
-            clearInterval(instervalId);
+        if(grafFixo){
+            const instervalId = grafFixo ? 0 : setInterval(() => setGraph(getPointsGraph()), 5000)
+            return () => {
+                //executa apenas quando o componente é destruido
+                clearInterval(instervalId);
+            }
         }
     }, [graph])
 
@@ -161,12 +163,16 @@ export default function Graph() {
             </div>
             {
                 (dadosGrafico.length > 0) ? drawGraph() :
-                <p>Baixando Dados...</p>}
+                <p>Baixando Dados...</p>
+            }
+            <p>{/*cli.getChartAreaBoundingBox().width*/}</p>
         </Container>
     )
-
+    
+    //const cli = chart.getChartLayoutInterface();
     function drawGraph() {
         return (
+            <div>
             <Chart
                 width={'100%'}
                 height={'500px'}
@@ -183,9 +189,26 @@ export default function Graph() {
                     },
                     series: {
                         0: { curveType: 'function', targetAxisIndex: 0 },
-                        1: { curveType: 'function', targetAxisIndex: 1 },
+                        1: { curveType: 'function', targetAxisIndex: 1, visibleInLegend:(var2==var1 ? false:true) },
                     },
-                    hAxis: { title: 'Tempo' },
+                    hAxis: { title: 'Tempo',
+                        gridlines: {
+                            count: "-1",
+                            units: {
+                                minutes: {format:["HH:mm"]},
+                                hours: {format: ["HH:mm \n d/MM","H'h'"]},
+                                days: {format: ["dd/MM/yyyy","d/M"]},
+                                months: {format: ["MM/yyyy","M/yy"]}
+                            }
+                        },
+                        minorGridlines: {
+                            units: {
+                                minutes: {format:["HH:mm",":mm"]},
+                                hours: {format: ["HH:mm","H'h'"]},
+                                days: {format: ["d"]},
+                            }
+                        }
+                    },
                     vAxes: {
                         //0: { title: textoVars[var1] },
                         //1: { title: textoVars[var2] }
@@ -194,7 +217,7 @@ export default function Graph() {
                 }}
                 rootProps={{ 'data-testid': '1' }}
             />
-
+                </div>
         )
     }
 
