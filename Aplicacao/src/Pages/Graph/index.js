@@ -37,7 +37,6 @@ export default function Graph() {
     const varsDevice = Object.keys(nomeVars).filter((prop) => {
         return propsDevice.includes(prop)
     })
-    //alert( JSON.stringify( varsDevice) )
 
     function getVar1() {
         const lVar = (varsDevice.length > 0) ? (selectedVar1 === '' ? varsDevice : varsDevice.filter((va) => va === selectedVar1)) : []
@@ -58,10 +57,9 @@ export default function Graph() {
     const [grafFixo, setGrafFixo] = useState(true);
     const [timeWindow, setTimeWindow] = useState(1);
 
-    async function downloadData() {
+    async function downloadData(options) {
         const id = (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : ""
-        //await api.get(`data?dev_addr=${id}&from_date=30/04/2021&to_date=01/05/2021`)
-        await api.get(`data?dev_addr=${id}&limit=1000`)
+        await api.get(`data?dev_addr=${id}&${options}`)
             .then((res) => {
                 setDadosGrafico(((res.data)));
             })
@@ -77,7 +75,8 @@ export default function Graph() {
     }
 
     useEffect(() => {
-        downloadData()
+        downloadData(`limit=1000`)
+        //downloadData(`from_date=01/05/2021&to_date=02/05/2021`)
     }, [selectedDevice])
 
     useEffect(() => {
@@ -96,83 +95,81 @@ export default function Graph() {
         }
     }, [graph])
 
+
+    return (
+        <Container fluid>
+            {/*<p>{JSON.stringify( graph )}</p>*/}
+                <Col lg="12" style={{ display: 'flex' , marginLeft: '10%'}}>
+                    {drawDropdownVar1()}
+                    {drawDropdownVar2()}
+                    {drawDropdownTime()}
+                    {drawTimeOptions()}
+                </Col>
+            { (dadosGrafico.length > 0) ? drawGraph() : <p>Baixando Dados...</p> }
+            <p>{/*cli.getChartAreaBoundingBox().width*/}</p>
+        </Container>
+    )
+    
     function drawDropdownVar1() {
         return (
-            <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar1} onChange={(e) => setSelectedVar1(e.target.value)} as="select">
-                {(varsDevice.length > 0) ? varsDevice.map((prop) => (
-                    <option key={nomeVars[prop]} value={prop}>{nomeVars[prop]}</option>
-                )) : (
-                    <option>Nenhuma variável</option>
-                )}
-            </Form.Control>
+            <div style={{ width: '15%', marginLeft: '2%' }}> 
+                <p>Variável do lado esquerdo:</p>
+                <Form.Control value={selectedVar1} onChange={(e) => setSelectedVar1(e.target.value)} as="select">
+                    {(varsDevice.length > 0) ? varsDevice.map((prop) => (
+                        <option key={nomeVars[prop]} value={prop}>{nomeVars[prop]}</option>)
+                    ) : (
+                        <option>Nenhuma variável</option>
+                    )}
+                </Form.Control>
+            </div>
         )
     }
     function drawDropdownVar2() {
         return (
-            <Form.Control style={{ width: '16%', marginLeft: '2%' }} value={selectedVar2} onChange={(e) => setSelectedVar2(e.target.value)} as="select">
-                {(varsDevice.length > 0) ? varsDevice.map((prop) => (
-                    <option key={nomeVars[prop]} value={prop}>{nomeVars[prop]}</option>
-                )) : (
-                    <option>Nenhuma variável</option>
-                )}
-            </Form.Control>
+            <div style={{ width: '15%', marginLeft: '2%' }}> 
+                <p>Variável do lado direito:</p>
+                <Form.Control  value={selectedVar2} onChange={(e) => setSelectedVar2(e.target.value)} as="select">
+                    {(varsDevice.length > 0) ? varsDevice.map((prop) => (
+                        <option key={nomeVars[prop]} value={prop}>{nomeVars[prop]}</option>
+                    )) : (
+                        <option>Nenhuma variável</option>
+                    )}
+                </Form.Control>
+            </div>
         )
     }
     function drawDropdownTime() {
         return (
-            <Form.Control style={{ width: '10%', marginLeft: '2%' }} value={timeWindow} onChange={(e) => setTimeWindow(e.target.value)} as="select">
+            <div style={{ width: '13%', marginLeft: '6%' }}> 
+                <p>Janela de tempo:</p>
+                <Form.Control  value={timeWindow} onChange={(e) => setTimeWindow(e.target.value)} as="select">
                     <option key={"1 dia"}     value={1}>{"1 dia"}</option>
                     <option key={"2 dias"}    value={2}>{"2 dias"}</option>
                     <option key={"4 dias"}    value={4}>{"4 dias"}</option>
                     <option key={"1 semana"}  value={7}>{"1 semana"}</option>
                     <option key={"2 semanas"} value={14}>{"2 semanas"}</option>
                     <option key={"3 semanas"} value={21}>{"3 semanas"}</option>
-            </Form.Control>
+                </Form.Control>
+            </div>
+        )
+    }
+    function drawTimeOptions() {
+        return (
+            <div style={{ width: '13%', marginLeft: '2%' }}> 
+                <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '2%'}} />
+                <p></p>
+                {dayCheck === false ?
+                <FormCheck  defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '2%' }} />
+                :
+                <Form.Control type="date" />
+                }
+            </div>
         )
     }
 
-
-    return (
-        <Container fluid>
-            {/*<p>{JSON.stringify( graph )}</p>*/}
-            <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                <Col>
-                {
-                    <Col lg="12" style={{ display: 'flex' , marginLeft: '10%'}}>
-                        {drawDropdownVar1()}
-                        {drawDropdownVar2()}
-                        {/*drawDropdownTime()*/}
-                        {
-                    dayCheck === false ?
-                        <div>
-                        <div style={{ display: 'flex' }}>
-                        <Form.Control style={{ width: '30%', marginLeft: '12%' }} type="week" />
-                        <FormCheck  defaultChecked value={grafFixo} onChange={(e) => setGrafFixo(e.target.checked)} label="Manter gráfico estático" style={{ marginLeft: '6%' }} />
-                        </div>
-                        <FormCheck value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '6%'}} />
-                        </div>
-                        :
-                        <div>
-                        <Form.Control style={{ width: '100%', marginLeft: '22%' }} type="date" />
-                        <FormCheck defaultChecked value={dayCheck} onChange={(e) => setDayCheck(e.target.checked)} label="Dia específico" style={{ marginLeft: '15%' }} />
-                        </div>
-                    }
-                    </Col>
-                }
-                </Col>
-            </div>
-            {
-                (dadosGrafico.length > 0) ? drawGraph() :
-                <p>Baixando Dados...</p>
-            }
-            <p>{/*cli.getChartAreaBoundingBox().width*/}</p>
-        </Container>
-    )
-    
-    //const cli = chart.getChartLayoutInterface();
     function drawGraph() {
+        //const cli = chart.getChartLayoutInterface();
         return (
-            <div>
             <Chart
                 width={'100%'}
                 height={'500px'}
@@ -217,7 +214,6 @@ export default function Graph() {
                 }}
                 rootProps={{ 'data-testid': '1' }}
             />
-                </div>
         )
     }
 
