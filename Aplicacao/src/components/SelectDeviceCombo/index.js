@@ -6,31 +6,57 @@ import { Link } from 'react-router-dom';
 import './styles.css';
 import { selecionarDevice, atualizarDevices, dadosDevice, dadosType } from '../../store/Modulos/Devices/actions';
 
-import { MdPhotoSizeSelectLarge } from 'react-icons/md';
+//import { MdPhotoSizeSelectLarge } from 'react-icons/md';
 import { AiOutlineHome } from 'react-icons/ai';
 import { BsPlusSquare } from 'react-icons/bs';
 import { GiRiotShield } from 'react-icons/gi';
-import { BsInfoCircle } from 'react-icons/bs';
+//import { BsInfoCircle } from 'react-icons/bs';
 
 export default function Combo() {
     
 
     const devices = useSelector((state) => state.devicesState.devices)
     const selectedDevice = useSelector((state) => state.devicesState.selectedDevice)
-    const dadosTypes = useSelector((state) =>  state.devicesState.dadosType)
+    //const dadosTypes = useSelector((state) =>  state.devicesState.dadosType)
     //const dadosDevice = useSelector((state) =>  state.devicesState.dadosDevice);
     //console.log(selectedDevice)
     const dispatch = useDispatch()
 
+    const [selDeviceCombo, setDeviceCombo] = useState([])
+
+    function drawDeviceCombo() {
+        return (
+            <div style={{ width: '16%', marginLeft: '80%'}}>
+                {(devices.length > 0) ? " Dispositivo Selecionado:" : <p> </p>}
+                <Form.Control as="select" value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))}>
+                    {(devices.length > 0) ? devices.map((dev) => (
+                        <option key={dev.name ? dev.name:dev.device} value={dev.device}>{dev.name ? dev.name:dev.device}</option>
+                    )) :
+                        (
+                            <option>Nenhum dispositivo</option>
+                        )
+                    }
+                </Form.Control>
+            </div>
+        )
+    }
+/*
     useEffect(() => {
-        handleDevices()
-        selectData()
-        selectDeviveTypes()
-        
+        dispatch(selecionarDevice(selDeviceCombo))
+    }, [selDeviceCombo])
+*/
+    useEffect(() => {
+        if(selectedDevice === '')
+            if(devices.length > 0)
+                dispatch(selecionarDevice(devices[0].device))
+            handleDevices()
+            selectData()
+            selectDeviveTypes()
     }, [selectedDevice])
 
-    async function handleDevices() {
 
+    async function handleDevices() {
+        //alert('aaaaaaaa')
         await api.get(`devices`)
             .then((res) => {
                 dispatch(atualizarDevices(res.data))
@@ -38,6 +64,7 @@ export default function Combo() {
             .catch((err) => {
                 console.log(err)
             })
+            
     }
 
     async function selectDeviveTypes(){
@@ -65,6 +92,7 @@ export default function Combo() {
     }
 
     async function selectData() {
+        //alert('aaaaaaaa')
         const id = (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : ""
         console.log(id)
         await api.get(`data?dev_addr=${id}&limit=100`)
@@ -106,17 +134,7 @@ export default function Combo() {
                         </Link>
                     </CardDeck>
                 </Col>
-
-                    <Form.Control style={{ width: '16%', marginLeft: '80%'}} value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))} as="select">
-                        {devices.length && (devices.length > 0) ? devices.map((dev) => (
-                            <option key={dev.name ? dev.name:dev.device} value={dev.device}>{dev.name ? dev.name:dev.device}</option>
-                        )) :
-                            (
-                                <option>Nenhum dispositivo</option>
-                            )
-                        }
-                    </Form.Control>
-
+                {drawDeviceCombo()}
             </Row>
 
 
