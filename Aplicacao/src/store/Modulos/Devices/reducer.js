@@ -28,7 +28,7 @@ export default (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 dadosDevice: payload,
-                selectedDevice: payload[0].device
+                //selectedDevice: payload[0].device
             }
         default:
             return state

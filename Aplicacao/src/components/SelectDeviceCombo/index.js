@@ -39,14 +39,14 @@ export default function Combo() {
         )
     }
     useEffect(() => {
-        selectDeviveTypes()
         handleDevices()
-        selectData()//  <--- BUG!
+        if(selectedDevice === '')
+            if(devices.length > 0)
+                dispatch(selecionarDevice(devices[0].device))
+        selectData()
+        selectDeviveTypes()
     }, [selectedDevice])
-/*BUG:  A selectData manda baixar dados, espera para receber-los e no final sobreescreve os antigos.
-         Qd o device é mudado antes de receber os dados do anterior, ele recebe os dados e muda p/
-         o device anterior, causando a oscilação
-*/
+
     async function handleDevices() {
         await api.get(`devices`)
             .then((res) => {
