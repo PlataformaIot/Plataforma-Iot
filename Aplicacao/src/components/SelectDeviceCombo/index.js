@@ -22,12 +22,10 @@ export default function Combo() {
     //console.log(selectedDevice)
     const dispatch = useDispatch()
 
-    const [selDeviceCombo, setDeviceCombo] = useState([])
-
     function drawDeviceCombo() {
         return (
             <div style={{ width: '16%', marginLeft: '80%'}}>
-                {(devices.length > 0) ? " Dispositivo Selecionado:" : <p> </p>}
+                <div style={{ marginLeft: '6%'}}>{(devices.length > 0) ? "Dispositivo Selecionado:" : <p> </p>}</div>
                 <Form.Control as="select" value={selectedDevice} onChange={(e) => dispatch(selecionarDevice(e.target.value))}>
                     {(devices.length > 0) ? devices.map((dev) => (
                         <option key={dev.name ? dev.name:dev.device} value={dev.device}>{dev.name ? dev.name:dev.device}</option>
@@ -40,23 +38,16 @@ export default function Combo() {
             </div>
         )
     }
-/*
     useEffect(() => {
-        dispatch(selecionarDevice(selDeviceCombo))
-    }, [selDeviceCombo])
-*/
-    useEffect(() => {
-        if(selectedDevice === '')
-            if(devices.length > 0)
-                dispatch(selecionarDevice(devices[0].device))
-            handleDevices()
-            selectData()
-            selectDeviveTypes()
+        selectDeviveTypes()
+        handleDevices()
+        selectData()//  <--- BUG!
     }, [selectedDevice])
-
-
+/*BUG:  A selectData manda baixar dados, espera para receber-los e no final sobreescreve os antigos.
+         Qd o device é mudado antes de receber os dados do anterior, ele recebe os dados e muda p/
+         o device anterior, causando a oscilação
+*/
     async function handleDevices() {
-        //alert('aaaaaaaa')
         await api.get(`devices`)
             .then((res) => {
                 dispatch(atualizarDevices(res.data))
@@ -92,10 +83,9 @@ export default function Combo() {
     }
 
     async function selectData() {
-        //alert('aaaaaaaa')
         const id = (devices.length > 0) ? (selectedDevice === '' ? devices[0].device : devices.filter((dev) => dev.device === selectedDevice)[0].device) : ""
         console.log(id)
-        await api.get(`data?dev_addr=${id}&limit=100`)
+        await api.get(`data?dev_addr=${id}&limit=10`)
             .then((res) => {
                 dispatch(dadosDevice(equacionarDadosDevices(res.data)));
             })
